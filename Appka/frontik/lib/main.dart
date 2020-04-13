@@ -44,67 +44,71 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Container kniha(String nazov, String obrazok){
+    return Container(
+              width: 160.0,
+              child: Card(
+                child: Wrap(children: <Widget>[
+                  Image.network(obrazok),
+                  ListTile(title: Text(nazov)),
+                ]),
+              ),
+            );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+    Widget horizontalList1 = new Container(
+        margin: EdgeInsets.symmetric(vertical: 20.0),
+        height: 300.0,
+        child: new ListView(
+          scrollDirection: Axis.horizontal,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            Container(
+              width: 160.0,
+              color: Colors.red,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            Container(
+              width: 160.0,
+              color: Colors.orange,
+            ),
+            Container(
+              width: 160.0,
+              color: Colors.pink,
+            ),
+            Container(
+              width: 160.0,
+              color: Colors.yellow,
             ),
           ],
-        ),
+        ));
+    Widget horizontalList2 = new Container(
+        margin: EdgeInsets.symmetric(vertical: 20.0),
+        height: 300.0,
+        child: new ListView(
+          scrollDirection: Axis.horizontal,
+          children: <Widget>[
+            kniha("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
+            kniha("Harry Potter a Kamen mudrcov", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
+            kniha("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
+            kniha("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")
+          ],
+        ));
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text(widget.title),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      body: new Center(
+        child: new Container(
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            children: <Widget>[
+              horizontalList1,
+              horizontalList2,
+            ],
+          ),
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
