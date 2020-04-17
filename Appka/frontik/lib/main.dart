@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Read It!',
       theme: ThemeData(
-        	primarySwatch: Colors.red
+        	primarySwatch: Colors.grey
       ),
-      home: MyHomePage(title: 'Read It!'),
+      home: MyHomePage(title: 'Read It!',),
     );
   }
 }
