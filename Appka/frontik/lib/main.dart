@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'user/homepage.dart';
+import 'user/navigation.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         	primarySwatch: Colors.grey
       ),
-      home: MyHomePage(title: 'Read It!',),
+      home: Navigation(title: 'Read It!',),
     );
   }
 }

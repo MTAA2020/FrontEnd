@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:frontik/user/myprofile.dart';
+import 'package:frontik/user/wishlist.dart';
+import 'package:frontik/user/mybooks.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key}) : super(key: key);
 
-  final String title;
   
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -11,19 +13,54 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  Container kniha(String nazov, String obrazok){
+    Container loginbutton(){
+      return Container(
+      width: 200.0,
+      height: 200.0,
+      child: new RawMaterialButton(
+        shape: new CircleBorder(),
+        elevation: 0.0,
+        child: Icon(
+          Icons.favorite,
+          color: Colors.blue,
+         ),
+      onPressed: (){},
+      ) 
+    );
+    }
+
+
+
+
+    Container kniha(String nazov, String obrazok){
     return Container(
       width: 120.0,
       height: 200.0,
       child: Card(
-        child: Wrap(children: <Widget>[
-          Image.network(obrazok),
-          ListTile(
-            title: Text(nazov)
-            
+        color: Colors.grey,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(20),
+          top: Radius.circular(20)
+          ),
+        ),
+        child: new Column(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+              child: Image.network(
+                  obrazok,
+                  height: 160.0,
+                  width: 140.0,
+              ),
             ),
-          
-        ]),
+            new Text(
+                        nazov,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0 ),
+                        textAlign: TextAlign.center,
+                      )
+          ],
+        ),
       ),
     );
   }
@@ -57,8 +94,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
+
+  int _currentIndex = 0;
+  void onItemTapped(int index) {
+  setState(() {
+    _currentIndex = index;
+  });
+  }
+
+  final List<Widget> _children = [
+    Wishlist(),
+    MyBooks(),
+    MyProfile()
+ ];
+
   @override
   Widget build(BuildContext context) {
+
     
     Widget categorylist = new Container(
       margin: EdgeInsets.symmetric(vertical: 30.0,horizontal: 5.0),
@@ -76,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
     Widget bestsellerlist = new Container(
-        margin: EdgeInsets.symmetric(vertical:10.0,horizontal: 5.0),
+        margin: EdgeInsets.symmetric(vertical:40.0,horizontal: 5.0),
         height: 200.0,
         child: new ListView(
           scrollDirection: Axis.horizontal,
@@ -89,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
     
     Widget picksforyoulist = new Container(
-    margin: EdgeInsets.symmetric(vertical:10.0,horizontal: 5.0),
+    margin: EdgeInsets.symmetric(vertical:20.0,horizontal: 5.0),
     height: 200.0,
     child: new ListView(
       scrollDirection: Axis.horizontal,
@@ -116,9 +168,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-        centerTitle: true,
+      backgroundColor: Colors.grey,
+
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        color: Colors.red,
+        notchMargin: 4,
       ),
       body: new Center(
         child: new Container(
