@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:frontik/user/loginpage.dart';
+import 'package:frontik/user/navigation.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+class StartPage extends StatefulWidget {
+  StartPage({Key key}) : super(key: key);
 
   
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _StartPageState createState() => _StartPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class _StartPageState extends State<StartPage> {
 
     Container kniha(String nazov, String obrazok){
     return Container(
@@ -133,6 +134,21 @@ class _MyHomePageState extends State<MyHomePage> {
     
     return new Scaffold(
       backgroundColor: Colors.grey,
+
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(0.0),
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Navigation()), //Tu bude LoginPage() a z LoginPage bude Navigation otvoreny
+            );
+          },
+          color: Colors.blue,
+          textColor: Colors.white,
+          child: Text('Login'),
+        ),
+      ),
       body: new Center(
         child: new Container(
           child: ListView(
@@ -145,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

@@ -4,9 +4,8 @@ import 'package:frontik/user/myprofile.dart';
 import 'package:frontik/user/mybooks.dart';
 
 class Navigation extends StatefulWidget {
-  Navigation({Key key, this.title}) : super(key: key);
+  Navigation({Key key}) : super(key: key);
 
-  final String title;
   
   @override
   _NavigationState createState() => _NavigationState();
@@ -47,11 +46,6 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.grey,
 
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'user/homepage.dart';
-import 'user/navigation.dart';
+import 'user/beforelogin.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         	primarySwatch: Colors.grey
       ),
-      home: Navigation(title: 'Read It!',),
+      home: StartPage()
     );
   }
 }
