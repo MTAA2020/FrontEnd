@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontik/user/homepage.dart';
 import 'package:frontik/user/myprofile.dart';
-import 'package:frontik/user/wishlist.dart';
 import 'package:frontik/user/mybooks.dart';
 
 class Navigation extends StatefulWidget {

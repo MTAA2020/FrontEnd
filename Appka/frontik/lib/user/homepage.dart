@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontik/user/myprofile.dart';
-import 'package:frontik/user/wishlist.dart';
-import 'package:frontik/user/mybooks.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
@@ -92,21 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-
-
-  int _currentIndex = 0;
-  void onItemTapped(int index) {
-  setState(() {
-    _currentIndex = index;
-  });
-  }
-
-  final List<Widget> _children = [
-    Wishlist(),
-    MyBooks(),
-    MyProfile()
- ];
 
   @override
   Widget build(BuildContext context) {
