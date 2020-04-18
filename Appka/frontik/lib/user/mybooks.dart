@@ -49,10 +49,6 @@ class _MyBooksState extends State<MyBooks> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("mybooks"),
-        centerTitle: true,
-      ),
       backgroundColor: Colors.grey
       
     );

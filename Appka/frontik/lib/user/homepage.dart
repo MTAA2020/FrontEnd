@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:frontik/user/category.dart';
+import 'package:frontik/user/bookdetail.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
@@ -12,72 +14,88 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
 
-  Container kniha(String nazov, String obrazok){
+ Container kniha(String nazov, String obrazok){
     return Container(
       width: 120.0,
       height: 200.0,
-      child: SizedBox(
-        width: 120,
-        height: 200,
+      child: GestureDetector(
+        onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BookDetail(title: nazov)),
+            );
+          },
+        child: SizedBox(
+          width: 120,
+          height: 200,
+          child: Card(
+            color: Colors.grey,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20),
+              top: Radius.circular(20)
+              ),
+            ),
+            child: new Column(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+                  child: Image.network(
+                      obrazok,
+                      height: 160.0,
+                      width: 140.0,
+                  ),
+                ),
+                Expanded( // Constrains AutoSizeText to the width of the Row
+                child:  AutoSizeText(
+                  nazov,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  minFontSize: 8.0,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0 ),
+                )
+                ),
+              ],
+            ),
+          ),
+        )
+      )
+    );
+  }
+
+
+   Container kategoria(String nazov){
+    return Container(
+      width: 140.0,
+      height: 50.0,
+      child: GestureDetector(
+        onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyCategory(title: nazov)),
+            );
+          },
         child: Card(
-          color: Colors.grey,
+          color: Colors.red[900],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(20),
             top: Radius.circular(20)
             ),
           ),
-          child: new Column(
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-                child: Image.network(
-                    obrazok,
-                    height: 160.0,
-                    width: 140.0,
-                ),
-              ),
-              Expanded( // Constrains AutoSizeText to the width of the Row
-              child:  AutoSizeText(
-                nazov,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                minFontSize: 8.0,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0 ),
-              )
-              ),
-            ],
-          ),
+          child: new Container(
+                    padding: new EdgeInsets.all(10.0),
+                    child: new Column(
+                      children: <Widget>[
+                        new Text(
+                          nazov,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0 ),
+                        )
+                      ],
+                    ),
+          )
         ),
       )
-    );
-  }
-
-
-  Container kategoria(String nazov){
-    return Container(
-      width: 140.0,
-      height: 50.0,
-      child: Card(
-        color: Colors.red[900],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(20),
-          top: Radius.circular(20)
-          ),
-        ),
-        child: new Container(
-                  padding: new EdgeInsets.all(10.0),
-                  child: new Column(
-                    children: <Widget>[
-                      new Text(
-                        nazov,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0 ),
-                      )
-                    ],
-                  ),
-        )
-      ),
     );
   }
 

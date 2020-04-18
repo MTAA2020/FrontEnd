@@ -46,16 +46,17 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     
     return new Scaffold(
-
+      
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
-        color: Colors.red,
+        color: Colors.grey,
         notchMargin: 4,
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
+          backgroundColor: Colors.grey[350],
           onTap: onItemTapped,
           items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+          BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.blueGrey,), title: Text("Home")),
           BottomNavigationBarItem(icon: Icon(Icons.list), title: Text("My Books")),    //Icons.library_books //Icons.layers
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), title: Text("My Profile")), 
           ]),
