@@ -1,2 +1,2 @@
 # FrontEnd
-Sem davame veci suvisejuce s front endom
+To download auto-size-text package run 'flutter pub get' in the command line from the 'frontik' folder.
