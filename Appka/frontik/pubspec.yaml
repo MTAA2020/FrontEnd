@@ -66,6 +66,9 @@ flutter:
     - family: Amithen
       fonts:
       - asset: fonts/Amithen.ttf
+    - family: PermanentMarker
+      fonts:
+      - asset: fonts/PermanentMarker-Regular.ttf
 
   #   - family: Schyler
   #     fonts:

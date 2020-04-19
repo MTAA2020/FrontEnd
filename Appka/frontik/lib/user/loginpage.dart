@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       text: 'Login',
-                      style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 40),
+                      style: TextStyle(fontFamily: 'PermanentMarker',fontSize: 40),
                     ),
                   ),
                 ),
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       text: 'Registration',
-                      style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 40),
+                      style: TextStyle(fontFamily: 'PermanentMarker',fontSize: 40),
                     ),
                   ),
                 ),

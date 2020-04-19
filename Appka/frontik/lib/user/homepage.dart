@@ -29,6 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
           width: 120,
           height: 200,
           child: Card(
+            elevation: 10,
             color: Colors.grey,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
@@ -76,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           },
         child: Card(
+          elevation: 10,
           color: Colors.red[900],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(

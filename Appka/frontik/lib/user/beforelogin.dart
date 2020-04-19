@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:frontik/user/bookdetail.dart';
 import 'package:frontik/user/loginpage.dart';
-import 'package:frontik/user/navigation.dart';
 import 'package:frontik/user/category.dart';
 
 class StartPage extends StatefulWidget {
@@ -31,6 +30,7 @@ class _StartPageState extends State<StartPage> {
           width: 120,
           height: 200,
           child: Card(
+            elevation: 10,
             color: Colors.grey,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
@@ -78,6 +78,7 @@ class _StartPageState extends State<StartPage> {
             );
           },
         child: Card(
+          elevation: 10,
           color: Colors.red[900],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -240,7 +241,13 @@ class _StartPageState extends State<StartPage> {
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
-        title: new Text("Read It!"),
+        title: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: 'Read It!',
+            style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 30),
+          ),
+        ),
         centerTitle: true,
       ),
       bottomNavigationBar: Padding(
