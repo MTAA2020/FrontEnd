@@ -26,8 +26,8 @@ class _LoginPageState extends State<LoginPage> {
 
     Container login(){
       return Container(
-        height: 240,
-        margin: EdgeInsets.symmetric(vertical: 1.0,horizontal: 5.0),
+        height: 260,
+        margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
          child: Card(
            color: Colors.grey[400],
            shape: RoundedRectangleBorder(
@@ -39,6 +39,17 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
 
               children: <Widget>[
+                Container(
+                  width: 330,
+                  padding: new EdgeInsets.all(5.0),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'Login',
+                      style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 40),
+                    ),
+                  ),
+                ),
                 Container(
                   width: 330,
                   padding: new EdgeInsets.all(5.0),
@@ -106,8 +117,8 @@ class _LoginPageState extends State<LoginPage> {
 
     Container registration(){
       return Container(
-        height: 340,
-        margin: EdgeInsets.symmetric(vertical: 1.0,horizontal: 5.0),
+        height: 320,
+        margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
          child: Card(
            color: Colors.grey[400],
            shape: RoundedRectangleBorder(
@@ -119,6 +130,17 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
 
               children: <Widget>[
+                Container(
+                  width: 330,
+                  padding: new EdgeInsets.all(5.0),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'Registration',
+                      style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 40),
+                    ),
+                  ),
+                ),
                 Container(
                   width: 330,
                   padding: new EdgeInsets.all(5.0),
@@ -199,7 +221,13 @@ class _LoginPageState extends State<LoginPage> {
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
-        title: new Text("Read It!"),
+        title: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: 'Read It!',
+            style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 30),
+          ),
+        ),
         centerTitle: true,
       ),
       body: new Center(

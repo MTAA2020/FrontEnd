@@ -31,7 +31,6 @@ class _NavigationState extends State<Navigation> {
   Widget build(BuildContext context) {
     
     return new Scaffold(
-      
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         color: Colors.grey,
