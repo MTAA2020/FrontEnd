@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:frontik/user/bookdetail.dart';
 
 class MyBooks extends StatefulWidget {
   MyBooks({Key key, this.title}) : super(key: key);
@@ -101,31 +102,39 @@ class _MyBooksState extends State<MyBooks> {
       padding: EdgeInsets.fromLTRB(10,5,10,0),
       height: 180,
       width: 360,
-      child: Card(
-        elevation: 15,
-        child: Padding(
-        padding: EdgeInsets.all(0),
-        child: Stack(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.centerRight,
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.only(left: 0, top: 0),
-                    child: Row(
-                      children: <Widget>[
-                        image(obrazok),
-                        info(title,author)
-                      ],
-                    )
-                ),
-              ],
-            ),
-          )
-        ]),
+      child: GestureDetector(
+        onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BookDetail(title: title)),
+            );
+          },
+        child: Card(
+          elevation: 15,
+          child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerRight,
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                      padding: const EdgeInsets.only(left: 0, top: 0),
+                      child: Row(
+                        children: <Widget>[
+                          image(obrazok),
+                          info(title,author)
+                        ],
+                      )
+                  ),
+                ],
+              ),
+            )
+          ]),
+          ),
         ),
-      ),
+      )
     );
   }
 
