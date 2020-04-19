@@ -253,17 +253,25 @@ class _StartPageState extends State<StartPage> {
         centerTitle: true,
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(0.0),
+        padding: EdgeInsets.all(5.0),
+        
         child: RaisedButton(
+          elevation: 8.0,
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LoginPage()), //Tu bude LoginPage() a z LoginPage bude Navigation() otvoreny
+              MaterialPageRoute(builder: (context) => LoginPage()), 
             );
           },
-          color: Colors.blue,
+          color: Color(0xff3F6CE1),
           textColor: Colors.white,
           child: Text('Login'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(60),
+            top: Radius.circular(60)
+            ),
+          ),
         ),
       ),
       body: new Center(

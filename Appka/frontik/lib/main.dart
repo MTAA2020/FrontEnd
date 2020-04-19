@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'user/beforelogin.dart';
+import 'user/startpage.dart';
 
 void main() => runApp(MyApp());
 
