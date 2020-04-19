@@ -95,7 +95,7 @@ class _BookDetailState extends State<BookDetail> {
           ),
           stars(),
           Container(
-            width: 120,
+            width: 170,
             padding: new EdgeInsets.all(5.0),
             child: new Material(
               elevation: 5.0,
@@ -103,7 +103,7 @@ class _BookDetailState extends State<BookDetail> {
               color: Color(0xff01A0C7),
               child: MaterialButton(
                 minWidth: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
+                padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                 onPressed: () {
                   
                 },
