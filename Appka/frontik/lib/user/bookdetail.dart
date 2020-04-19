@@ -12,6 +12,10 @@ class BookDetail extends StatefulWidget {
 
 class _BookDetailState extends State<BookDetail> {
 
+
+
+  
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(

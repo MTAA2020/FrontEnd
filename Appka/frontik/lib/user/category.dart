@@ -68,7 +68,7 @@ class _MyCategoryState extends State<MyCategory> {
     );
   }
 
-  Container info(String title,String author) {
+  Widget info(String title,String author) {
     return Container(
       width: 240,
       height: 160,

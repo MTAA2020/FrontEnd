@@ -234,13 +234,10 @@ class _StartPageState extends State<StartPage> {
 
 
 
-
-
-
-
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
+        automaticallyImplyLeading: false,
         title: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
@@ -248,6 +245,11 @@ class _StartPageState extends State<StartPage> {
             style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 30),
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+          icon: Icon(Icons.search), 
+          onPressed: (){})
+        ],
         centerTitle: true,
       ),
       bottomNavigationBar: Padding(

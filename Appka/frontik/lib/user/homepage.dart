@@ -232,6 +232,25 @@ class _MyHomePageState extends State<MyHomePage> {
     
     return new Scaffold(
       backgroundColor: Colors.grey,
+      appBar: new AppBar(
+        leading: IconButton(
+        icon: Icon(Icons.power_settings_new, color: Colors.black),
+        onPressed: () => Navigator.of(context).pop(),
+        ), 
+        title: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: 'Read It!',
+            style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 30),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+          icon: Icon(Icons.search), 
+          onPressed: (){})
+        ],
+        centerTitle: true,
+      ),
       
       body: new Center(
         child: new Container(
