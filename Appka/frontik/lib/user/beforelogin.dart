@@ -249,7 +249,7 @@ class _StartPageState extends State<StartPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Navigation()), //Tu bude LoginPage() a z LoginPage bude Navigation() otvoreny
+              MaterialPageRoute(builder: (context) => LoginPage()), //Tu bude LoginPage() a z LoginPage bude Navigation() otvoreny
             );
           },
           color: Colors.blue,

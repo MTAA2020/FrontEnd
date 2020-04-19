@@ -13,21 +13,6 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
 
-    Container loginbutton(){
-      return Container(
-      width: 200.0,
-      height: 200.0,
-      child: new RawMaterialButton(
-        shape: new CircleBorder(),
-        elevation: 0.0,
-        child: Icon(
-          Icons.favorite,
-          color: Colors.blue,
-         ),
-      onPressed: (){},
-      ) 
-    );
-    }
 
   int _currentIndex = 0;
   void onItemTapped(int index) {
