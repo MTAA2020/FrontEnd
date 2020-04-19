@@ -14,7 +14,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
 
- Container book(String nazov, String obrazok){
+ Container book(String nazov, String obrazok,String author){
     return Container(
       width: 120.0,
       height: 200.0,
@@ -22,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => BookDetail(title: nazov)),
+              MaterialPageRoute(builder: (context) => BookDetail(title: nazov,author: author)),
             );
           },
         child: SizedBox(
@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: 140.0,
                   ),
                 ),
-                Expanded( // Constrains AutoSizeText to the width of the Row
+                Expanded(
                 child:  AutoSizeText(
                   nazov,
                   maxLines: 2,
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-   Container kategoria(String title){
+   Container kategoria(String category){
     return Container(
       width: 140.0,
       height: 50.0,
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyCategory(title: title)),
+              MaterialPageRoute(builder: (context) => MyCategory(category: category)),
             );
           },
         child: Card(
@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: new Column(
                       children: <Widget>[
                         new Text(
-                          title,
+                          category,
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0 ),
                         )
                       ],
@@ -145,10 +145,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new ListView(
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            book("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-            book("Harry Potter a Kamen mudrcov jksndkjnkjdnjkdasnajs", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-            book("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-            book("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")
+          book("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Harry Potter a Kamen mudrcov", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author")
           ],
         ));
 
@@ -176,10 +176,10 @@ class _MyHomePageState extends State<MyHomePage> {
     child: new ListView(
       scrollDirection: Axis.horizontal,
       children: <Widget>[
-        book("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-        book("Harry Potter a Kamen mudrcov", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-        book("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-        book("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")
+          book("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Harry Potter a Kamen mudrcov", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author")
       ],
     ));
 
@@ -207,10 +207,10 @@ class _MyHomePageState extends State<MyHomePage> {
       child: new ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
-          book("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-          book("Harry Potter a Kamen mudrcov", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-          book("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
-          book("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60")
+          book("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Harry Potter a Kamen mudrcov", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author"),
+          book("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author")
         ],
       ));
 
@@ -264,7 +264,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ), 
     );
   }
 }

@@ -88,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
                   width: 330,
                   padding: new EdgeInsets.all(5.0),
                   child: new Material(
-                    //onPressed:
                     elevation: 5.0,
                     borderRadius: BorderRadius.circular(50.0),
                     color: Color(0xff01A0C7),

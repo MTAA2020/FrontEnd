@@ -42,6 +42,7 @@ class _MyProfileState extends State<MyProfile> {
                       },
                       child: Text("Deposit",
                           textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 30),
                         ),
                     )
                   ), 
@@ -65,6 +66,7 @@ class _MyProfileState extends State<MyProfile> {
                       },
                       child: Text("Transactions",
                           textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 30),
                         ),
                     )
                   ), 
@@ -84,6 +86,7 @@ class _MyProfileState extends State<MyProfile> {
                       onPressed: () {},
                       child: Text("Settings",
                           textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 30),
                         ),
                     )
                   ), 
@@ -100,9 +103,10 @@ class _MyProfileState extends State<MyProfile> {
                     child: MaterialButton(
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).pop(),
                       child: Text("Log Out",
                           textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 30),
                         ),
                     )
                   ), 

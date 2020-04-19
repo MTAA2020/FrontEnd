@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:frontik/user/bookdetail.dart';
 
 class MyCategory extends StatefulWidget {
-  MyCategory({Key key, this.title}) : super(key: key);
+  MyCategory({Key key, this.category}) : super(key: key);
 
-  final String title;
+  final String category;
   
   @override
   _MyCategoryState createState() => _MyCategoryState();
@@ -101,31 +102,39 @@ class _MyCategoryState extends State<MyCategory> {
       padding: EdgeInsets.fromLTRB(10,5,10,0),
       height: 180,
       width: 360,
-      child: Card(
-        elevation: 15,
-        child: Padding(
-        padding: EdgeInsets.all(0),
-        child: Stack(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.centerRight,
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.only(left: 0, top: 0),
-                    child: Row(
-                      children: <Widget>[
-                        image(obrazok),
-                        info(title,author)
-                      ],
-                    )
-                ),
-              ],
-            ),
-          )
-        ]),
+      child: GestureDetector(
+        onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BookDetail(title: title)),
+            );
+          },
+        child: Card(
+          elevation: 15,
+          child: Padding(
+          padding: EdgeInsets.all(0),
+          child: Stack(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerRight,
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                      padding: const EdgeInsets.only(left: 0, top: 0),
+                      child: Row(
+                        children: <Widget>[
+                          image(obrazok),
+                          info(title,author)
+                        ],
+                      )
+                  ),
+                ],
+              ),
+            )
+          ]),
+          ),
         ),
-      ),
+      )
     );
   }
   
@@ -151,7 +160,7 @@ class _MyCategoryState extends State<MyCategory> {
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
-        title: new Text(widget.title),
+        title: new Text(widget.category),
         centerTitle: true,
       ),
       body: new Center(

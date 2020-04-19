@@ -106,7 +106,7 @@ class _MyBooksState extends State<MyBooks> {
         onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => BookDetail(title: title)),
+              MaterialPageRoute(builder: (context) => BookDetail(title: title,author: author,)),
             );
           },
         child: Card(
