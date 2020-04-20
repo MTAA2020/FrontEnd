@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:frontik/user/bookdetail.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyCategory extends StatefulWidget {
   MyCategory({Key key, this.category}) : super(key: key);
@@ -137,26 +141,20 @@ class _MyCategoryState extends State<MyCategory> {
       )
     );
   }
+
+
+  List<Book> books = new List();
   
+  void initState(){
+    super.initState();
+    fetch();
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
-
-    Widget booksscroll = new Container(
-      margin: EdgeInsets.symmetric(vertical:1.0,horizontal: 5.0),
-      height: 600.0,
-      child: new ListView(
-        scrollDirection: Axis.vertical,
-        children: <Widget>[
-          book("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author1"),
-          book("Harry Potter a Kamen mudrcov", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author1"),
-          book("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author1"),
-          book("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author1")
-        ],
-      )
-    );
-
-
+    
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
@@ -164,14 +162,56 @@ class _MyCategoryState extends State<MyCategory> {
         centerTitle: true,
       ),
       body: new Center(
-        child: new Container(
-          child: ListView(
-            children: <Widget>[
-              booksscroll,
-            ],
-          ),
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical:1.0,horizontal: 5.0),
+          height: 600.0,
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: books.length,
+            itemBuilder: (BuildContext context,int index){
+              book(books[index].title,"https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","hello");
+            }
+          )
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  fetch() async {
+
+
+    //Tu by sme mali pridat request ale pisal mi chybu ze connection refused
+
+    //if (response.statusCode==200){
+    //  setState(() {
+    //    books.add(json.decode(response.body));
+    //  });
+    //}
+   // else{
+   //   throw Exception('fail');
+   // }
+
+  }
+}
+
+class Book {
+  final String author;
+  final String title;
+  final String date;
+  final Float rating;
+  final Float price;
+  final List<String> genres;
+
+  Book({this.author, this.title, this.date,this.rating,this.price,this.genres});
+
+  factory Book.fromJson(Map<String, dynamic> json) {
+    return Book(
+      author: json['name'],
+      title: json['title'],
+      date: json['title'],
+      rating: json['rating'],
+      price: json['price'],
+      genres: json['genres'],
     );
   }
 }
