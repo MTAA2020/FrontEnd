@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:expandable/expandable.dart';
 
 
 class BookDetail extends StatefulWidget {
-  BookDetail({Key key, this.title,this.author}) : super(key: key);
+  BookDetail({Key key, this.title,this.author,this.image,this.about}) : super(key: key);
 
   final String title;
   final String author;
+  final String image;
+  final String about;
   
   @override
   _BookDetailState createState() => _BookDetailState();
@@ -118,28 +121,28 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
 
-  Widget bookdetails(String image) {
+  Widget bookdetails() {
     return Container(
       padding: EdgeInsets.all(5.0),
       width: 330,
       height: 250,
       child: new Row(
         children: <Widget>[
-          bookdetail1(image),
+          bookdetail1(widget.image),
           bookdetail2(),
         ],
       )
     );
   }
   Widget about() {
-    return Container(
-      color: Colors.blue,
-      height: 100,
-      child: Card(
-
-      ),
+    return   ExpandablePanel(
+      header: Text("About"),
+      collapsed: Text(widget.about, softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
+      expanded: Text(widget.about, softWrap: true, ),
     );
   }
+
+  
   Widget reviews(){
     return Container(
       
@@ -167,7 +170,7 @@ class _BookDetailState extends State<BookDetail> {
           child: ListView(
             scrollDirection: Axis.vertical,
             children: <Widget>[
-              bookdetails("https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"),
+              bookdetails(),
               about(),
               reviews(),
             ],

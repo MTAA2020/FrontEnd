@@ -1,9 +1,9 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:frontik/user/bookdetail.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 import 'dart:convert';
 
 class MyCategory extends StatefulWidget {
@@ -110,7 +110,7 @@ class _MyCategoryState extends State<MyCategory> {
         onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => BookDetail(title: title,author: author)),
+              MaterialPageRoute(builder: (context) => BookDetail(title: title,author: author,image: obrazok)),
             );
           },
         child: Card(
@@ -177,21 +177,29 @@ class _MyCategoryState extends State<MyCategory> {
     );
   }
 
-  fetch() async {
-
+  Future fetch() async {
+    http.Response response;
 
     //Tu by sme mali pridat request ale pisal mi chybu ze connection refused
+    response =  await http.get(
+      Uri.http("localhost:5000", '/getBooks?strana=1'),
+      headers: {
+        'Content-Type' : 'application/json'
+      },
+    );
 
-    //if (response.statusCode==200){
-    //  setState(() {
-    //    books.add(json.decode(response.body));
-    //  });
-    //}
-   // else{
-   //   throw Exception('fail');
-   // }
+    if (response.statusCode==200){
+      setState(() {
+        //books.add(json.decode(response.body));
+      });
+    }
+    else{
+      throw Exception('fail');
+    }
 
   }
+
+
 }
 
 class Book {

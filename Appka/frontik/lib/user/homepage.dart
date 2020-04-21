@@ -22,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => BookDetail(title: nazov,author: author)),
+              MaterialPageRoute(builder: (context) => BookDetail(title: nazov,author: author,image:obrazok,about: "h")),
             );
           },
         child: SizedBox(

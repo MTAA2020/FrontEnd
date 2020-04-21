@@ -23,7 +23,7 @@ class _StartPageState extends State<StartPage> {
         onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => BookDetail(title: nazov,author: author,)),
+              MaterialPageRoute(builder: (context) => BookDetail(title: nazov,author: author,image: obrazok,about: "h")),
             );
           },
         child: SizedBox(
