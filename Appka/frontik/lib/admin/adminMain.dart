@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontik/admin/adminAddAuthor.dart';
+import 'package:frontik/admin/adminAddBook.dart';
+import 'package:frontik/admin/adminEditBook.dart';
 
 void main() {
   runApp(new MaterialApp(home: new AwesomeButton()));
@@ -58,7 +61,10 @@ class AwesomeButtonState extends State<AwesomeButton> {
                               fontFamily: 'EmilysCandy',
                               fontSize: 20.0)),
                       color: Colors.lightBlue,
-                      onPressed: onPressed),
+                      onPressed: (){Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddBook()),
+            );}),
                 ),
               ),
               new Padding(
