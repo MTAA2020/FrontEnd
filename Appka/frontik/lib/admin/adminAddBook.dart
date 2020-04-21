@@ -9,14 +9,19 @@ class AddBook extends StatefulWidget {
   AddBookState createState() => new AddBookState();
 }
 
+
+
 class AddBookState extends State<AddBook> {
   final TextEditingController controller = new TextEditingController();
+
+  DateTime selectedDate = DateTime.now();
 
   String result = "";
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: new AppBar(
           backgroundColor: Colors.grey,
           title: RichText(
@@ -39,7 +44,7 @@ class AddBookState extends State<AddBook> {
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Type in here"),
+                      hintText: "Enter Author name"),
                 ),
               ),
               Container(
@@ -49,7 +54,7 @@ class AddBookState extends State<AddBook> {
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Type in here"),
+                      hintText: "Ented book title"),
                 ),
               ),
               Container(
@@ -59,7 +64,7 @@ class AddBookState extends State<AddBook> {
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Type in here"),
+                      hintText: "Enter date published"),
                 ),
               ),
               Container(
@@ -69,7 +74,7 @@ class AddBookState extends State<AddBook> {
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Type in here"),
+                      hintText: "Enter price"),
                 ),
               ),
               Container(
@@ -79,7 +84,7 @@ class AddBookState extends State<AddBook> {
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Type in here"),
+                      hintText: "Enter book genres (;)"),
                 ),
               ),
               Container(
