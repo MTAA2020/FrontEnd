@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:frontik/user/bookdetail.dart';
 import 'package:frontik/user/loginpage.dart';
 import 'package:frontik/user/category.dart';
-
+import 'package:frontik/admin/adminMain.dart';
 class StartPage extends StatefulWidget {
   StartPage({Key key}) : super(key: key);
 
@@ -248,7 +248,7 @@ class _StartPageState extends State<StartPage> {
         actions: <Widget>[
           IconButton(
           icon: Icon(Icons.search), 
-          onPressed: (){})
+          onPressed: (){Navigator.of(context).pushNamed("frontik/admin/adminMain.dart");})
         ],
         centerTitle: true,
       ),
