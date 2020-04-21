@@ -248,7 +248,12 @@ class _StartPageState extends State<StartPage> {
         actions: <Widget>[
           IconButton(
           icon: Icon(Icons.search), 
-          onPressed: (){Navigator.of(context).pushNamed("frontik/admin/adminMain.dart");})
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AwesomeButton()), 
+            );
+          })
         ],
         centerTitle: true,
       ),
