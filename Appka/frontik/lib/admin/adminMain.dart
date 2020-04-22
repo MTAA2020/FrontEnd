@@ -30,7 +30,7 @@ class AwesomeButtonState extends State<AdminMainPage> {
             ),
           ),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.exit_to_app), onPressed: () {})
+            IconButton(icon: Icon(Icons.exit_to_app), onPressed: () {showAlertDialog(context);})
           ],
           centerTitle: true,
         ),
@@ -111,4 +111,31 @@ class AwesomeButtonState extends State<AdminMainPage> {
               )
             ]))));
   }
+  showAlertDialog(BuildContext context) {
+
+ Widget cancelButton = FlatButton(
+    child: new Text("No",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+    onPressed:  () {},
+  );
+  Widget continueButton = FlatButton(
+    child: new Text("Yes",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+    onPressed:  () {},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    content: new Text("Are you sure yo want to log out?",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+    actions: [
+      cancelButton,continueButton
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 }
