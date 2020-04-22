@@ -251,7 +251,7 @@ class _StartPageState extends State<StartPage> {
           onPressed: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AwesomeButton()), 
+              MaterialPageRoute(builder: (context) => AdminMainPage()), 
             );
           })
         ],

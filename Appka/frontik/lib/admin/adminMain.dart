@@ -3,16 +3,17 @@ import 'package:frontik/admin/adminAddAuthor.dart';
 import 'package:frontik/admin/adminAddBook.dart';
 import 'package:frontik/admin/adminEditBook.dart';
 
+
 void main() {
-  runApp(new MaterialApp(home: new AwesomeButton()));
+  runApp(new MaterialApp(home: new AdminMainPage()));
 }
 
-class AwesomeButton extends StatefulWidget {
+class AdminMainPage extends StatefulWidget {
   @override
   AwesomeButtonState createState() => new AwesomeButtonState();
 }
 
-class AwesomeButtonState extends State<AwesomeButton> {
+class AwesomeButtonState extends State<AdminMainPage> {
   void onPressed() {
     setState(() {});
   }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontik/admin/filePicker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(new MaterialApp(home: new AddBook()));
@@ -15,6 +18,57 @@ class AddBookState extends State<AddBook> {
   final TextEditingController controller = new TextEditingController();
 
   DateTime selectedDate = DateTime.now();
+  String _fileName;
+
+  String _path;
+
+  Map<String, String> _paths;
+
+  String _extension;
+
+  bool _loadingPath = false;
+
+  bool _multiPick = false;
+
+  FileType _pickingType;
+
+  TextEditingController _controller = new TextEditingController();
+
+  void _openFileExplorer() async {
+    setState(() => _loadingPath = true);
+
+    try {
+      if (_multiPick) {
+        _path = null;
+
+        _paths = await FilePicker.getMultiFilePath(
+            type: _pickingType,
+            allowedExtensions: (_extension?.isNotEmpty ?? false)
+                ? _extension?.replaceAll(' ', '')?.split(',')
+                : null);
+      } else {
+        _paths = null;
+
+        _path = await FilePicker.getFilePath(
+            type: _pickingType,
+            allowedExtensions: (_extension?.isNotEmpty ?? false)
+                ? _extension?.replaceAll(' ', '')?.split(',')
+                : null);
+      }
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _loadingPath = false;
+
+      _fileName = _path != null
+          ? _path.split('/').last
+          : _paths != null ? _paths.keys.toString() : '...';
+    });
+  }
 
   String result = "";
 
@@ -92,6 +146,7 @@ class AddBookState extends State<AddBook> {
                 padding: EdgeInsets.all(10),
                 child: new TextField(
                   decoration: new InputDecoration(
+                      prefixIcon: IconButton(icon: Icon(Icons.find_in_page), onPressed:() => _openFileExplorer()),
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Browse for the book"),
