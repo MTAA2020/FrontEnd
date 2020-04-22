@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontik/admin/filePicker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 
@@ -12,70 +11,49 @@ class AddBook extends StatefulWidget {
   AddBookState createState() => new AddBookState();
 }
 
-
-
 class AddBookState extends State<AddBook> {
   final TextEditingController controller = new TextEditingController();
-
-  DateTime selectedDate = DateTime.now();
+  DateTime now = DateTime.now();
+  var selectedDate = TextEditingController();
   String _fileName;
-
   String _path;
-
   Map<String, String> _paths;
-
+  var filePath = TextEditingController();
   String _extension;
-
   bool _loadingPath = false;
-
   bool _multiPick = false;
-
   FileType _pickingType;
-
   TextEditingController _controller = new TextEditingController();
-
   void _openFileExplorer() async {
     setState(() => _loadingPath = true);
-
     try {
-      if (_multiPick) {
-        _path = null;
-
-        _paths = await FilePicker.getMultiFilePath(
-            type: _pickingType,
-            allowedExtensions: (_extension?.isNotEmpty ?? false)
-                ? _extension?.replaceAll(' ', '')?.split(',')
-                : null);
-      } else {
-        _paths = null;
-
-        _path = await FilePicker.getFilePath(
-            type: _pickingType,
-            allowedExtensions: (_extension?.isNotEmpty ?? false)
-                ? _extension?.replaceAll(' ', '')?.split(',')
-                : null);
-      }
+      _paths = null;
+      _path = await FilePicker.getFilePath(
+          type: _pickingType,
+          allowedExtensions: (_extension?.isNotEmpty ?? false)
+              ? _extension?.replaceAll(' ', '')?.split(',')
+              : null);
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     }
 
     if (!mounted) return;
-
     setState(() {
       _loadingPath = false;
-
       _fileName = _path != null
           ? _path.split('/').last
           : _paths != null ? _paths.keys.toString() : '...';
     });
+    filePath.text = _path;
   }
 
   String result = "";
 
   @override
   Widget build(BuildContext context) {
+    selectedDate.text = new DateTime(now.year,now.month,now.day).t;
     return new Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         appBar: new AppBar(
           backgroundColor: Colors.grey,
           title: RichText(
@@ -115,6 +93,7 @@ class AddBookState extends State<AddBook> {
                 width: 300,
                 padding: EdgeInsets.all(10),
                 child: new TextField(
+                  controller: selectedDate,
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
@@ -145,8 +124,11 @@ class AddBookState extends State<AddBook> {
                 width: 300,
                 padding: EdgeInsets.all(10),
                 child: new TextField(
+                  controller: filePath,
                   decoration: new InputDecoration(
-                      prefixIcon: IconButton(icon: Icon(Icons.find_in_page), onPressed:() => _openFileExplorer()),
+                      prefixIcon: IconButton(
+                          icon: Icon(Icons.find_in_page),
+                          onPressed: () => _openFileExplorer()),
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Browse for the book"),
