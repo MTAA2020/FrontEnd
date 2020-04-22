@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(new MaterialApp(home: new AddBook()));
@@ -13,7 +14,7 @@ class AddBook extends StatefulWidget {
 
 class AddBookState extends State<AddBook> {
   final TextEditingController controller = new TextEditingController();
-  DateTime now = DateTime.now();
+  DateFormat dateFormat = DateFormat('yyy-MM-dd');
   var selectedDate = TextEditingController();
   String _fileName;
   String _path;
@@ -51,7 +52,7 @@ class AddBookState extends State<AddBook> {
 
   @override
   Widget build(BuildContext context) {
-    selectedDate.text = new DateTime(now.year,now.month,now.day).t;
+    selectedDate.text = dateFormat.format(DateTime.now());
     return new Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: new AppBar(
