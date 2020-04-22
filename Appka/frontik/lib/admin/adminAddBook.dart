@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
@@ -14,7 +14,7 @@ class AddBook extends StatefulWidget {
 
 class AddBookState extends State<AddBook> {
   final TextEditingController controller = new TextEditingController();
-  DateFormat dateFormat = DateFormat('yyy-MM-dd');
+  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   var selectedDate = TextEditingController();
   String _fileName;
   String _path;
@@ -25,29 +25,6 @@ class AddBookState extends State<AddBook> {
   bool _multiPick = false;
   FileType _pickingType;
   TextEditingController _controller = new TextEditingController();
-  void _openFileExplorer() async {
-    setState(() => _loadingPath = true);
-    try {
-      _paths = null;
-      _path = await FilePicker.getFilePath(
-          type: _pickingType,
-          allowedExtensions: (_extension?.isNotEmpty ?? false)
-              ? _extension?.replaceAll(' ', '')?.split(',')
-              : null);
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
-    }
-
-    if (!mounted) return;
-    setState(() {
-      _loadingPath = false;
-      _fileName = _path != null
-          ? _path.split('/').last
-          : _paths != null ? _paths.keys.toString() : '...';
-    });
-    filePath.text = _path;
-  }
-
   String result = "";
 
   @override
@@ -163,5 +140,28 @@ class AddBookState extends State<AddBook> {
               //displaying input text
               new Text(result)
             ]))));
+  }
+
+  void _openFileExplorer() async {
+    setState(() => _loadingPath = true);
+    try {
+      _paths = null;
+      _path = await FilePicker.getFilePath(
+          type: _pickingType,
+          allowedExtensions: (_extension?.isNotEmpty ?? false)
+              ? _extension?.replaceAll(' ', '')?.split(',')
+              : null);
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _loadingPath = false;
+      _fileName = _path != null
+          ? _path.split('/').last
+          : _paths != null ? _paths.keys.toString() : '...';
+    });
+    filePath.text = _path;
   }
 }

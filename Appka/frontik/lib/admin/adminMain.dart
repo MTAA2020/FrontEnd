@@ -3,7 +3,6 @@ import 'package:frontik/admin/adminAddAuthor.dart';
 import 'package:frontik/admin/adminAddBook.dart';
 import 'package:frontik/admin/adminEditBook.dart';
 
-
 void main() {
   runApp(new MaterialApp(home: new AdminMainPage()));
 }
@@ -31,12 +30,7 @@ class AwesomeButtonState extends State<AdminMainPage> {
             ),
           ),
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {}),
-            IconButton(
-                icon: Icon(Icons.exit_to_app),
-                onPressed: () {})
+            IconButton(icon: Icon(Icons.exit_to_app), onPressed: () {})
           ],
           centerTitle: true,
         ),
@@ -62,10 +56,12 @@ class AwesomeButtonState extends State<AdminMainPage> {
                               fontFamily: 'EmilysCandy',
                               fontSize: 20.0)),
                       color: Colors.lightBlue,
-                      onPressed: (){Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddBook()),
-            );}),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AddBook()),
+                        );
+                      }),
                 ),
               ),
               new Padding(
@@ -85,7 +81,12 @@ class AwesomeButtonState extends State<AdminMainPage> {
                               fontFamily: 'EmilysCandy',
                               fontSize: 20.0)),
                       color: Colors.lightBlue,
-                      onPressed: onPressed),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AddAuthor()),
+                        );
+                      }),
                 ),
               ),
               new Padding(
