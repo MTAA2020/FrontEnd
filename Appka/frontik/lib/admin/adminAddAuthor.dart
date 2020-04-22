@@ -62,6 +62,7 @@ class AddAuthorState extends State<AddAuthor> {
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "About"),
+                  maxLines: 99,
                 ),
               ),
               new Padding(
