@@ -136,7 +136,7 @@ class AddAuthorState extends State<AddAuthor> {
     final jsonResponse = json.decode(response.body);
     Author autor = Author.fromJson(jsonResponse);
     
-    if (response.statusCode==200){
+    if (response.statusCode==201){
       setState(() {
           print(autor.name);
       });
