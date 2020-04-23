@@ -3,6 +3,7 @@ import 'package:frontik/user/navigation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'package:frontik/admin/adminMain.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -104,10 +105,18 @@ class _LoginPageState extends State<LoginPage> {
                         if (res['msg'] == "Success") {
                           loginusername.clear();
                           loginpassword.clear();
-                          Navigator.push(
+                          print(res['admin']);
+                          if(res['admin'] == true){
+                             Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AdminMainPage(token: res['access_token'])),
+                            );  
+                          }else{
+                            Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => Navigation(token: res['access_token'])),
-                          );  
+                            );  
+                          }
                         } else {
                           {showAlertDialog(context);}
                         }

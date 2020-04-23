@@ -8,6 +8,8 @@ void main() {
 }
 
 class AdminMainPage extends StatefulWidget {
+  AdminMainPage({Key key,this.token}) : super(key: key);
+  final String token;
   @override
   AwesomeButtonState createState() => new AwesomeButtonState();
 }
