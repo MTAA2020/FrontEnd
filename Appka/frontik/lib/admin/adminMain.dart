@@ -108,7 +108,10 @@ class AwesomeButtonState extends State<AdminMainPage> {
                               fontFamily: 'EmilysCandy',
                               fontSize: 20.0)),
                       color: Colors.lightBlue,
-                      onPressed: onPressed),
+                      onPressed: (){Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EditBook()),
+                        );}),
                 ),
               )
             ]))));

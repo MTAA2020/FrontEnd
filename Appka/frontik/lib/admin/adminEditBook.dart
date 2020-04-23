@@ -4,13 +4,8 @@ import 'package:frontik/user/bookdetail.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 class EditBook extends StatefulWidget {
-  EditBook({Key key, this.category}) : super(key: key);
-
-  final String category;
-  
   @override
   _EditBookState createState() => _EditBookState();
 }
@@ -49,30 +44,16 @@ class _EditBookState extends State<EditBook> {
     );
   }
 
-  Widget stars() {
-    return Container(
-      width: 240,
-      height: 40,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-          child: RatingBar(
-            initialRating: 0,
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-            itemBuilder: (context, _) => Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            onRatingUpdate: (rating) {
-              print(rating);
-            },
-          )
-        )
-    );
-  }
+Widget removeButton = FlatButton(
+    child: new Text("Remove",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+    onPressed:  () {},
+  );
+  Widget editButton = FlatButton(
+    child: new Text("Edit",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+    onPressed:  () {},
+  );
+
+  
 
   Widget info(String title,String author) {
     return Container(
@@ -82,7 +63,8 @@ class _EditBookState extends State<EditBook> {
         children: <Widget>[
           tit(title),
           auth(author),
-          stars(),
+          removeButton,
+          editButton
         ],
       ),
     );
@@ -159,7 +141,7 @@ class _EditBookState extends State<EditBook> {
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
-        title: new Text(widget.category),
+        title: new Text('PEPE'),
         centerTitle: true,
       ),
       body: new Center(
@@ -220,13 +202,13 @@ class _EditBookState extends State<EditBook> {
     
     http.Response response;
     try{
-      response = await http.get(
-        Uri.http('10.0.2.2:5000', "/getBookCategory",{"strana": "1" ,"kategoria": widget.category}),
-        headers: {
-          'Content-Type' : 'application/json',
-          'Connection' : 'keep-alive'
-        },
-      );
+      //response = await http.get(
+        //Uri.http('10.0.2.2:5000', "/getBookCategory",{"strana": "1" ,"kategoria": widget.category}),
+        //headers: {
+        //  'Content-Type' : 'application/json',
+       //   'Connection' : 'keep-alive'
+       // },
+      //);
     }
     catch(error){
       print(error);
