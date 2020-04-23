@@ -15,18 +15,12 @@ class AddAuthor extends StatefulWidget {
 class Author {
   final String name;
   final String about;
-  
 
-  Author({this.name,this.about});
+  Author({this.name, this.about});
 
   factory Author.fromJson(Map<String, dynamic> json) {
-
-    return new Author(
-      name: json['name'],
-      about: json['about']
-    );
+    return new Author(name: json['name'], about: json['about']);
   }
-
 }
 
 class AddAuthorState extends State<AddAuthor> {
@@ -106,6 +100,17 @@ class AddAuthorState extends State<AddAuthor> {
                             fontFamily: 'EmilysCandy',
                             fontSize: 20.0)),
                     color: Colors.lightBlue,
+                    /*onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(),
+                          );
+                          ;
+                        },
+                      );
+                    },*/
                     onPressed: (){give10();},
                   ),
                 ),
@@ -113,38 +118,31 @@ class AddAuthorState extends State<AddAuthor> {
               //displaying input text
             ]))));
   }
-    Future give10() async {
-    var url = Uri.http('10.0.2.2:5000', "/addAuthor");
-    var body = jsonEncode({'name':'${authorName.text}',
-    'about':about.text});
-    http.Response response;
-    try{
-      response = await http.post(
-        url,
-        headers: {
-          'Content-Type' : 'application/json',
-          'Connection' : 'keep-alive'
-        },
-        body: body
-      );
-    }
-    catch(error){
-      print(error);
 
+  Future give10() async {
+    var url = Uri.http('10.0.2.2:5000', "/addAuthor");
+    var body = jsonEncode({'name': '${authorName.text}', 'about': about.text});
+    http.Response response;
+    try {
+      response = await http.post(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive'
+          },
+          body: body);
+    } catch (error) {
+      print(error);
     }
 
     final jsonResponse = json.decode(response.body);
     Author autor = Author.fromJson(jsonResponse);
-    
-    if (response.statusCode==201){
+
+    if (response.statusCode == 201) {
       setState(() {
-          print(autor.name);
+        print(autor.name);
       });
-    }
-    else{
+    } else {
       throw Exception('fail');
     }
-    
   }
-
 }

@@ -103,46 +103,6 @@ class _MyCategoryState extends State<MyCategory> {
     );
   }
 
-  Container book(String title, String obrazok,String author){
-    return Container(
-      padding: EdgeInsets.fromLTRB(10,5,10,0),
-      height: 180,
-      width: 360,
-      child: GestureDetector(
-        onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BookDetail(title: title,author: author,image: obrazok)),
-            );
-          },
-        child: Card(
-          elevation: 15,
-          child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerRight,
-              child: Stack(
-                children: <Widget>[
-                  Padding(
-                      padding: const EdgeInsets.only(left: 0, top: 0),
-                      child: Row(
-                        children: <Widget>[
-                          image(obrazok),
-                          info(title,author)
-                        ],
-                      )
-                  ),
-                ],
-              ),
-            )
-          ]),
-          ),
-        ),
-      )
-    );
-  }
 
 
   List<Book> books = new List();
