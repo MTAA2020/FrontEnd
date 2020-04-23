@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontik/user/navigation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -23,8 +26,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     
+    bool isloading=false;
 
-    Container login(){
+
+    Container logincard(){
       return Container(
         height: 260,
         margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
@@ -94,11 +99,19 @@ class _LoginPageState extends State<LoginPage> {
                     child: MaterialButton(
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Navigation()),
-                        );
+                      onPressed: () async {
+                        setState(() => isloading = true);
+                        var res = await loginrequest();
+                        
+                        isloading=true;
+                        if (false) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Navigation()),
+                          );  
+                        } else {
+                          
+                        }
                       },
                       child: Text("Login",
                           textAlign: TextAlign.center,
@@ -114,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
 
-    Container registration(){
+    Container registrationcard(){
       return Container(
         height: 320,
         margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
@@ -231,14 +244,41 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: new Center(
         child: new Container(
-          child: ListView(
+          child: isloading ? Center(child: CircularProgressIndicator()) :ListView(
             children: <Widget>[
-              login(),
-              registration()
+              logincard(),
+              registrationcard()
             ],
           ),
         ),
       ),
     );
   }
+
+
+  loginrequest() async{
+
+    http.Response response;
+    try{
+      response = await http.post(
+        Uri.http('10.0.2.2:5000', "/login"),
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: json.encode({
+          "username": loginusername.text,
+          "password": loginpassword.text,
+        })
+      );
+    }
+    catch(error){
+      print(error);
+    }
+    final jsonresponse= json.decode(response.body);
+    if (response.statusCode==200){
+      return jsonresponse;
+    }
+    return jsonresponse;
+  }
+
 }

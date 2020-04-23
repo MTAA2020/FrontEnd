@@ -223,7 +223,7 @@ class _MyCategoryState extends State<MyCategory> {
         Uri.http('10.0.2.2:5000', "/getBookCategory",{"strana": "1" ,"kategoria": widget.category}),
         headers: {
           'Content-Type' : 'application/json',
-          //'Connection' : 'keep-alive'
+          'Connection' : 'keep-alive'
         },
       );
     }
