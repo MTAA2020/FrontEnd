@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     
-    bool isloading=false;
 
 
     Container logincard(){
@@ -80,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     elevation: 3.0,
                     borderRadius: BorderRadius.circular(50.0),
                     child: TextFormField(
+                      obscureText: true,
                       controller: loginpassword,
                       decoration: InputDecoration(
                           hintText: 'Password',
@@ -100,17 +100,16 @@ class _LoginPageState extends State<LoginPage> {
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       onPressed: () async {
-                        setState(() => isloading = true);
                         var res = await loginrequest();
-                        
-                        isloading=true;
-                        if (false) {
+                        if (res['msg'] == "Success") {
+                          loginusername.clear();
+                          loginpassword.clear();
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Navigation()),
+                            MaterialPageRoute(builder: (context) => Navigation(token: res['access_token'])),
                           );  
                         } else {
-                          
+                          {showAlertDialog(context);}
                         }
                       },
                       child: Text("Login",
@@ -215,7 +214,16 @@ class _LoginPageState extends State<LoginPage> {
                     child: MaterialButton(
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      onPressed: () {},
+                      onPressed: () async{
+                        var res = await registerrequest();
+                        if (res['msg'] == "Success") {
+                          loginusername.clear();
+                          loginpassword.clear();
+                          {showAlertDialog1(context);} 
+                        } else {
+                          {showAlertDialog2(context,res['msg']);}
+                        }
+                      },
                       child: Text("Registrate",
                           textAlign: TextAlign.center,
                         ),
@@ -244,7 +252,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: new Center(
         child: new Container(
-          child: isloading ? Center(child: CircularProgressIndicator()) :ListView(
+          child: ListView(
             children: <Widget>[
               logincard(),
               registrationcard()
@@ -255,6 +263,77 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  showAlertDialog(BuildContext context) {
+
+    Widget continueButton = FlatButton(
+      child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("Wrong Details",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialog1(BuildContext context) {
+
+    Widget continueButton = FlatButton(
+      child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("Successful registration. Please sign in to continue.",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialog2(BuildContext context,String msg) {
+
+    Widget continueButton = FlatButton(
+      child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text(msg,style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   loginrequest() async{
 
@@ -275,10 +354,39 @@ class _LoginPageState extends State<LoginPage> {
       print(error);
     }
     final jsonresponse= json.decode(response.body);
+    print(jsonresponse);
     if (response.statusCode==200){
       return jsonresponse;
     }
     return jsonresponse;
   }
+  
 
+  registerrequest() async{
+
+    http.Response response;
+    try{
+      response = await http.post(
+        Uri.http('10.0.2.2:5000', "/register"),
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: json.encode({
+          "username": regusername.text,
+          "password": regpassword.text,
+          "email" : regemail.text,
+          "admin" : "false",
+        })
+      );
+    }
+    catch(error){
+      print(error);
+    }
+    final jsonresponse= json.decode(response.body);
+    print(jsonresponse);
+    if (response.statusCode==201){
+      return jsonresponse;
+    }
+    return jsonresponse;
+  }
 }

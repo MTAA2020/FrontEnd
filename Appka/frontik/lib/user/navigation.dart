@@ -4,8 +4,9 @@ import 'package:frontik/user/myprofile.dart';
 import 'package:frontik/user/mybooks.dart';
 
 class Navigation extends StatefulWidget {
-  Navigation({Key key}) : super(key: key);
+  Navigation({Key key, this.token}) : super(key: key);
 
+  final String token;
   
   @override
   _NavigationState createState() => _NavigationState();
