@@ -13,18 +13,22 @@ class AddBook extends StatefulWidget {
 }
 
 class AddBookState extends State<AddBook> {
-  final TextEditingController controller = new TextEditingController();
+  //final TextEditingController controller = new TextEditingController();
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   var selectedDate = TextEditingController();
   String _fileName;
   String _path;
   Map<String, String> _paths;
   var filePath = TextEditingController();
+  var authorName = TextEditingController();
+  var price = TextEditingController();
+  var bookTitle = TextEditingController();
+  var genres = TextEditingController();
   String _extension;
   bool _loadingPath = false;
-  bool _multiPick = false;
+  //bool _multiPick = false;
   FileType _pickingType;
-  TextEditingController _controller = new TextEditingController();
+  //TextEditingController _controller = new TextEditingController();
   String result = "";
 
   @override
@@ -51,6 +55,7 @@ class AddBookState extends State<AddBook> {
                 width: 300,
                 padding: EdgeInsets.all(10),
                 child: new TextField(
+                  controller: authorName,
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
@@ -61,6 +66,7 @@ class AddBookState extends State<AddBook> {
                 width: 300,
                 padding: EdgeInsets.all(10),
                 child: new TextField(
+                  controller: bookTitle,
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
@@ -82,6 +88,7 @@ class AddBookState extends State<AddBook> {
                 width: 300,
                 padding: EdgeInsets.all(10),
                 child: new TextField(
+                  controller: price,
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
@@ -92,6 +99,7 @@ class AddBookState extends State<AddBook> {
                 width: 300,
                 padding: EdgeInsets.all(10),
                 child: new TextField(
+                  controller: genres,
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
