@@ -87,14 +87,14 @@ class _MyCategoryState extends State<MyCategory> {
     );
   }
 
-  Widget image(int id){
-    Uint8List bytes=getcover(id.toString());
+  Widget image(String image){
+    //Uint8List bytes=getcover(id.toString());
     return Container(
       width: 120,
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Image.memory(
-        bytes,
+        child: Image.network(
+        image,
         height: 167.0,
         width: 113.0,
         ),
@@ -169,6 +169,7 @@ class _MyCategoryState extends State<MyCategory> {
             scrollDirection: Axis.vertical,
             itemCount: books.length,
             itemBuilder: (BuildContext context,int index){
+              int idcko=books[index].id;
               return Container(
                 padding: EdgeInsets.fromLTRB(10,5,10,0),
                 height: 180,
@@ -177,7 +178,7 @@ class _MyCategoryState extends State<MyCategory> {
                   onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => BookDetail(title: books[index].title,author: books[index].author,image: "")),
+                        MaterialPageRoute(builder: (context) => BookDetail(title: books[index].title,author: books[index].author,image: "http://10.0.2.2:5000/jpg?book_id=$idcko",about: "hello",)),
                       );
                     },
                   child: Card(
@@ -194,7 +195,7 @@ class _MyCategoryState extends State<MyCategory> {
                                 padding: const EdgeInsets.only(left: 0, top: 0),
                                 child: Row(
                                   children: <Widget>[
-                                    image(books[index].id),
+                                    image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
                                     info(books[index].title,books[index].author)
                                   ],
                                 )
@@ -215,14 +216,14 @@ class _MyCategoryState extends State<MyCategory> {
   }
 
   Future give10() async {
-
-    //Tu by sme mali pridat request ale pisal mi chybu ze connection refused
+    
     http.Response response;
     try{
       response = await http.get(
         Uri.http('10.0.2.2:5000', "/getBookCategory",{"strana": "1" ,"kategoria": widget.category}),
         headers: {
-          'Content-Type' : 'application/json'
+          'Content-Type' : 'application/json',
+          //'Connection' : 'keep-alive'
         },
       );
     }
@@ -232,10 +233,7 @@ class _MyCategoryState extends State<MyCategory> {
     }
 
     final jsonResponse = json.decode(response.body);
-   
     BookList b = BookList.fromJson(jsonResponse);
-    //print("photos " + photosList.photos[0].title);
-    //BookList b = BookList.fromJson(json.decode(response.body));
     
     if (response.statusCode==200){
       setState(() {
@@ -258,7 +256,8 @@ class _MyCategoryState extends State<MyCategory> {
       response = await http.get(
         Uri.http('10.0.2.2:5000', "/jpg",{"book_id": id}),
         headers: {
-          'Content-Type' : 'application/json'
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive'
         },
       );
     }
@@ -306,7 +305,7 @@ class Book {
 
     return new Book(
       id: json['id'],
-      author: json['name'],
+      author: json['author'],
       title: json['title'],
       published: json['published'],
       rating: json['rating'],
@@ -317,4 +316,3 @@ class Book {
   }
 
 }
-

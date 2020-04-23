@@ -57,7 +57,7 @@ class _BookDetailState extends State<BookDetail> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
               child: Image.network(
-                  image,
+                  widget.image,
                   width: 150,
               ),
             ),
@@ -152,6 +152,8 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.title);
+    print(widget.author);
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
