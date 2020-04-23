@@ -1,10 +1,10 @@
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:frontik/user/bookdetail.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 class MyCategory extends StatefulWidget {
   MyCategory({Key key, this.category}) : super(key: key);
@@ -87,13 +87,14 @@ class _MyCategoryState extends State<MyCategory> {
     );
   }
 
-  Widget image(String obrazok){
+  Widget image(int id){
+    Uint8List bytes=getcover(id.toString());
     return Container(
       width: 120,
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Image.network(
-        obrazok,
+        child: Image.memory(
+        bytes,
         height: 167.0,
         width: 113.0,
         ),
@@ -147,14 +148,13 @@ class _MyCategoryState extends State<MyCategory> {
   
   void initState(){
     super.initState();
-    fetch();
+    give10();
   }
 
 
   @override
   Widget build(BuildContext context) {
 
-    
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
@@ -169,7 +169,44 @@ class _MyCategoryState extends State<MyCategory> {
             scrollDirection: Axis.vertical,
             itemCount: books.length,
             itemBuilder: (BuildContext context,int index){
-              book(books[index].title,"https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","hello");
+              return Container(
+                padding: EdgeInsets.fromLTRB(10,5,10,0),
+                height: 180,
+                width: 360,
+                child: GestureDetector(
+                  onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BookDetail(title: books[index].title,author: books[index].author,image: "")),
+                      );
+                    },
+                  child: Card(
+                    elevation: 15,
+                    child: Padding(
+                    padding: EdgeInsets.all(0),
+                    child: Stack(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Stack(
+                          children: <Widget>[
+                            Padding(
+                                padding: const EdgeInsets.only(left: 0, top: 0),
+                                child: Row(
+                                  children: <Widget>[
+                                    image(books[index].id),
+                                    info(books[index].title,books[index].author)
+                                  ],
+                                )
+                            ),
+                          ],
+                        ),
+                      )
+                    ]),
+                    ),
+                  ),
+                )
+              );
             }
           )
         ),
@@ -177,49 +214,107 @@ class _MyCategoryState extends State<MyCategory> {
     );
   }
 
-  Future fetch() async {
-    http.Response response;
+  Future give10() async {
 
     //Tu by sme mali pridat request ale pisal mi chybu ze connection refused
-    response =  await http.get(
-      Uri.http("localhost:5000", '/getBooks?strana=1'),
-      headers: {
-        'Content-Type' : 'application/json'
-      },
-    );
+    http.Response response;
+    try{
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/getBookCategory",{"strana": "1" ,"kategoria": widget.category}),
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+      );
+    }
+    catch(error){
+      print(error);
 
+    }
+
+    final jsonResponse = json.decode(response.body);
+   
+    BookList b = BookList.fromJson(jsonResponse);
+    //print("photos " + photosList.photos[0].title);
+    //BookList b = BookList.fromJson(json.decode(response.body));
+    
     if (response.statusCode==200){
       setState(() {
-        //books.add(json.decode(response.body));
+        for(final book in b.books){
+          books.add(book);
+          print(book.title);
+        }
       });
     }
     else{
       throw Exception('fail');
     }
-
+    
   }
 
+  Future getcover(String id) async{
+
+    http.Response response;
+    try{
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/jpg",{"book_id": id}),
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+      );
+    }
+    catch(error){
+      print(error);
+
+    }
+    return response.body;
+  }
+}
+
+
+class BookList {
+  final List<Book> books;
+
+  BookList({
+    this.books,
+  });
+
+  factory BookList.fromJson(List<dynamic> parsedJson) {
+
+    List<Book> books = new List<Book>();
+    books = parsedJson.map((i)=>Book.fromJson(i)).toList();
+
+    return new BookList(
+      books: books,
+    );
+  }
 
 }
 
 class Book {
+  final int id;
   final String author;
   final String title;
-  final String date;
-  final Float rating;
-  final Float price;
-  final List<String> genres;
+  final String published;
+  final double rating;
+  final double price;
+  final List<dynamic> genres;
+  final String about;
 
-  Book({this.author, this.title, this.date,this.rating,this.price,this.genres});
+  Book({this.id,this.author, this.title, this.published,this.rating,this.price,this.genres,this.about});
 
   factory Book.fromJson(Map<String, dynamic> json) {
-    return Book(
+
+    return new Book(
+      id: json['id'],
       author: json['name'],
       title: json['title'],
-      date: json['title'],
+      published: json['published'],
       rating: json['rating'],
       price: json['price'],
       genres: json['genres'],
+      about: json['about'],
     );
   }
+
 }
+
