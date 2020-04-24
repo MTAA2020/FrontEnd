@@ -21,7 +21,6 @@ class EditingBook extends StatefulWidget {
 
 class EditingBookState extends State<EditingBook> {
   //final TextEditingController controller = new TextEditingController();
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   var selectedDate = TextEditingController();
   String _fileName;
   String _path;
@@ -40,11 +39,12 @@ class EditingBookState extends State<EditingBook> {
 
   @override
   Widget build(BuildContext context) {
+  
     selectedDate.text = widget.selectedDate;
     authorName.text = widget.authorName;
-    price.text = widget.price as String;
+    price.text = widget.price.toString();
     bookTitle.text = widget.bookTitle;
-    genres.text = widget.genres as String;
+    genres.text = widget.genres.toString();
     //selectedDate.text = dateFormat.format(DateTime.now());
     return new Scaffold(
         resizeToAvoidBottomInset: false,

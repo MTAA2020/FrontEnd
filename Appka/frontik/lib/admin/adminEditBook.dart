@@ -61,7 +61,7 @@ class _EditBookState extends State<EditBook> {
   }
 
   editButton(int index) {
-    return  FlatButton(
+    return FlatButton(
       child: new Text("Edit",
           style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
       onPressed: () {
@@ -69,7 +69,11 @@ class _EditBookState extends State<EditBook> {
           context,
           MaterialPageRoute(
               builder: (context) => EditingBook(
-                    authorName: books[index].author,bookTitle: books[index].title,genres: books[index].genres,price: books[index].price,selectedDate: books[index].published,
+                    authorName: books[index].author,
+                    bookTitle: books[index].title,
+                    genres: books[index].genres,
+                    price: books[index].price,
+                    selectedDate: books[index].published,
                   )),
         );
       },
@@ -205,7 +209,7 @@ class _EditBookState extends State<EditBook> {
       setState(() {
         for (final book in b.books) {
           books.add(book);
-          print(book.title);
+          print(book.published);
         }
       });
     } else {
