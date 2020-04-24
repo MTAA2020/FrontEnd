@@ -1,15 +1,27 @@
+import 'dart:convert';
+import 'dart:core';
+import 'dart:core';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(new MaterialApp(home: new EditingBook()));
 }
 
 class EditingBook extends StatefulWidget {
-  EditingBook({Key key, this.selectedDate, this.authorName, this.price, this.bookTitle, this.genres}) : super(key: key);
+  EditingBook(
+      {Key key,
+      this.id,
+      this.selectedDate,
+      this.authorName,
+      this.price,
+      this.bookTitle,
+      this.genres})
+      : super(key: key);
   String selectedDate;
+  int id;
   String authorName;
   double price;
   String bookTitle;
@@ -39,12 +51,12 @@ class EditingBookState extends State<EditingBook> {
 
   @override
   Widget build(BuildContext context) {
-  
     selectedDate.text = widget.selectedDate;
     authorName.text = widget.authorName;
     price.text = widget.price.toString();
     bookTitle.text = widget.bookTitle;
     genres.text = widget.genres.toString();
+    print(genres.text);
     //selectedDate.text = dateFormat.format(DateTime.now());
     return new Scaffold(
         resizeToAvoidBottomInset: false,
@@ -118,20 +130,6 @@ class EditingBookState extends State<EditingBook> {
                       hintText: "Enter book genres (;)"),
                 ),
               ),
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(10),
-                child: new TextField(
-                  controller: filePath,
-                  decoration: new InputDecoration(
-                      prefixIcon: IconButton(
-                          icon: Icon(Icons.find_in_page),
-                          onPressed: () => _openFileExplorer()),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Browse for the book"),
-                ),
-              ),
               new Padding(
                 padding: new EdgeInsets.all(25.0),
                 child: ButtonTheme(
@@ -150,38 +148,41 @@ class EditingBookState extends State<EditingBook> {
                               fontSize: 20.0)),
                       color: Colors.lightBlue,
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EditingBook()),
-                        );
+                        give10();
                       }),
                 ),
               ),
               //displaying input text
               new Text(result)
             ]))));
-  }
 
-  void _openFileExplorer() async {
-    setState(() => _loadingPath = true);
-    try {
-      _paths = null;
-      _path = await FilePicker.getFilePath(
-          type: _pickingType,
-          allowedExtensions: (_extension?.isNotEmpty ?? false)
-              ? _extension?.replaceAll(' ', '')?.split(',')
-              : null);
-    } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
+
+  }
+      Future give10() async {
+      var url = Uri.http('10.0.2.2:5000', "/bookEdit");
+      var body =
+          jsonEncode({'book_id': '${widget.id}', 'name': '${authorName.text}','title':'${bookTitle.text}','date':'${selectedDate.text}','price':'${price.text}','genres':'${genres.text}'});
+
+      http.Response response;
+      try {
+        response = await http.put(url,
+            headers: {
+              'Content-Type': 'application/json',
+              'Connection': 'keep-alive',
+              'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc3Mjg1ODAsIm5iZiI6MTU4NzcyODU4MCwianRpIjoiYjZkN2MyMWMtOWFkZi00MGYzLWFiNmMtYTdjOTU4M2VhZjcxIiwiZXhwIjoxNTg3NzI5NDgwLCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.9d2i03RawLf0TWEtwvqFSjAr8qYFRpmdZb_GCBg2aLg'
+            },
+            body: body);
+      } catch (error) {
+        print(error);
+      }
+
+      final jsonResponse = json.decode(response.body);
+     
+
+      if (response.statusCode == 201) {
+  
+      } else {
+        throw Exception('fail');
+      }
     }
-
-    if (!mounted) return;
-    setState(() {
-      _loadingPath = false;
-      _fileName = _path != null
-          ? _path.split('/').last
-          : _paths != null ? _paths.keys.toString() : '...';
-    });
-    filePath.text = _path;
-  }
 }

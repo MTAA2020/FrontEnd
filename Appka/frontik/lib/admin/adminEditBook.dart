@@ -74,6 +74,7 @@ class _EditBookState extends State<EditBook> {
                     genres: books[index].genres,
                     price: books[index].price,
                     selectedDate: books[index].published,
+                    id: books[index].id
                   )),
         );
       },
