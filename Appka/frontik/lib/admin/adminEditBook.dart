@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:frontik/admin/bookEditing.dart';
 import 'package:frontik/user/bookdetail.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -44,7 +45,7 @@ class _EditBookState extends State<EditBook> {
   }
 
   removeButton(int index) {
-    Widget removeButton = FlatButton(
+    return FlatButton(
       child: new Text("Remove",
           style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
       onPressed: () {
@@ -60,15 +61,15 @@ class _EditBookState extends State<EditBook> {
   }
 
   editButton(int index) {
-    Widget editButton = FlatButton(
+    return  FlatButton(
       child: new Text("Edit",
           style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
       onPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => BookDetail(
-                    about: books[index].about,
+              builder: (context) => EditingBook(
+                    authorName: books[index].author,bookTitle: books[index].title,genres: books[index].genres,price: books[index].price,selectedDate: books[index].published,
                   )),
         );
       },

@@ -4,22 +4,22 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 void main() {
-  runApp(new MaterialApp(home: new AddBook()));
+  runApp(new MaterialApp(home: new EditingBook()));
 }
 
-class AddBook extends StatefulWidget {
-  AddBook({Key key, this.selectedDate, this.authorName, this.price, this.bookTitle, this.genres}) : super(key: key);
+class EditingBook extends StatefulWidget {
+  EditingBook({Key key, this.selectedDate, this.authorName, this.price, this.bookTitle, this.genres}) : super(key: key);
   String selectedDate;
   String authorName;
-  String price;
+  double price;
   String bookTitle;
-  String genres;
+  List genres;
 
   @override
-  AddBookState createState() => new AddBookState();
+  EditingBookState createState() => new EditingBookState();
 }
 
-class AddBookState extends State<AddBook> {
+class EditingBookState extends State<EditingBook> {
   //final TextEditingController controller = new TextEditingController();
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   var selectedDate = TextEditingController();
@@ -42,9 +42,9 @@ class AddBookState extends State<AddBook> {
   Widget build(BuildContext context) {
     selectedDate.text = widget.selectedDate;
     authorName.text = widget.authorName;
-    price.text = widget.price;
+    price.text = widget.price as String;
     bookTitle.text = widget.bookTitle;
-    genres.text = widget.genres;
+    genres.text = widget.genres as String;
     //selectedDate.text = dateFormat.format(DateTime.now());
     return new Scaffold(
         resizeToAvoidBottomInset: false,
@@ -152,7 +152,7 @@ class AddBookState extends State<AddBook> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AddBook()),
+                          MaterialPageRoute(builder: (context) => EditingBook()),
                         );
                       }),
                 ),
