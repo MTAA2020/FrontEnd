@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter/rendering.dart';
 import 'package:frontik/user/bookdetail.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -43,18 +43,39 @@ class _EditBookState extends State<EditBook> {
     );
   }
 
-  Widget removeButton = FlatButton(
-    child: new Text("Remove",
-        style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
-    onPressed: () {},
-  );
-  Widget editButton = FlatButton(
-    child: new Text("Edit",
-        style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
-    onPressed: () {},
-  );
+  removeButton(int index) {
+    Widget removeButton = FlatButton(
+      child: new Text("Remove",
+          style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BookDetail(
+                    about: books[index].about,
+                  )),
+        );
+      },
+    );
+  }
 
-  Widget info(String title, String author) {
+  editButton(int index) {
+    Widget editButton = FlatButton(
+      child: new Text("Edit",
+          style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BookDetail(
+                    about: books[index].about,
+                  )),
+        );
+      },
+    );
+  }
+
+  Widget info(String title, String author, int index) {
     return Container(
       width: 233,
       height: 160,
@@ -65,7 +86,7 @@ class _EditBookState extends State<EditBook> {
           Container(
             height: 40,
             child: new Row(
-              children: <Widget>[removeButton, editButton],
+              children: <Widget>[removeButton(index), editButton(index)],
             ),
           ),
         ],
@@ -86,7 +107,6 @@ class _EditBookState extends State<EditBook> {
           ),
         ));
   }
-
 
   List<Book> books = new List();
 
@@ -147,7 +167,7 @@ class _EditBookState extends State<EditBook> {
                                             image(
                                                 'http://10.0.2.2:5000/jpg?book_id=$idcko'),
                                             info(books[index].title,
-                                                books[index].author)
+                                                books[index].author, index)
                                           ],
                                         )),
                                   ],
