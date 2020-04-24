@@ -49,13 +49,7 @@ class _EditBookState extends State<EditBook> {
       child: new Text("Remove",
           style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BookDetail(
-                    about: books[index].about,
-                  )),
-        );
+        deleteBook(books[index].id,index);
       },
     );
   }
@@ -69,13 +63,12 @@ class _EditBookState extends State<EditBook> {
           context,
           MaterialPageRoute(
               builder: (context) => EditingBook(
-                    authorName: books[index].author,
-                    bookTitle: books[index].title,
-                    genres: books[index].genres,
-                    price: books[index].price,
-                    selectedDate: books[index].published,
-                    id: books[index].id
-                  )),
+                  authorName: books[index].author,
+                  bookTitle: books[index].title,
+                  genres: books[index].genres,
+                  price: books[index].price,
+                  selectedDate: books[index].published,
+                  id: books[index].id)),
         );
       },
     );
@@ -188,11 +181,29 @@ class _EditBookState extends State<EditBook> {
     );
   }
 
+  Future deleteBook(int id,int index) async {
+    setState(() {
+      books.remove(index);
+    });
+    http.Response response;
+    try {
+      response =
+          await http.delete(Uri.http('10.0.2.2:5000', "/bookDelete",{"book_id":"${id}"}), headers: {
+        'Content-Type': 'application/json',
+        'Connection': 'keep-alive',
+        'Authorization':
+            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc3MzU2MDAsIm5iZiI6MTU4NzczNTYwMCwianRpIjoiMGQ2OTQzY2ItZDliZC00ZWVmLThjYTEtNzFjNDdiMDJiMzdiIiwiZXhwIjoxNTg3NzM2NTAwLCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.sTJBwaGjfP-COMlQWtIE0Wd6aHlYweUP-P2Ez_mhwtE'
+      },);
+    } catch (error) {
+      print(error);
+    }
+  }
+
   Future give10() async {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": "book1"}),
+        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": "book"}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive'
@@ -203,17 +214,17 @@ class _EditBookState extends State<EditBook> {
     }
 
     final jsonResponse = json.decode(response.body);
-    print(response.body);
     BookList b = BookList.fromJson(jsonResponse);
-
-    if (response.statusCode == 200) {
+    
+    if (response.statusCode==200){
       setState(() {
-        for (final book in b.books) {
+        for(final book in b.books){
           books.add(book);
-          print(book.published);
+          print(book.title);
         }
       });
-    } else {
+    }
+    else{
       throw Exception('fail');
     }
   }
