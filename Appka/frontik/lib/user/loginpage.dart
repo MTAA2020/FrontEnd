@@ -384,7 +384,7 @@ class _LoginPageState extends State<LoginPage> {
           "username": regusername.text,
           "password": regpassword.text,
           "email" : regemail.text,
-          "admin" : "false",
+          "admin" : "0",
         })
       );
     }
