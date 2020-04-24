@@ -161,7 +161,7 @@ class EditingBookState extends State<EditingBook> {
       Future give10() async {
       var url = Uri.http('10.0.2.2:5000', "/bookEdit");
       var body =
-          jsonEncode({'book_id': '${widget.id}', 'name': '${authorName.text}','title':'${bookTitle.text}','date':'${selectedDate.text}','price':'${price.text}','genres':'${genres.text}'});
+          jsonEncode({'book_id': '${widget.id}', 'name': '${authorName.text}','title':'${bookTitle.text}','date':'${selectedDate.text}','price':'${price.text}','genres':jsonDecode('${genres.text.split(';')}')});
 
       http.Response response;
       try {
@@ -169,7 +169,7 @@ class EditingBookState extends State<EditingBook> {
             headers: {
               'Content-Type': 'application/json',
               'Connection': 'keep-alive',
-              'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc3Mjg1ODAsIm5iZiI6MTU4NzcyODU4MCwianRpIjoiYjZkN2MyMWMtOWFkZi00MGYzLWFiNmMtYTdjOTU4M2VhZjcxIiwiZXhwIjoxNTg3NzI5NDgwLCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.9d2i03RawLf0TWEtwvqFSjAr8qYFRpmdZb_GCBg2aLg'
+              'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc3MzEzMDgsIm5iZiI6MTU4NzczMTMwOCwianRpIjoiY2RiOWQ4M2ItNDZhMC00NmY0LWIxZTQtY2Y3OWY2MjI2MmZjIiwiZXhwIjoxNTg3NzMyMjA4LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.SOXQYHsGtonNTwgiwpowm11R0Ees_zOGCd_7cGrDl2I'
             },
             body: body);
       } catch (error) {
