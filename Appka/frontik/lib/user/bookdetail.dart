@@ -72,7 +72,7 @@ class _BookDetailState extends State<BookDetail> {
     
   Widget bookdetail2(){
     return Container(
-      width: 230,
+      width: 180,
       height: 250,
       child: new Column(
         children: <Widget>[
@@ -152,8 +152,7 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.title);
-    print(widget.author);
+
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(

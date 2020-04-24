@@ -7,9 +7,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 class MyCategory extends StatefulWidget {
-  MyCategory({Key key, this.category}) : super(key: key);
+  MyCategory({Key key, this.category,this.token}) : super(key: key);
 
   final String category;
+  final String token;
   
   @override
   _MyCategoryState createState() => _MyCategoryState();
@@ -21,7 +22,7 @@ class _MyCategoryState extends State<MyCategory> {
 
   Widget tit(String title) {
     return Container(
-      width: 240,
+      width: 200,
       height: 60,
       padding: new EdgeInsets.all(1.0),
       child: RichText(
@@ -36,7 +37,7 @@ class _MyCategoryState extends State<MyCategory> {
 
   Widget auth(String auth) {
     return Container(
-      width: 240,
+      width: 200,
       height: 60,
       padding: new EdgeInsets.all(1.0),
       child: RichText(
@@ -51,7 +52,7 @@ class _MyCategoryState extends State<MyCategory> {
 
   Widget stars() {
     return Container(
-      width: 240,
+      width: 200,
       height: 40,
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -76,7 +77,7 @@ class _MyCategoryState extends State<MyCategory> {
 
   Widget info(String title,String author) {
     return Container(
-      width: 240,
+      width: 200,
       height: 160,
       child: new Column(
         children: <Widget>[
@@ -106,10 +107,29 @@ class _MyCategoryState extends State<MyCategory> {
 
 
   List<Book> books = new List();
-  
+  ScrollController scrollController = new ScrollController();
+
+  @override
   void initState(){
     super.initState();
-    give10();
+    give10(1);
+    scrollController.addListener((){
+      if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
+        int tmp=1;
+        if(books.length%10!=0){
+          tmp=2;
+        }
+        int nextpage=(books.length/10-(books.length%10)/10 +tmp).toInt();
+        give10(nextpage);
+      }
+    }
+    );
+  }
+
+  @override
+  void dispose(){
+    scrollController.dispose();
+    super.dispose();
   }
 
 
@@ -127,9 +147,11 @@ class _MyCategoryState extends State<MyCategory> {
           margin: EdgeInsets.symmetric(vertical:1.0,horizontal: 5.0),
           height: 600.0,
           child: ListView.builder(
+            controller: scrollController,
             scrollDirection: Axis.vertical,
             itemCount: books.length,
             itemBuilder: (BuildContext context,int index){
+              
               int idcko=books[index].id;
               return Container(
                 padding: EdgeInsets.fromLTRB(10,5,10,0),
@@ -176,12 +198,12 @@ class _MyCategoryState extends State<MyCategory> {
     );
   }
 
-  Future give10() async {
+  Future give10(int page) async {
     
     http.Response response;
     try{
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/getBookCategory",{"strana": "1" ,"kategoria": widget.category}),
+        Uri.http('10.0.2.2:5000', "/getBookCategory",{"strana": page.toString() ,"kategoria": widget.category}),
         headers: {
           'Content-Type' : 'application/json',
           'Connection' : 'keep-alive'
@@ -192,11 +214,11 @@ class _MyCategoryState extends State<MyCategory> {
       print(error);
 
     }
-
-    final jsonResponse = json.decode(response.body);
-    BookList b = BookList.fromJson(jsonResponse);
+    
     
     if (response.statusCode==200){
+      final jsonResponse = json.decode(response.body);
+      BookList b = BookList.fromJson(jsonResponse);
       setState(() {
         for(final book in b.books){
           books.add(book);
@@ -204,30 +226,16 @@ class _MyCategoryState extends State<MyCategory> {
         }
       });
     }
+    else if(response.statusCode==204){
+
+    }
     else{
       throw Exception('fail');
     }
     
   }
 
-  Future getcover(String id) async{
 
-    http.Response response;
-    try{
-      response = await http.get(
-        Uri.http('10.0.2.2:5000', "/jpg",{"book_id": id}),
-        headers: {
-          'Content-Type' : 'application/json',
-          'Connection' : 'keep-alive'
-        },
-      );
-    }
-    catch(error){
-      print(error);
-
-    }
-    return response.body;
-  }
 }
 
 
