@@ -8,6 +8,8 @@ void main() {
 }
 
 class AddAuthor extends StatefulWidget {
+  AddAuthor({Key key, this.token}) : super(key: key);
+  final String token;
   @override
   AddAuthorState createState() => new AddAuthorState();
 }
@@ -111,7 +113,7 @@ class AddAuthorState extends State<AddAuthor> {
                         },
                       );
                     },*/
-                    onPressed: (){give10();},
+                    onPressed: (){addnewauthor();},
                   ),
                 ),
               ),
@@ -119,7 +121,7 @@ class AddAuthorState extends State<AddAuthor> {
             ]))));
   }
 
-  Future give10() async {
+  Future addnewauthor() async {
     var url = Uri.http('10.0.2.2:5000', "/addAuthor");
     var body = jsonEncode({'name': '${authorName.text}', 'about': about.text});
     http.Response response;

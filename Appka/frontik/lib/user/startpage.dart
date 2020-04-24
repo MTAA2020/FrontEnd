@@ -205,7 +205,9 @@ class _StartPageState extends State<StartPage> {
                         title: bestsellers[index].title,
                         author: bestsellers[index].author,
                         image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
-                        about: "h")),
+                        about: "h"
+                        )
+                      ),
                     );
                   },
                 child: SizedBox(

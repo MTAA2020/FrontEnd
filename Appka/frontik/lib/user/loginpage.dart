@@ -107,12 +107,12 @@ class _LoginPageState extends State<LoginPage> {
                           loginpassword.clear();
                           print(res['admin']);
                           if(res['admin'] == true){
-                             Navigator.push(
+                             Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => AdminMainPage(token: res['access_token'])),
                             );  
                           }else{
-                            Navigator.push(
+                            Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => Navigation(token: res['access_token'])),
                             );  
@@ -392,7 +392,6 @@ class _LoginPageState extends State<LoginPage> {
       print(error);
     }
     final jsonresponse= json.decode(response.body);
-    print(jsonresponse);
     if (response.statusCode==201){
       return jsonresponse;
     }

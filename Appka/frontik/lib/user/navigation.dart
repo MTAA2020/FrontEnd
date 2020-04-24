@@ -22,15 +22,14 @@ class _NavigationState extends State<Navigation> {
   });
   }
 
-  final List<Widget> _children = [
-    MyHomePage(),
-    MyBooks(),
-    MyProfile()
- ];
 
   @override
   Widget build(BuildContext context) {
-    
+    List<Widget> _children = [
+      MyHomePage(token: widget.token),
+      MyBooks(token: widget.token),
+      MyProfile(token: widget.token)
+  	];
     return new Scaffold(
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),

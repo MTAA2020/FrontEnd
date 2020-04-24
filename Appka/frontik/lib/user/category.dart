@@ -4,7 +4,6 @@ import 'package:frontik/user/bookdetail.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 class MyCategory extends StatefulWidget {
   MyCategory({Key key, this.category,this.token}) : super(key: key);

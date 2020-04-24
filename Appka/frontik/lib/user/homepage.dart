@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:frontik/user/category.dart';
 import 'package:frontik/user/bookdetail.dart';
+import 'package:frontik/user/startpage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key key,this.token}) : super(key: key);
+  
+  final String token;
 
   
   @override
@@ -76,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyCategory(category: category)),
+              MaterialPageRoute(builder: (context) => MyCategory(category: category,token: widget.token,)),
             );
           },
         child: Card(
@@ -430,7 +433,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         leading: IconButton(
         icon: Icon(Icons.power_settings_new, color: Colors.black),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () {
+          showAlertDialog(context);
+        },
         ), 
         title: RichText(
           textAlign: TextAlign.center,
@@ -463,6 +468,38 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+
+  showAlertDialog(BuildContext context) {
+    Widget cancelButton = FlatButton(
+      child: new Text("No",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () {},
+    );
+    Widget continueButton = FlatButton(
+      child: new Text("Yes",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () { 
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => StartPage()),
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("Are you sure yo want to log out?",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        cancelButton,continueButton
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  } 
 
   Future give5(int type) async {
     

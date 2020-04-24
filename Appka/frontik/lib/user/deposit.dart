@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Deposit extends StatefulWidget {
-  Deposit({Key key}) : super(key: key);
+  Deposit({Key key,this.token}) : super(key: key);
 
+  final String token;
   
   @override
   _DepositState createState() => _DepositState();
@@ -92,7 +95,7 @@ class _DepositState extends State<Deposit> {
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       onPressed: () {
-                      
+                        getmoney(widget.token);
                       },
                       child: Text("Confirm",
                           textAlign: TextAlign.center,
@@ -134,4 +137,59 @@ class _DepositState extends State<Deposit> {
       ),
     );
   }
+
+  Future getmoney(String token) async{
+
+    var url = Uri.http('10.0.2.2:5000', "/deposit");
+    var body = jsonEncode({'amount': amount.text});
+    http.Response response;
+    print('Bearer $token');
+    try {
+      response = await http.post(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Authorization': 'Bearer $token',
+          },
+          body: body);
+    } catch (error) {
+      print(error);
+    }
+
+    if (response.statusCode == 200) {
+      setState(() {
+        cardid.clear();
+        amount.clear();
+        showAlertDialog(context, "Success");
+      });
+    } else {
+      throw Exception('fail');
+    }
+
+  }
+
+  showAlertDialog(BuildContext context,String msg) {
+
+    Widget continueButton = FlatButton(
+      child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text(msg,style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 }

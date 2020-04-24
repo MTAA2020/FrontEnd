@@ -5,12 +5,13 @@ import 'package:expandable/expandable.dart';
 
 
 class BookDetail extends StatefulWidget {
-  BookDetail({Key key, this.title,this.author,this.image,this.about}) : super(key: key);
+  BookDetail({Key key, this.title,this.author,this.image,this.about,this.token}) : super(key: key);
 
   final String title;
   final String author;
   final String image;
   final String about;
+  final String token;
   
   @override
   _BookDetailState createState() => _BookDetailState();

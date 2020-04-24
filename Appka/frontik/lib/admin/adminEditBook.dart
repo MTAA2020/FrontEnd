@@ -7,6 +7,8 @@ import 'dart:async';
 import 'dart:convert';
 
 class EditBook extends StatefulWidget {
+  EditBook({Key key, this.token}) : super(key: key);
+  final String token;
   @override
   _EditBookState createState() => _EditBookState();
 }

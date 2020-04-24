@@ -3,9 +3,10 @@ import 'package:frontik/user/transactions.dart';
 import 'package:frontik/user/deposit.dart';
 
 class MyProfile extends StatefulWidget {
-  MyProfile({Key key, this.title}) : super(key: key);
+  MyProfile({Key key, this.title,this.token}) : super(key: key);
 
   final String title;
+  final String token;
   
   @override
   _MyProfileState createState() => _MyProfileState();
@@ -19,12 +20,12 @@ class _MyProfileState extends State<MyProfile> {
       backgroundColor: Colors.grey,
       body: new Center(
         child: new Container(
-          padding: new EdgeInsets.fromLTRB(0,50,0,10),
+          padding: new EdgeInsets.fromLTRB(0,70,0,10),
           child: Column(
             children: <Widget>[
               Container(
                   width: 330,
-                  height: 140,
+                  height: 110,
                   padding: new EdgeInsets.fromLTRB(5,20,5,20),
                   child: new Material(
                     //onPressed:
@@ -37,7 +38,7 @@ class _MyProfileState extends State<MyProfile> {
                       onPressed: () {
                           Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Deposit()),
+                          MaterialPageRoute(builder: (context) => Deposit(token: widget.token,)),
                           );
                       },
                       child: Text("Deposit",
@@ -49,7 +50,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
               Container(
                   width: 330,
-                  height: 140,
+                  height: 110,
                   padding: new EdgeInsets.fromLTRB(5,20,5,20),
                   child: new Material(
                     //onPressed:
@@ -61,7 +62,7 @@ class _MyProfileState extends State<MyProfile> {
                       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       onPressed: () {Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Transactions()),
+                          MaterialPageRoute(builder: (context) => Transactions(token: widget.token)),
                           );
                       },
                       child: Text("Transactions",
@@ -73,7 +74,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
               Container(
                   width: 330,
-                  height: 140,
+                  height: 110,
                   padding: new EdgeInsets.fromLTRB(5,20,5,20),
                   child: new Material(
                     //onPressed:
@@ -93,7 +94,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
               Container(
                   width: 330,
-                  height: 140,
+                  height: 110,
                   padding: new EdgeInsets.fromLTRB(5,20,5,20),
                   child: new Material(
                     //onPressed:

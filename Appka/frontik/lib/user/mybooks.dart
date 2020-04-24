@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:frontik/user/bookdetail.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class MyBooks extends StatefulWidget {
-  MyBooks({Key key, this.title}) : super(key: key);
+  MyBooks({Key key, this.title,this.token}) : super(key: key);
 
   final String title;
+  final String token;
   
   @override
   _MyBooksState createState() => _MyBooksState();
@@ -16,7 +20,7 @@ class _MyBooksState extends State<MyBooks> {
 
   Widget tit(String title) {
     return Container(
-      width: 240,
+      width: 200,
       height: 60,
       padding: new EdgeInsets.all(1.0),
       child: RichText(
@@ -31,7 +35,7 @@ class _MyBooksState extends State<MyBooks> {
 
   Widget auth(String auth) {
     return Container(
-      width: 240,
+      width: 200,
       height: 60,
       padding: new EdgeInsets.all(1.0),
       child: RichText(
@@ -46,7 +50,7 @@ class _MyBooksState extends State<MyBooks> {
 
   Widget stars() {
     return Container(
-      width: 240,
+      width: 200,
       height: 40,
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -71,7 +75,7 @@ class _MyBooksState extends State<MyBooks> {
 
   Container info(String title,String author) {
     return Container(
-      width: 240,
+      width: 200,
       height: 160,
       child: new Column(
         children: <Widget>[
@@ -138,22 +142,85 @@ class _MyBooksState extends State<MyBooks> {
     );
   }
 
+  List<Book> books = new List();
+  ScrollController scrollController = new ScrollController();
+
+  @override
+  void initState(){
+    super.initState();
+    give10(1,widget.token);
+    scrollController.addListener((){
+      if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
+        int tmp=1;
+        if(books.length%10!=0){
+          tmp=2;
+        }
+        int nextpage=(books.length/10-(books.length%10)/10 +tmp).toInt();
+        give10(nextpage,widget.token);
+      }
+    }
+    );
+  }
+
+  @override
+  void dispose(){
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     Widget picksforyouscroll = new Container(
       margin: EdgeInsets.symmetric(vertical:1.0,horizontal: 5.0),
-      height: 600.0,
-      child: new ListView(
-        scrollDirection: Axis.vertical,
-        children: <Widget>[
-          book("Toto je kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author1"),
-          book("Harry Potter a Kamen mudrcov", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author1"),
-          book("Tretie kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author1"),
-          book("Najlepsia kniha", "https://images.unsplash.com/photo-1503875154399-95d2b151e3b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60","author1")
-        ],
-      )
+      height: 500.0,
+      child: ListView.builder(
+            controller: scrollController,
+            scrollDirection: Axis.vertical,
+            itemCount: books.length,
+            itemBuilder: (BuildContext context,int index){
+              
+              int idcko=books[index].id;
+              return Container(
+                padding: EdgeInsets.fromLTRB(10,5,10,0),
+                height: 180,
+                width: 360,
+                child: GestureDetector(
+                  onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BookDetail(title: books[index].title,author: books[index].author,image: "http://10.0.2.2:5000/jpg?book_id=$idcko",about: "hello",)),
+                      );
+                    },
+                  child: Card(
+                    elevation: 15,
+                    child: Padding(
+                    padding: EdgeInsets.all(0),
+                    child: Stack(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Stack(
+                          children: <Widget>[
+                            Padding(
+                                padding: const EdgeInsets.only(left: 0, top: 0),
+                                child: Row(
+                                  children: <Widget>[
+                                    image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
+                                    info(books[index].title,books[index].author)
+                                  ],
+                                )
+                            ),
+                          ],
+                        ),
+                      )
+                    ]),
+                    ),
+                  ),
+                )
+              );
+            }
+          )
     );
 
     return new Scaffold(
@@ -170,4 +237,91 @@ class _MyBooksState extends State<MyBooks> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+Future give10(int page,String token) async {
+    
+    http.Response response;
+    try{
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/getMyBooks",{"strana": page.toString()}),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive',
+          'Authorization': 'Bearer $token',
+        },
+      );
+    }
+    catch(error){
+      print(error);
+
+    }
+    
+    
+    if (response.statusCode==200){
+      final jsonResponse = json.decode(response.body);
+      BookList b = BookList.fromJson(jsonResponse);
+      setState(() {
+        for(final book in b.books){
+          books.add(book);
+          print(book.title);
+        }
+      });
+    }
+    else if(response.statusCode==204){
+
+    }
+    else{
+      throw Exception('fail');
+    }
+    
+  }
+
+
+}
+
+
+class BookList {
+  final List<Book> books;
+
+  BookList({
+    this.books,
+  });
+
+  factory BookList.fromJson(List<dynamic> parsedJson) {
+
+    List<Book> books = new List<Book>();
+    books = parsedJson.map((i)=>Book.fromJson(i)).toList();
+
+    return new BookList(
+      books: books,
+    );
+  }
+
+}
+
+class Book {
+  final int id;
+  final String author;
+  final String title;
+  final String published;
+  final double rating;
+  final double price;
+  final List<dynamic> genres;
+  final String about;
+
+  Book({this.id,this.author, this.title, this.published,this.rating,this.price,this.genres,this.about});
+
+  factory Book.fromJson(Map<String, dynamic> json) {
+
+    return new Book(
+      id: json['id'],
+      author: json['author'],
+      title: json['title'],
+      published: json['published'],
+      rating: json['rating'],
+      price: json['price'],
+      genres: json['genres'],
+      about: json['about'],
+    );
+  }
+
 }

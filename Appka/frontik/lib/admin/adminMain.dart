@@ -61,7 +61,7 @@ class AwesomeButtonState extends State<AdminMainPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AddBook()),
+                          MaterialPageRoute(builder: (context) => AddBook(token: widget.token)),
                         );
                       }),
                 ),
@@ -86,7 +86,7 @@ class AwesomeButtonState extends State<AdminMainPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AddAuthor()),
+                          MaterialPageRoute(builder: (context) => AddAuthor(token: widget.token)),
                         );
                       }),
                 ),
@@ -110,7 +110,7 @@ class AwesomeButtonState extends State<AdminMainPage> {
                       color: Colors.lightBlue,
                       onPressed: (){Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => EditBook()),
+                          MaterialPageRoute(builder: (context) => EditBook(token: widget.token)),
                         );}),
                 ),
               )

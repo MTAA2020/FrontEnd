@@ -8,6 +8,10 @@ void main() {
 }
 
 class AddBook extends StatefulWidget {
+  AddBook({Key key,this.token}) : super(key: key);
+
+  final String token;
+
   @override
   AddBookState createState() => new AddBookState();
 }
