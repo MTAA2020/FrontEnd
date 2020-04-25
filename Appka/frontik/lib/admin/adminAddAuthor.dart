@@ -129,7 +129,8 @@ class AddAuthorState extends State<AddAuthor> {
       response = await http.post(url,
           headers: {
             'Content-Type': 'application/json',
-            'Connection': 'keep-alive'
+            'Connection': 'keep-alive',
+            'Authorization': 'Bearer ${widget.token}'
           },
           body: body);
     } catch (error) {

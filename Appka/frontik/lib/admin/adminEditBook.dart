@@ -70,7 +70,8 @@ class _EditBookState extends State<EditBook> {
                   genres: books[index].genres,
                   price: books[index].price,
                   selectedDate: books[index].published,
-                  id: books[index].id)),
+                  id: books[index].id,token: widget.token)),
+        
         );
       },
     );
@@ -196,8 +197,7 @@ class _EditBookState extends State<EditBook> {
           await http.delete(Uri.http('10.0.2.2:5000', "/bookDelete",{"book_id":"${id}"}), headers: {
         'Content-Type': 'application/json',
         'Connection': 'keep-alive',
-        'Authorization':
-            'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc3MzU2MDAsIm5iZiI6MTU4NzczNTYwMCwianRpIjoiMGQ2OTQzY2ItZDliZC00ZWVmLThjYTEtNzFjNDdiMDJiMzdiIiwiZXhwIjoxNTg3NzM2NTAwLCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.sTJBwaGjfP-COMlQWtIE0Wd6aHlYweUP-P2Ez_mhwtE'
+        'Authorization': 'Bearer ${widget.token}'
       },);
     } catch (error) {
       print(error);
@@ -208,7 +208,7 @@ class _EditBookState extends State<EditBook> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": "book"}),
+        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": "ggg"}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive'
