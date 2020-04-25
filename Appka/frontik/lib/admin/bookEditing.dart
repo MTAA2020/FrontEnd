@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:core';
-import 'dart:core';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -161,7 +160,7 @@ class EditingBookState extends State<EditingBook> {
       Future give10() async {
       var url = Uri.http('10.0.2.2:5000', "/bookEdit");
       var body =
-          jsonEncode({'book_id': '${widget.id}', 'name': '${authorName.text}','title':'${bookTitle.text}','date':'${selectedDate.text}','price':'${price.text}','genres':jsonDecode('${genres.text.split(';')}')});
+          jsonEncode({'book_id': '${widget.id}', 'name': '${authorName.text}','title':'${bookTitle.text}','date':'${selectedDate.text}','price':'${price.text}','genres':jsonDecode('${genres.text.split(',')}')});
 
       http.Response response;
       try {
