@@ -20,56 +20,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
 
- Container book(String nazov, String obrazok,String author){
-    return Container(
-      width: 120.0,
-      height: 200.0,
-      child: GestureDetector(
-        onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BookDetail(title: nazov,author: author,image:obrazok,about: "h")),
-            );
-          },
-        child: SizedBox(
-          width: 120,
-          height: 200,
-          child: Card(
-            elevation: 10,
-            color: Colors.grey,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20),
-              top: Radius.circular(20)
-              ),
-            ),
-            child: new Column(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-                  child: Image.network(
-                      obrazok,
-                      height: 160.0,
-                      width: 140.0,
-                  ),
-                ),
-                Expanded(
-                child:  AutoSizeText(
-                  nazov,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  minFontSize: 8.0,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0 ),
-                )
-                ),
-              ],
-            ),
-          ),
-        )
-      )
-    );
-  }
-
 
    Container kategoria(String category){
     return Container(
@@ -205,7 +155,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         title: bestsellers[index].title,
                         author: bestsellers[index].author,
                         image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
-                        about: "h")),
+                        about: "h",
+                        bookid: bestsellers[index].id,
+                        price: bestsellers[index].price,
+                        rating: bestsellers[index].rating,
+                        )
+                      ),
                     );
                   },
                 child: SizedBox(
@@ -286,7 +241,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         title: picks[index].title,
                         author: picks[index].author,
                         image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
-                        about: "h")),
+                        about: "h",
+                        bookid: picks[index].id,
+                        price: picks[index].price,
+                        rating: picks[index].rating,
+                        )
+                      ),
                     );
                   },
                 child: SizedBox(
@@ -368,7 +328,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         title: topbooks[index].title,
                         author: topbooks[index].author,
                         image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
-                        about: "h")),
+                        about: topbooks[index].about,
+                        bookid: topbooks[index].id,
+                        price: topbooks[index].price,
+                        rating: topbooks[index].rating,
+                        )
+                      ),
                     );
                   },
                 child: SizedBox(

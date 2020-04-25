@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontik/user/navigation.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'dart:convert';
 import 'package:frontik/admin/adminMain.dart';
 
@@ -186,6 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                     elevation: 3.0,
                     borderRadius: BorderRadius.circular(50.0),
                     child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       controller: regemail,
                       decoration: InputDecoration(
                           hintText: 'E-mail',

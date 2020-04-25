@@ -49,32 +49,33 @@ class _MyCategoryState extends State<MyCategory> {
     );
   }
 
-  Widget stars() {
+  Widget stars(double r) {
     return Container(
-      width: 200,
-      height: 40,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-          child: RatingBar(
-            initialRating: 0,
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-            itemBuilder: (context, _) => Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            onRatingUpdate: (rating) {
-              print(rating);
-            },
-          )
+    width: 200,
+    height: 40,
+    child: Align(
+      alignment: Alignment.bottomCenter,
+        child: RatingBar(
+          initialRating: r,
+          minRating: 1,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          ignoreGestures: true,
+          itemCount: 5,
+          itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+          itemBuilder: (context, _) => Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          onRatingUpdate: (rating) {
+            print(rating);
+          },
         )
-    );
+      )
+  );
   }
 
-  Widget info(String title,String author) {
+  Widget info(String title,String author,double rating) {
     return Container(
       width: 200,
       height: 160,
@@ -82,7 +83,7 @@ class _MyCategoryState extends State<MyCategory> {
         children: <Widget>[
           tit(title),
           auth(author),
-          stars(),
+          stars(rating),
         ],
       ),
     );
@@ -160,7 +161,16 @@ class _MyCategoryState extends State<MyCategory> {
                   onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => BookDetail(title: books[index].title,author: books[index].author,image: "http://10.0.2.2:5000/jpg?book_id=$idcko",about: "hello",)),
+                        MaterialPageRoute(builder: (context) => BookDetail(
+                          title: books[index].title,
+                          author: books[index].author,
+                          image: "http://10.0.2.2:5000/jpg?book_id=$idcko",
+                          about: books[index].about,
+                          bookid: books[index].id,
+                          price: books[index].price,
+                          rating: books[index].rating,
+                          )
+                        ),
                       );
                     },
                   child: Card(
@@ -178,7 +188,7 @@ class _MyCategoryState extends State<MyCategory> {
                                 child: Row(
                                   children: <Widget>[
                                     image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
-                                    info(books[index].title,books[index].author)
+                                    info(books[index].title,books[index].author,books[index].rating)
                                   ],
                                 )
                             ),

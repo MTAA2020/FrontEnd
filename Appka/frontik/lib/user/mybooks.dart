@@ -101,46 +101,7 @@ class _MyBooksState extends State<MyBooks> {
     );
   }
 
-  Container book(String title, String obrazok,String author){
-    return Container(
-      padding: EdgeInsets.fromLTRB(10,5,10,0),
-      height: 180,
-      width: 360,
-      child: GestureDetector(
-        onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BookDetail(title: title,author: author,image: obrazok,about:"h",)),
-            );
-          },
-        child: Card(
-          elevation: 15,
-          child: Padding(
-          padding: EdgeInsets.all(0),
-          child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerRight,
-              child: Stack(
-                children: <Widget>[
-                  Padding(
-                      padding: const EdgeInsets.only(left: 0, top: 0),
-                      child: Row(
-                        children: <Widget>[
-                          image(obrazok),
-                          info(title,author)
-                        ],
-                      )
-                  ),
-                ],
-              ),
-            )
-          ]),
-          ),
-        ),
-      )
-    );
-  }
+  
 
   List<Book> books = new List();
   ScrollController scrollController = new ScrollController();
@@ -179,46 +140,62 @@ class _MyBooksState extends State<MyBooks> {
             scrollDirection: Axis.vertical,
             itemCount: books.length,
             itemBuilder: (BuildContext context,int index){
-              
-              int idcko=books[index].id;
-              return Container(
-                padding: EdgeInsets.fromLTRB(10,5,10,0),
-                height: 180,
-                width: 360,
-                child: GestureDetector(
-                  onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => BookDetail(title: books[index].title,author: books[index].author,image: "http://10.0.2.2:5000/jpg?book_id=$idcko",about: "hello",)),
-                      );
-                    },
-                  child: Card(
-                    elevation: 15,
-                    child: Padding(
-                    padding: EdgeInsets.all(0),
-                    child: Stack(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Stack(
-                          children: <Widget>[
-                            Padding(
-                                padding: const EdgeInsets.only(left: 0, top: 0),
-                                child: Row(
-                                  children: <Widget>[
-                                    image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
-                                    info(books[index].title,books[index].author)
-                                  ],
-                                )
-                            ),
-                          ],
-                        ),
-                      )
-                    ]),
-                    ),
+              if(books.length==0){
+                return Container(
+                  child: Text(
+                    "You have no books"
                   ),
-                )
-              );
+                );
+              }else{
+                int idcko=books[index].id;
+                return Container(
+                  padding: EdgeInsets.fromLTRB(10,5,10,0),
+                  height: 180,
+                  width: 360,
+                  child: GestureDetector(
+                    onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => BookDetail(
+                            title: books[index].title,
+                            author: books[index].author,
+                            image: "http://10.0.2.2:5000/jpg?book_id=$idcko",
+                            about: books[index].about,
+                            bookid: books[index].id,
+                            price: books[index].price,
+                            rating: books[index].rating,
+                            )
+                          ),
+                        );
+                      },
+                    child: Card(
+                      elevation: 15,
+                      child: Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Stack(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Stack(
+                            children: <Widget>[
+                              Padding(
+                                  padding: const EdgeInsets.only(left: 0, top: 0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
+                                      info(books[index].title,books[index].author)
+                                    ],
+                                  )
+                              ),
+                            ],
+                          ),
+                        )
+                      ]),
+                      ),
+                    ),
+                  )
+                );
+              }
             }
           )
     );
@@ -270,7 +247,9 @@ Future give10(int page,String token) async {
 
     }
     else{
-      throw Exception('fail');
+      setState(() {
+        
+      });
     }
     
   }

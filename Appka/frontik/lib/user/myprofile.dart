@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontik/user/transactions.dart';
 import 'package:frontik/user/deposit.dart';
+import 'package:frontik/user/startpage.dart';
 
 class MyProfile extends StatefulWidget {
   MyProfile({Key key, this.title,this.token}) : super(key: key);
@@ -104,7 +105,12 @@ class _MyProfileState extends State<MyProfile> {
                     child: MaterialButton(
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () { 
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => StartPage()),
+                        );
+                      },
                       child: Text("Log Out",
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 30),

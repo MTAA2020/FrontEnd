@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class Transactions extends StatefulWidget {
   Transactions({Key key,this.token}) : super(key: key);
@@ -102,6 +105,32 @@ class _TransactionsState extends State<Transactions> {
     );
   }
   
+  List<Transaction> transactions = new List();
+  ScrollController scrollController = new ScrollController();
+
+  @override
+  void initState(){
+    super.initState();
+    give10(1);
+    scrollController.addListener((){
+      if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
+        int tmp=1;
+        if(transactions.length%10!=0){
+          tmp=2;
+        }
+        int nextpage=(transactions.length/10-(transactions.length%10)/10 +tmp).toInt();
+        give10(nextpage);
+      }
+    }
+    );
+  }
+
+  @override
+  void dispose(){
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -152,4 +181,80 @@ class _TransactionsState extends State<Transactions> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+
+
+  Future give10(int page) async {
+    
+    http.Response response;
+    try{
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/seePurchases",{"strana": page.toString()}),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive'
+        },
+      );
+    }
+    catch(error){
+      print(error);
+
+    }
+    
+    
+    if (response.statusCode==200){
+      final jsonResponse = json.decode(response.body);
+      TransactionList t = TransactionList.fromJson(jsonResponse);
+      setState(() {
+        for(final transaction in t.transactions){
+          transactions.add(transaction);
+          print(transaction.title);
+        }
+      });
+    }
+    else if(response.statusCode==204){
+
+    }
+    else{
+      throw Exception('fail');
+    }
+    
+  }
+}
+
+class TransactionList {
+  final List<Transaction> transactions;
+
+  TransactionList({
+    this.transactions,
+  });
+
+  factory TransactionList.fromJson(List<dynamic> parsedJson) {
+
+    List<Transaction> transactions = new List<Transaction>();
+    transactions = parsedJson.map((i)=>Transaction.fromJson(i)).toList();
+
+    return new TransactionList(
+      transactions: transactions,
+    );
+  }
+
+}
+class Transaction {
+  final String amount;
+  final String title;
+  final String date;
+
+
+  Transaction({this.amount, this.title, this.date});
+
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+
+    return new Transaction(
+      amount: json['price'],
+      title: json['title'],
+      date: json['date'],
+    );
+  }
+
 }

@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expandable/expandable.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 
 class BookDetail extends StatefulWidget {
-  BookDetail({Key key, this.title,this.author,this.image,this.about,this.token}) : super(key: key);
-
+  BookDetail({Key key, this.title,this.author,this.image,this.about,this.token,@required this.bookid,@required this.price,@required this.rating}) : super(key: key);
+  final int bookid;
   final String title;
   final String author;
   final String image;
   final String about;
   final String token;
+  final double price;
+  final double rating;
   
   @override
   _BookDetailState createState() => _BookDetailState();
@@ -20,7 +25,7 @@ class BookDetail extends StatefulWidget {
 class _BookDetailState extends State<BookDetail> {
 
 
-   Widget stars() {
+   Widget stars(double r) {
     return Container(
       width: 150,
       height: 30,
@@ -28,8 +33,9 @@ class _BookDetailState extends State<BookDetail> {
         alignment: Alignment.bottomCenter,
           child: RatingBar(
             itemSize: 30,
-            initialRating: 0,
+            initialRating: r,
             minRating: 1,
+            ignoreGestures: true,
             direction: Axis.horizontal,
             allowHalfRating: true,
             itemCount: 5,
@@ -71,7 +77,7 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
     
-  Widget bookdetail2(){
+  Widget bookdetail2(double r){
     return Container(
       width: 180,
       height: 250,
@@ -97,7 +103,7 @@ class _BookDetailState extends State<BookDetail> {
                 style: TextStyle(fontFamily: 'PermanentMarker', fontSize: 30.0 , color: Colors.black),
               )
           ),
-          stars(),
+          stars(r),
           Container(
             width: 170,
             padding: new EdgeInsets.all(5.0),
@@ -130,7 +136,7 @@ class _BookDetailState extends State<BookDetail> {
       child: new Row(
         children: <Widget>[
           bookdetail1(widget.image),
-          bookdetail2(),
+          bookdetail2(widget.rating),
         ],
       )
     );
@@ -144,15 +150,48 @@ class _BookDetailState extends State<BookDetail> {
   }
 
   
-  Widget reviews(){
-    return Container(
-      
+  
+
+  List<Review> reviews = new List();
+  ScrollController scrollController = new ScrollController();
+
+  @override
+  void initState(){
+    super.initState();
+    give10(1);
+    scrollController.addListener((){
+      if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
+        int tmp=1;
+        if(reviews.length%10!=0){
+          tmp=2;
+        }
+        int nextpage=(reviews.length/10-(reviews.length%10)/10 +tmp).toInt();
+        give10(nextpage);
+      }
+    }
     );
   }
-  
+
+  @override
+  void dispose(){
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    
+    Widget reviewcont(){
+      return Container(
+        child: ListView.builder(
+          controller: scrollController,
+          scrollDirection: Axis.vertical,
+          itemCount: reviews.length,
+          itemBuilder: null
+          )
+      );
+    }
+
 
     return new Scaffold(
       backgroundColor: Colors.grey,
@@ -174,11 +213,87 @@ class _BookDetailState extends State<BookDetail> {
             children: <Widget>[
               bookdetails(),
               about(),
-              reviews(),
+              //reviewcont(),
             ],
           ),
         ),
       ),
     );
   }
+
+  Future give10(int page) async {
+    
+    http.Response response;
+    try{
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/getBookReviews",{"strana": page.toString(),"book_id": widget.bookid.toString()}),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive',
+        },
+      );
+    }
+    catch(error){
+      print(error);
+
+    }
+    
+    print(response.body);
+    if (response.statusCode==200){
+      final jsonResponse = json.decode(response.body);
+      ReviewList r = ReviewList.fromJson(jsonResponse);
+      setState(() {
+        for(final review in r.reviews){
+          reviews.add(review);
+        }
+      });
+    }
+    else if(response.statusCode==204){
+
+    }
+    else{
+      throw Exception('fail');
+    }
+    
+  }
+}
+
+
+class ReviewList {
+  final List<Review> reviews;
+
+  ReviewList({
+    this.reviews,
+  });
+
+  factory ReviewList.fromJson(List<dynamic> parsedJson) {
+
+    List<Review> reviews = new List<Review>();
+    reviews = parsedJson.map((i)=>Review.fromJson(i)).toList();
+
+    return new ReviewList(
+      reviews: reviews,
+    );
+  }
+
+}
+class Review {
+  final String user;
+  final String rating;
+  final String date;
+  final String comment;
+
+
+  Review({this.user, this.rating, this.date,this.comment});
+
+  factory Review.fromJson(Map<String, dynamic> json) {
+
+    return new Review(
+      user: json['user'],
+      rating: json['rating'],
+      date: json['time'],
+      comment: json['comment'],
+    );
+  }
+
 }
