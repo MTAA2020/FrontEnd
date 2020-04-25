@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 void main() {
   runApp(new MaterialApp(home: new AddBook()));
@@ -36,6 +35,7 @@ class AddBookState extends State<AddBook> {
   var picturePath = TextEditingController();
   String _extension;
   bool _loadingPath = false;
+  var _myActivities = [];
   //bool _multiPick = false;
   FileType _pickingType;
   //TextEditingController _controller = new TextEditingController();
@@ -108,13 +108,58 @@ class AddBookState extends State<AddBook> {
               Container(
                 width: 300,
                 padding: EdgeInsets.all(5),
-                child: new TextField(
-                  controller: genres,
-                  decoration: new InputDecoration(
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Enter book genres (\"\",\"\")"),
-                ),
+                child: MultiSelectFormField(
+                  autovalidate: false,
+                  titleText: 'Genres',
+                  validator: (value) {
+                    if (value == null || value.length == 0) {
+                      return 'Please select one or more options';
+                    }
+                  },
+                  dataSource: [
+                    {
+                      "display": "Thriller",
+                      "value": "\"Thriller\"",
+                    },
+                    {
+                      "display": "SciFi",
+                      "value": "\"SciFi\"",
+                    },
+                    {
+                      "display": "Child",
+                      "value": "\"Child\"",
+                    },
+                    {
+                      "display": "History",
+                      "value": "\"History\"",
+                    },
+                    {
+                      "display": "Romance",
+                      "value": "\"Romance\"",
+                    },
+                    {
+                      "display": "Bibliography",
+                      "value": "\"Bibliography\"",
+                    },
+                    {
+                      "display": "Technology",
+                      "value": "\"Technology\"",
+                    },
+                  ],
+                  textField: 'display',
+                  valueField: 'value',
+                  okButtonLabel: 'OK',
+                  cancelButtonLabel: 'CANCEL',
+                  // required: true,
+                  hintText: 'Please choose one or more',
+                  value: _myActivities,
+                  onSaved: (value) {
+                    if (value == null) return;
+                    setState(() {
+                      _myActivities = value;
+                    });
+                  },
+                ), 
               ),
               Container(
                 width: 300,
@@ -224,7 +269,7 @@ class AddBookState extends State<AddBook> {
       'title': '${bookTitle.text}',
       'date': '${selectedDate.text}',
       'price': '${double.parse(price.text)}',
-      'genres': jsonDecode('${genres.text.split(',')}')
+      'genres': jsonDecode('$_myActivities')
     });
     http.Response response;
     try {
@@ -243,6 +288,7 @@ class AddBookState extends State<AddBook> {
 
     try {
       postcover(jsonResponse['book_id']);
+      postpdf(jsonResponse['book_id']);
     } catch (error) {
       print(error);
     }
@@ -264,7 +310,7 @@ class AddBookState extends State<AddBook> {
           "/addjpg",
         ));
     request.fields['book_id'] = id.toString();
-    request.headers.addAll({"Authorization":'Bearer ${widget.token}'});
+    request.headers.addAll({"Authorization": 'Bearer ${widget.token}'});
     request.files.add(
         new http.MultipartFile('file', stream, length, filename: 'book_$id'));
     request.send().then((response) {
@@ -272,28 +318,22 @@ class AddBookState extends State<AddBook> {
     });
   }
 
-  /*Future postcover(int id) async {
-    http.Response response;
-    try {
-      Stream<Uint8List> subor = File('${picturePath.text}').readAsBytes().asStream();
-      print(subor);
-      response = await http.post(
-          Uri.http(
-            '10.0.2.2:5000',
-            "/addjpg",
-          ),
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Connection': 'keep-alive',
-            'Authorization': 'Bearer ${widget.token}'
-          },
-          body: {
-           'book_id': id.toString(),
-           'data': subor
-          });
-    } catch (error) {
-      print(error);
-    }
-    //return response.body;
-  }*/
+  Future postpdf(int id) async {
+    File picture = new File('${filePath.text}');
+    var stream = new http.ByteStream(picture.openRead());
+    var length = await picture.length();
+    var request = new http.MultipartRequest(
+        "POST",
+        Uri.http(
+          '10.0.2.2:5000',
+          "/addpdf",
+        ));
+    request.fields['book_id'] = id.toString();
+    request.headers.addAll({"Authorization": 'Bearer ${widget.token}'});
+    request.files.add(
+        new http.MultipartFile('file', stream, length, filename: 'book_$id'));
+    request.send().then((response) {
+      if (response.statusCode == 200) print("Uploaded!");
+    });
+  }
 }

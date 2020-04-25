@@ -4,20 +4,23 @@ import 'dart:core';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 void main() {
   runApp(new MaterialApp(home: new EditingBook()));
 }
 
 class EditingBook extends StatefulWidget {
-  EditingBook(
+
+
+EditingBook(
       {Key key,
       this.id,
       this.selectedDate,
       this.authorName,
       this.price,
       this.bookTitle,
-      this.genres})
+      this.genres,this.token})
       : super(key: key);
   String selectedDate;
   int id;
@@ -25,6 +28,7 @@ class EditingBook extends StatefulWidget {
   double price;
   String bookTitle;
   List genres;
+   final String token;
 
   @override
   EditingBookState createState() => new EditingBookState();
@@ -41,6 +45,7 @@ class EditingBookState extends State<EditingBook> {
   var price = TextEditingController();
   var bookTitle = TextEditingController();
   var genres = TextEditingController();
+  var _myActivities=[];
   String _extension;
   bool _loadingPath = false;
   //bool _multiPick = false;
@@ -54,8 +59,12 @@ class EditingBookState extends State<EditingBook> {
     authorName.text = widget.authorName;
     price.text = widget.price.toString();
     bookTitle.text = widget.bookTitle;
+    List<String> zanre = new List();
+    for (String item in widget.genres) {
+      zanre.add("\""+item+"\"");
+    }
+    _myActivities = zanre;
     genres.text = widget.genres.toString();
-    print(genres.text);
     //selectedDate.text = dateFormat.format(DateTime.now());
     return new Scaffold(
         resizeToAvoidBottomInset: false,
@@ -93,7 +102,7 @@ class EditingBookState extends State<EditingBook> {
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Ented book title"),
+                      hintText: "Enter book title"),
                 ),
               ),
               Container(
@@ -121,12 +130,57 @@ class EditingBookState extends State<EditingBook> {
               Container(
                 width: 300,
                 padding: EdgeInsets.all(10),
-                child: new TextField(
-                  controller: genres,
-                  decoration: new InputDecoration(
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Enter book genres (;)"),
+                child: MultiSelectFormField(
+                  autovalidate: false,
+                  titleText: 'Genres',
+                  validator: (value) {
+                    if (value == null || value.length == 0) {
+                      return 'Please select one or more options';
+                    }
+                  },
+                  dataSource: [
+                    {
+                      "display": "Thriller",
+                      "value": "\"Thriller\"",
+                    },
+                    {
+                      "display": "SciFi",
+                      "value": "\"SciFi\"",
+                    },
+                    {
+                      "display": "Child",
+                      "value": "\"Child\"",
+                    },
+                    {
+                      "display": "History",
+                      "value": "\"History\"",
+                    },
+                    {
+                      "display": "Romance",
+                      "value": "\"Romance\"",
+                    },
+                    {
+                      "display": "Bibliography",
+                      "value": "\"Bibliography\"",
+                    },
+                    {
+                      "display": "Technology",
+                      "value": "\"Technology\"",
+                    },
+                  ],
+                  textField: 'display',
+                  valueField: 'value',
+                  okButtonLabel: 'OK',
+                  cancelButtonLabel: 'CANCEL',
+                  // required: true,
+                  hintText: 'Please choose one or more',
+                  value: _myActivities,
+                  onSaved: (value) {
+                    if (value == null) return;
+                    setState(() {
+                      _myActivities = value;
+                    });
+                  },
                 ),
               ),
               new Padding(
@@ -160,7 +214,7 @@ class EditingBookState extends State<EditingBook> {
       Future give10() async {
       var url = Uri.http('10.0.2.2:5000', "/bookEdit");
       var body =
-          jsonEncode({'book_id': '${widget.id}', 'name': '${authorName.text}','title':'${bookTitle.text}','date':'${selectedDate.text}','price':'${price.text}','genres':jsonDecode('${genres.text.split(',')}')});
+          jsonEncode({'book_id': '${widget.id}', 'name': '${authorName.text}','title':'${bookTitle.text}','date':'${selectedDate.text}','price':'${price.text}','genres':jsonDecode('$_myActivities')});
 
       http.Response response;
       try {
@@ -168,7 +222,7 @@ class EditingBookState extends State<EditingBook> {
             headers: {
               'Content-Type': 'application/json',
               'Connection': 'keep-alive',
-              'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc3Mjk5MDcsIm5iZiI6MTU4NzcyOTkwNywianRpIjoiYTlkYTE0YmEtZjg0My00NjUzLWE4YzQtMDFjOWYwNDdiYTYzIiwiZXhwIjoxNTg3NzMwODA3LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.oywXFQmVBRNaQGXkJ0NITapxQDEn8bP2u1zQTDvl5wE'
+              'Authorization':'Bearer ${widget.token}'
             },
             body: body);
       } catch (error) {
