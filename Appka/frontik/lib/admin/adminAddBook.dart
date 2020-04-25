@@ -1,14 +1,18 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(new MaterialApp(home: new AddBook()));
 }
 
 class AddBook extends StatefulWidget {
-  AddBook({Key key,this.token}) : super(key: key);
+  AddBook({Key key, this.token}) : super(key: key);
 
   final String token;
 
@@ -28,6 +32,7 @@ class AddBookState extends State<AddBook> {
   var price = TextEditingController();
   var bookTitle = TextEditingController();
   var genres = TextEditingController();
+  var picturePath = TextEditingController();
   String _extension;
   bool _loadingPath = false;
   //bool _multiPick = false;
@@ -57,7 +62,7 @@ class AddBookState extends State<AddBook> {
                     children: <Widget>[
               Container(
                 width: 300,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(7),
                 child: new TextField(
                   controller: authorName,
                   decoration: new InputDecoration(
@@ -68,7 +73,7 @@ class AddBookState extends State<AddBook> {
               ),
               Container(
                 width: 300,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(7),
                 child: new TextField(
                   controller: bookTitle,
                   decoration: new InputDecoration(
@@ -79,7 +84,7 @@ class AddBookState extends State<AddBook> {
               ),
               Container(
                 width: 300,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(7),
                 child: new TextField(
                   controller: selectedDate,
                   decoration: new InputDecoration(
@@ -90,7 +95,7 @@ class AddBookState extends State<AddBook> {
               ),
               Container(
                 width: 300,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(7),
                 child: new TextField(
                   controller: price,
                   decoration: new InputDecoration(
@@ -101,18 +106,18 @@ class AddBookState extends State<AddBook> {
               ),
               Container(
                 width: 300,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(7),
                 child: new TextField(
                   controller: genres,
                   decoration: new InputDecoration(
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Enter book genres (;)"),
+                      hintText: "Enter book genres (\"\",\"\")"),
                 ),
               ),
               Container(
                 width: 300,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(7),
                 child: new TextField(
                   controller: filePath,
                   decoration: new InputDecoration(
@@ -122,6 +127,20 @@ class AddBookState extends State<AddBook> {
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Browse for the book"),
+                ),
+              ),
+              Container(
+                width: 300,
+                padding: EdgeInsets.all(7),
+                child: new TextField(
+                  controller: picturePath,
+                  decoration: new InputDecoration(
+                      prefixIcon: IconButton(
+                          icon: Icon(Icons.find_in_page),
+                          onPressed: () => _openFileExplorer()),
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(),
+                      hintText: "Browse for the cover"),
                 ),
               ),
               new Padding(
@@ -142,10 +161,7 @@ class AddBookState extends State<AddBook> {
                               fontSize: 20.0)),
                       color: Colors.lightBlue,
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AddBook()),
-                        );
+                        addnewbook();
                       }),
                 ),
               ),
@@ -175,5 +191,56 @@ class AddBookState extends State<AddBook> {
           : _paths != null ? _paths.keys.toString() : '...';
     });
     filePath.text = _path;
+  }
+
+  Future addnewbook() async {
+    var url = Uri.http('10.0.2.2:5000', "/addBook");
+    var body = jsonEncode({
+      'name': '${authorName.text}',
+      'title': '${bookTitle.text}',
+      'date': '${selectedDate.text}',
+      'price': '${genres.text}'
+    });
+    http.Response response;
+    try {
+      response = await http.post(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Authorization': 'Bearer ${widget.token}'
+          },
+          body: body);
+    } catch (error) {
+      print(error);
+    }
+
+    final jsonResponse = json.decode(response.body);
+
+    if (response.statusCode == 201) {
+      setState(() {});
+    } else {
+      throw Exception('fail');
+    }
+  }
+
+  Future postcover(int id) async {
+    http.Response response;
+    try {
+      ByteData bytes = await rootBundle.load('${picturePath.text}');
+      response = await http.post(
+        Uri.http('10.0.2.2:5000', "/addjpg",),
+        headers: {
+          'Content-Type': 'application/json',
+          'Connection': 'keep-alive',
+          'Authorization':'Bearer ${widget.token}'
+        },body: {
+          'book_id': id,
+          'data': bytes
+        }
+      );
+    } catch (error) {
+      print(error);
+    }
+    return response.body;
   }
 }
