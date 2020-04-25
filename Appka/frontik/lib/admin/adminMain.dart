@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontik/admin/adminAddAuthor.dart';
 import 'package:frontik/admin/adminAddBook.dart';
 import 'package:frontik/admin/adminEditBook.dart';
+import 'package:frontik/user/startpage.dart';
 
 void main() {
   runApp(new MaterialApp(home: new AdminMainPage()));
@@ -120,11 +121,16 @@ class AwesomeButtonState extends State<AdminMainPage> {
 
  Widget cancelButton = FlatButton(
     child: new Text("No",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
-    onPressed:  () {},
+    onPressed:  () {Navigator.pop(context);},
   );
   Widget continueButton = FlatButton(
     child: new Text("Yes",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
-    onPressed:  () {},
+    onPressed:  () { 
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => StartPage()),
+        );
+      },
   );
 
   // set up the AlertDialog

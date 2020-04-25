@@ -6,9 +6,8 @@ import 'dart:async';
 import 'dart:convert';
 
 class MyBooks extends StatefulWidget {
-  MyBooks({Key key, this.title,this.token}) : super(key: key);
+  MyBooks({Key key,this.token}) : super(key: key);
 
-  final String title;
   final String token;
   
   @override

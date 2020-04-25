@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:frontik/user/category.dart';
 import 'package:frontik/user/bookdetail.dart';
 import 'package:frontik/user/startpage.dart';
+import 'package:frontik/user/search.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -414,8 +415,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: <Widget>[
           IconButton(
-          icon: Icon(Icons.search), 
-          onPressed: (){})
+            icon: Icon(Icons.search), 
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Search()),
+              );
+            }
+          )
         ],
         centerTitle: true,
       ),
@@ -440,7 +447,7 @@ class _MyHomePageState extends State<MyHomePage> {
   showAlertDialog(BuildContext context) {
     Widget cancelButton = FlatButton(
       child: new Text("No",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
-      onPressed:  () {},
+      onPressed:  ()  {Navigator.pop(context);},
     );
     Widget continueButton = FlatButton(
       child: new Text("Yes",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),

@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:frontik/user/bookdetail.dart';
 import 'package:frontik/user/loginpage.dart';
 import 'package:frontik/user/category.dart';
-import 'package:frontik/admin/adminMain.dart';
+import 'package:frontik/user/search.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -434,7 +434,7 @@ class _StartPageState extends State<StartPage> {
           onPressed: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AdminMainPage()), 
+              MaterialPageRoute(builder: (context) => Search()),
             );
           })
         ],
