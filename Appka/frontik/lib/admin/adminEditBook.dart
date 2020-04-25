@@ -70,7 +70,8 @@ class _EditBookState extends State<EditBook> {
                   genres: books[index].genres,
                   price: books[index].price,
                   selectedDate: books[index].published,
-                  id: books[index].id)),
+                  id: books[index].id,token: widget.token)),
+        
         );
       },
     );
@@ -207,7 +208,7 @@ class _EditBookState extends State<EditBook> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": "book"}),
+        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": "ggg"}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive'

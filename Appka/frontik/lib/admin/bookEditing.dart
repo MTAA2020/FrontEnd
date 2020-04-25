@@ -11,16 +11,15 @@ void main() {
 }
 
 class EditingBook extends StatefulWidget {
-
-
-EditingBook(
+  EditingBook(
       {Key key,
       this.id,
       this.selectedDate,
       this.authorName,
       this.price,
       this.bookTitle,
-      this.genres,this.token})
+      this.genres,
+      this.token})
       : super(key: key);
   String selectedDate;
   int id;
@@ -28,8 +27,7 @@ EditingBook(
   double price;
   String bookTitle;
   List genres;
-   final String token;
-
+  final String token;
   @override
   EditingBookState createState() => new EditingBookState();
 }
@@ -45,7 +43,8 @@ class EditingBookState extends State<EditingBook> {
   var price = TextEditingController();
   var bookTitle = TextEditingController();
   var genres = TextEditingController();
-  var _myActivities=[];
+  var _myActivities = [];
+  var zanrere = [];
   String _extension;
   bool _loadingPath = false;
   //bool _multiPick = false;
@@ -61,7 +60,7 @@ class EditingBookState extends State<EditingBook> {
     bookTitle.text = widget.bookTitle;
     List<String> zanre = new List();
     for (String item in widget.genres) {
-      zanre.add("\""+item+"\"");
+      zanre.add("\"" + item + "\"");
     }
     _myActivities = zanre;
     genres.text = widget.genres.toString();
@@ -179,6 +178,7 @@ class EditingBookState extends State<EditingBook> {
                     if (value == null) return;
                     setState(() {
                       _myActivities = value;
+                      zanrere = value;
                     });
                   },
                 ),
@@ -208,34 +208,38 @@ class EditingBookState extends State<EditingBook> {
               //displaying input text
               new Text(result)
             ]))));
-
-
   }
-      Future give10() async {
-      var url = Uri.http('10.0.2.2:5000', "/bookEdit");
-      var body =
-          jsonEncode({'book_id': '${widget.id}', 'name': '${authorName.text}','title':'${bookTitle.text}','date':'${selectedDate.text}','price':'${price.text}','genres':jsonDecode('$_myActivities')});
 
-      http.Response response;
-      try {
-        response = await http.put(url,
-            headers: {
-              'Content-Type': 'application/json',
-              'Connection': 'keep-alive',
-              'Authorization':'Bearer ${widget.token}'
-            },
-            body: body);
-      } catch (error) {
-        print(error);
-      }
-
-      final jsonResponse = json.decode(response.body);
-     
-
-      if (response.statusCode == 201) {
-  
-      } else {
-        throw Exception('fail');
-      }
+  Future give10() async {
+    var url = Uri.http('10.0.2.2:5000', "/bookEdit");
+    var body = jsonEncode({
+      'book_id': '${widget.id}',
+      'name': '${authorName.text}',
+      'title': '${bookTitle.text}',
+      'date': '${selectedDate.text}',
+      'price': '${price.text}',
+      'genres': jsonDecode('$zanrere')
+    });
+    print(body);
+    http.Response response;
+    try {
+      response = await http.put(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Authorization': 'Bearer ${widget.token}'
+          },
+          body: body);
+    } catch (error) {
+      print(error);
     }
+
+    final jsonResponse = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      print("keke");
+    } else {
+      throw Exception(Exception);
+    }
+  }
 }

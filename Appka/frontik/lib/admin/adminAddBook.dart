@@ -271,6 +271,7 @@ class AddBookState extends State<AddBook> {
       'price': '${double.parse(price.text)}',
       'genres': jsonDecode('$_myActivities')
     });
+    print(body);
     http.Response response;
     try {
       response = await http.post(url,
