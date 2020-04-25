@@ -274,7 +274,7 @@ class Book {
   final String published;
   final double rating;
   final double price;
-  final List<String> genres;
+  final List<dynamic> genres;
   final String about;
 
   Book({this.id,this.author, this.title, this.published,this.rating,this.price,this.genres,this.about});
