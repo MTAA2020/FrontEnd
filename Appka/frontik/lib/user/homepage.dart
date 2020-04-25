@@ -152,6 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => BookDetail(
+                        token: widget.token,
                         title: bestsellers[index].title,
                         author: bestsellers[index].author,
                         image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
@@ -238,6 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => BookDetail(
+                        token: widget.token,
                         title: picks[index].title,
                         author: picks[index].author,
                         image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
@@ -325,6 +327,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => BookDetail(
+                        token: widget.token,
                         title: topbooks[index].title,
                         author: topbooks[index].author,
                         image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',

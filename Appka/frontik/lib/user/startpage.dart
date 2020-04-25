@@ -181,6 +181,13 @@ class _StartPageState extends State<StartPage> {
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
                               'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              headers: {
+                                //'Content-Type' : 'application/json',
+                                'Connection' : 'keep-alive',
+                                'Accept-Encoding' : 'gzip, deflate, br',
+                                'Accept' : '*/*',
+                                'Cache-Control' : 'no-cache',
+                              },
                               height: 160.0,
                               width: 140.0,
                           ),
@@ -267,6 +274,13 @@ class _StartPageState extends State<StartPage> {
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
                               'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              headers: {
+                                //'Content-Type' : 'application/json',
+                                'Connection' : 'keep-alive',
+                                'Accept-Encoding' : 'gzip, deflate, br',
+                                'Accept' : '*/*',
+                                'Cache-Control' : 'no-cache',
+                              },
                               height: 160.0,
                               width: 140.0,
                           ),
@@ -354,6 +368,13 @@ class _StartPageState extends State<StartPage> {
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
                               'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              headers: {
+                                //'Content-Type' : 'application/json',
+                                'Connection' : 'keep-alive',
+                                'Accept-Encoding' : 'gzip, deflate, br',
+                                'Accept' : '*/*',
+                                'Cache-Control' : 'no-cache',
+                              },
                               height: 160.0,
                               width: 140.0,
                           ),

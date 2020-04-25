@@ -21,7 +21,7 @@ class _MyCategoryState extends State<MyCategory> {
 
   Widget tit(String title) {
     return Container(
-      width: 200,
+      width: 240,
       height: 60,
       padding: new EdgeInsets.all(1.0),
       child: RichText(
@@ -36,7 +36,7 @@ class _MyCategoryState extends State<MyCategory> {
 
   Widget auth(String auth) {
     return Container(
-      width: 200,
+      width: 240,
       height: 60,
       padding: new EdgeInsets.all(1.0),
       child: RichText(
@@ -51,7 +51,7 @@ class _MyCategoryState extends State<MyCategory> {
 
   Widget stars(double r) {
     return Container(
-    width: 200,
+    width: 240,
     height: 40,
     child: Align(
       alignment: Alignment.bottomCenter,
@@ -77,7 +77,7 @@ class _MyCategoryState extends State<MyCategory> {
 
   Widget info(String title,String author,double rating) {
     return Container(
-      width: 200,
+      width: 240,
       height: 160,
       child: new Column(
         children: <Widget>[
@@ -274,7 +274,7 @@ class Book {
   final String published;
   final double rating;
   final double price;
-  final List<dynamic> genres;
+  final List<String> genres;
   final String about;
 
   Book({this.id,this.author, this.title, this.published,this.rating,this.price,this.genres,this.about});

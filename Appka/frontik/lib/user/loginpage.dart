@@ -104,7 +104,6 @@ class _LoginPageState extends State<LoginPage> {
                         if (res['msg'] == "Success") {
                           loginusername.clear();
                           loginpassword.clear();
-                          print(res['admin']);
                           if(res['admin'] == true){
                              Navigator.pushReplacement(
                             context,
@@ -363,7 +362,7 @@ class _LoginPageState extends State<LoginPage> {
       print(error);
     }
     final jsonresponse= json.decode(response.body);
-    print(jsonresponse);
+
     if (response.statusCode==200){
       return jsonresponse;
     }

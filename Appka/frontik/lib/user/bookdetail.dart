@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:convert';
 
 
+
 class BookDetail extends StatefulWidget {
   BookDetail({Key key, this.title,this.author,this.image,this.about,this.token,@required this.bookid,@required this.price,@required this.rating}) : super(key: key);
   final int bookid;
@@ -23,11 +24,12 @@ class BookDetail extends StatefulWidget {
 }
 
 class _BookDetailState extends State<BookDetail> {
-
+    String myreview ="";
+    double myrating = 0;
 
    Widget stars(double r) {
     return Container(
-      width: 150,
+      width: 180,
       height: 30,
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -45,7 +47,6 @@ class _BookDetailState extends State<BookDetail> {
               color: Colors.amber,
             ),
             onRatingUpdate: (rating) {
-              print(rating);
             },
           )
         )
@@ -79,7 +80,7 @@ class _BookDetailState extends State<BookDetail> {
     
   Widget bookdetail2(double r){
     return Container(
-      width: 180,
+      width: 220,
       height: 250,
       child: new Column(
         children: <Widget>[
@@ -114,10 +115,21 @@ class _BookDetailState extends State<BookDetail> {
               child: MaterialButton(
                 minWidth: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                onPressed: () {
-                  
+                onPressed: () async {
+                  if(widget.token==null){
+                    showAlertDialog(context);
+                  }
+                  else{
+                    var bought = await isbought();
+                    print(bought['code']);
+                    if(bought['code']=="1"){
+                      print("now youre reading the book");//Treba otvorit PDF
+                    }else{
+                      showAlertDialog2(context,widget.price);
+                    }
+                  }
                 },
-                child: Text("Buy",
+                child: Text(mytext,
                     textAlign: TextAlign.center,
                   ),
               )
@@ -131,7 +143,7 @@ class _BookDetailState extends State<BookDetail> {
   Widget bookdetails() {
     return Container(
       padding: EdgeInsets.all(5.0),
-      width: 330,
+      width: 360,
       height: 250,
       child: new Row(
         children: <Widget>[
@@ -149,15 +161,109 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
 
-  
+  Widget stars2(){
+    return Container(
+      height: 54,
+      width: 250,
+      color: Colors.blueAccent,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+          child: RatingBar(
+            itemSize: 43,
+            initialRating: 0,
+            minRating: 1,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.fromLTRB(1, 2, 1, 5),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            onRatingUpdate: (rating) {
+              if(widget.token==null){
+                showAlertDialog(context);
+              }else{
+                addreview(rating);
+              }
+            },
+          )
+        )
+    );
+  }
+  Widget sendbutton(){
+    return Container(
+      height: 54,
+      width: 143,
+      color: Colors.white,
+      padding: new EdgeInsets.all(5.0),
+      child: new Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(0.0),
+        color: Color(0xff01A0C7),
+        child: MaterialButton(
+          minWidth: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+          onPressed: () {
+            if(widget.token==null){
+              showAlertDialog(context);
+            }
+            else{
+              double tmp=0;
+              addreview(tmp);
+            }
+          },
+          child: Text("Send",
+              textAlign: TextAlign.center,
+            ),
+        )
+      ), 
+    );
+  }
+
+  Widget comment(){
+    return Container(
+      height: 200,
+      child: Card(
+        color: Colors.grey[100],
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              controller: commentcontroller,
+              keyboardType: TextInputType.multiline,
+              maxLines: 6,
+              decoration: InputDecoration(
+                hintText: "Write your review here"
+              ),
+            ),
+            new Row(
+              children: <Widget>[
+                stars2(),
+                sendbutton(),
+              ]
+            )
+          ],
+        )  
+      )
+    );
+  }
   
 
   List<Review> reviews = new List();
   ScrollController scrollController = new ScrollController();
+  final commentcontroller = TextEditingController();
+  String mytext= "Read";
+  TextEditingController myreviewcontroller = new TextEditingController();
 
   @override
   void initState(){
     super.initState();
+
+
+    //getmyreview();
+
+
+    //Reviews Section
     give10(1);
     scrollController.addListener((){
       if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
@@ -181,18 +287,6 @@ class _BookDetailState extends State<BookDetail> {
   @override
   Widget build(BuildContext context) {
     
-    Widget reviewcont(){
-      return Container(
-        child: ListView.builder(
-          controller: scrollController,
-          scrollDirection: Axis.vertical,
-          itemCount: reviews.length,
-          itemBuilder: null
-          )
-      );
-    }
-
-
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
@@ -213,7 +307,28 @@ class _BookDetailState extends State<BookDetail> {
             children: <Widget>[
               bookdetails(),
               about(),
-              //reviewcont(),
+              comment(),
+              new Container(
+                height: 400,
+                child: ListView.builder(
+                  controller: scrollController,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: reviews.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      padding: EdgeInsets.only(left: 10.0, right: 8.0, top: 8.0, bottom: 8.0),
+                      child:  Card(
+                        child: ExpandablePanel(
+                          header: Text(reviews[index].user),
+                          collapsed: Text(reviews[index].comment, softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
+                          expanded: Text(reviews[index].comment, softWrap: true, ),
+                        ),
+                      )
+                    );
+                  },
+                ),
+              )
             ],
           ),
         ),
@@ -245,16 +360,200 @@ class _BookDetailState extends State<BookDetail> {
       setState(() {
         for(final review in r.reviews){
           reviews.add(review);
+          print(review.comment);
         }
       });
     }
     else if(response.statusCode==204){
-
+      
     }
     else{
       throw Exception('fail');
     }
     
+  }
+
+  Future addreview(double rating) async{
+    http.Response response;
+    try{
+      response = await http.put(
+        Uri.http('10.0.2.2:5000', "/addReview"),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive',
+          'Authorization' : 'Bearer ${widget.token}'
+        },
+        body: json.encode(
+          {
+            'book_id': widget.bookid.toString(),
+            'comment': commentcontroller.text,
+            'rating' : rating.toString(),
+          }
+        )
+      );
+    }
+    catch(error){
+      print(error);
+    }
+    
+    print(response.body);
+    if (response.statusCode==200){
+      final jsonResponse = json.decode(response.body);
+    }
+    else{
+      throw Exception('fail');
+    }
+  }
+
+  getmyreview() async{
+    http.Response response;
+    try{
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/getmyReview",{'book_id': widget.bookid.toString()}),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive',
+          'Authorization' : 'Bearer ${widget.token}'
+        }
+      );
+    }
+    catch(error){
+      print(error);
+    }
+    
+    if (response.statusCode==200){
+      final jsonResponse = json.decode(response.body);
+    }
+    else{
+      throw Exception('fail');
+    }
+  }
+
+  buybook() async{
+    http.Response response;
+    try{
+      response = await http.post(
+        Uri.http('10.0.2.2:5000', "/purchase"),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive',
+          'Authorization' : 'Bearer ${widget.token}'
+        },
+        body: json.encode(
+          {
+            'book_id': widget.bookid.toString(),
+          }
+        )
+      );
+    }
+    catch(error){
+      print(error);
+    }
+    
+    if (response.statusCode==201){
+      return json.decode(response.body);
+    }
+    else if(response.statusCode==406){
+      return json.decode(response.body);
+    }
+    else{
+      throw Exception('fail');
+    }
+
+  }
+
+  isbought() async{
+    http.Response response;
+    try{
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/isbought",{'book_id': widget.bookid.toString()}),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive',
+          'Authorization' : 'Bearer ${widget.token}'
+        },
+      );
+    }
+    catch(error){
+      print(error);
+    }
+
+    final jsonresponse= json.decode(response.body);
+    if (response.statusCode==200){
+      return jsonresponse;
+    }
+    else{
+      throw Exception('fail');
+    }
+
+  }
+
+
+  showAlertDialog(BuildContext context) {
+
+    Widget continueButton = FlatButton(
+      child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("You must be logged in to perform this action",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
+  showAlertDialog2(BuildContext context,double price) {
+
+    Widget cancelButton = FlatButton(
+      child: new Text("No",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+    Widget continueButton = FlatButton(
+      child: new Text("Yes",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () async{
+        var res=await buybook();
+        if(res['code']=="1"){
+          print("Readin");
+        }
+        else if(res['code']=="2"){
+          print("No credit");
+        }
+        else if(res['code']=="3"){
+          print("reading");
+        }
+
+      },
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("You will be charged $price credits.  Do you wish to continue?",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        cancelButton,
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
 
@@ -279,7 +578,7 @@ class ReviewList {
 }
 class Review {
   final String user;
-  final String rating;
+  final double rating;
   final String date;
   final String comment;
 

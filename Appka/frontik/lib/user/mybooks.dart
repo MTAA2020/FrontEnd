@@ -134,7 +134,7 @@ class _MyBooksState extends State<MyBooks> {
 
     Widget picksforyouscroll = new Container(
       margin: EdgeInsets.symmetric(vertical:1.0,horizontal: 5.0),
-      height: 500.0,
+      height: 600.0,
       child: ListView.builder(
             controller: scrollController,
             scrollDirection: Axis.vertical,
