@@ -128,7 +128,7 @@ class _BookDetailState extends State<BookDetail> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => PdfViewPage(
-                          url: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                          url: 'http://10.0.2.2:5000/pdf?book_id=$idcko',
                           )
                         ),
                       );
