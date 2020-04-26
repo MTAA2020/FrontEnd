@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
-
+import 'package:frontik/admin/searchAuthort.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +17,7 @@ class EditingBook extends StatefulWidget {
       this.selectedDate,
       this.authorName,
       this.price,
+      this.author,
       this.bookTitle,
       this.genres,
       this.token})
@@ -24,6 +25,7 @@ class EditingBook extends StatefulWidget {
   String selectedDate;
   int id;
   String authorName;
+  String author;
   double price;
   String bookTitle;
   List genres;
@@ -55,7 +57,12 @@ class EditingBookState extends State<EditingBook> {
   @override
   Widget build(BuildContext context) {
     selectedDate.text = widget.selectedDate;
-    authorName.text = widget.authorName;
+    if (widget.author=='Null'){
+      authorName.text = widget.authorName;
+    } else {
+      authorName.text = widget.author;
+    }
+    
     price.text = widget.price.toString();
     bookTitle.text = widget.bookTitle;
     List<String> zanre = new List();
@@ -76,18 +83,31 @@ class EditingBookState extends State<EditingBook> {
               style: TextStyle(fontFamily: 'EmilysCandy', fontSize: 30),
             ),
           ),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.delete), onPressed: ()async{var res = await deleteBook(widget.id);
+                        if (res['msg'] == "success") {
+                          Navigator.pop(context);
+                        } else {
+                          {showAlertDialog(context,res['msg']);}
+                        }}),
+          ],
         ),
         body: new Container(
             child: new Center(
                 child: new Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(10),
+              Container(width: 300,
+                padding: EdgeInsets.all(5),
                 child: new TextField(
                   controller: authorName,
                   decoration: new InputDecoration(
+                    prefixIcon: IconButton(
+                          icon: Icon(Icons.find_in_page),
+                          onPressed: () {Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchAuthor(token: widget.token)),
+                        );}),
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Enter Author name"),
@@ -208,6 +228,45 @@ class EditingBookState extends State<EditingBook> {
               //displaying input text
               new Text(result)
             ]))));
+  }
+
+    Future deleteBook(int id) async {
+    http.Response response;
+    try {
+      response =
+          await http.delete(Uri.http('10.0.2.2:5000', "/bookDelete",{"book_id":"${id}"}), headers: {
+        'Content-Type': 'application/json',
+        'Connection': 'keep-alive',
+        'Authorization': 'Bearer ${widget.token}'
+      },);
+    } catch (error) {
+      print(error);
+    }
+
+  }
+
+  showAlertDialog(BuildContext context,String msg) {
+
+    Widget continueButton = FlatButton(
+      child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text(msg,style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Future give10() async {
