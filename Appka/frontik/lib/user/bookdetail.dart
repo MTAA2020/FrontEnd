@@ -128,8 +128,7 @@ class _BookDetailState extends State<BookDetail> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => PdfViewPage(
-                          //url: 'http://10.0.2.2:5000/pdf?book_id=$idcko',
-                          url: 'https://nosycrow.com/wp-content/uploads/2020/04/Coronavirus-A-Book-for-Children.pdf'
+                          url: 'http://10.0.2.2:5000/pdf?book_id=$idcko',
                           )
                         ),
                       );
