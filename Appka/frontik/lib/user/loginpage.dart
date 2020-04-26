@@ -134,76 +134,80 @@ class _LoginPageState extends State<LoginPage> {
 
 
     Container registrationcard(){
-      return Container(
-        height: 320,
-        margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
-         child: Card(
-           color: Colors.grey[400],
-           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20),
-              top: Radius.circular(20)
-              ),
-            ),
-            child: Column(
-
-              children: <Widget>[
-                Container(
-                  width: 330,
-                  padding: new EdgeInsets.all(5.0),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'Registration',
-                      style: TextStyle(fontFamily: 'PermanentMarker',fontSize: 40),
+      var _validate=false;
+            return Container(
+              height: 320,
+              margin: EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0),
+               child: Card(
+                 color: Colors.grey[400],
+                 shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(20),
+                    top: Radius.circular(20)
                     ),
                   ),
-                ),
-                Container(
-                  width: 330,
-                  padding: new EdgeInsets.all(5.0),
-                  child: new Material(
-                    color: Colors.white,
-                    elevation: 3.0,
-                    borderRadius: BorderRadius.circular(50.0),
-                    child: TextFormField(
-                      controller: regusername,
-                      decoration: InputDecoration(
-                          hintText: 'Username',
-                          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(50.0)),
+                  child: Column(
+      
+                    children: <Widget>[
+                      Container(
+                        width: 330,
+                        padding: new EdgeInsets.all(5.0),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: 'Registration',
+                            style: TextStyle(fontFamily: 'PermanentMarker',fontSize: 40),
+                          ),
                         ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 330,
-                  padding: new EdgeInsets.all(5.0),
-                  child: new Material(
-                    color: Colors.white,
-                    elevation: 3.0,
-                    borderRadius: BorderRadius.circular(50.0),
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: regemail,
-                      decoration: InputDecoration(
-                          hintText: 'E-mail',
-                          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(50.0)),
+                      ),
+                      Container(
+                        width: 330,
+                        padding: new EdgeInsets.all(5.0),
+                        child: new Material(
+                          color: Colors.white,
+                          elevation: 3.0,
+                          borderRadius: BorderRadius.circular(50.0),
+                          child: TextFormField(
+                            controller: regusername,
+                            decoration: InputDecoration(
+                                hintText: 'Username',
+                                contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(50.0)),
+                              ),
+                          ),
                         ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 330,
-                  padding: new EdgeInsets.all(5.0),
-                  child: new Material(
-                    color: Colors.white,
-                    elevation: 3.0,
-                    borderRadius: BorderRadius.circular(50.0),
-                    child: TextFormField(
-                      controller: regpassword,
-                      decoration: InputDecoration(
+                      ),
+                      Container(
+                        width: 330,
+                        padding: new EdgeInsets.all(5.0),
+                        child: new Material(
+                          color: Colors.white,
+                          elevation: 3.0,
+                          borderRadius: BorderRadius.circular(50.0),
+                          child: TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            controller: regemail,
+                            decoration: InputDecoration(
+                              
+                                hintText: 'E-mail',
+                                contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(50.0)),
+                              ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 330,
+                        padding: new EdgeInsets.all(5.0),
+                        child: new Material(
+                          color: Colors.white,
+                          elevation: 3.0,
+                          borderRadius: BorderRadius.circular(50.0),
+                          child: TextFormField(
+                            
+                            controller: regpassword,
+                            decoration: InputDecoration(
+                            
                           hintText: 'Password',
                           contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(50.0)),
@@ -216,13 +220,18 @@ class _LoginPageState extends State<LoginPage> {
                   padding: new EdgeInsets.all(5.0),
                   child: new Material(
                     //onPressed:
+
                     elevation: 5.0,
                     borderRadius: BorderRadius.circular(50.0),
                     color: Color(0xff01A0C7),
                     child: MaterialButton(
+
                       minWidth: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       onPressed: () async{
+                        if ((regusername.text.trim()=="")||(regemail.text.trim()=="")||(regpassword.text.trim()=="")){
+                            showAlertDialog9(context);
+                        } else {
                         var res = await registerrequest();
                         if (res['msg'] == "Success") {
                           loginusername.clear();
@@ -230,6 +239,7 @@ class _LoginPageState extends State<LoginPage> {
                           {showAlertDialog1(context);} 
                         } else {
                           {showAlertDialog2(context,res['msg']);}
+                        }
                         }
                       },
                       child: Text("Registrate",
@@ -281,6 +291,30 @@ class _LoginPageState extends State<LoginPage> {
   // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       content: new Text("Wrong Details",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialog9(BuildContext context) {
+
+    Widget continueButton = FlatButton(
+      child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("Fields cannot be empty",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
       actions: [
         continueButton
       ],

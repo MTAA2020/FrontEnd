@@ -301,7 +301,7 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
-    commentcontroller.text = myreviewtext;
+    //commentcontroller.text = myreviewtext;
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(

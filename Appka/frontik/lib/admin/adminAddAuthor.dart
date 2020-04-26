@@ -114,7 +114,10 @@ class AddAuthorState extends State<AddAuthor> {
                       );
                     },*/
                     onPressed: () {
-                      addnewauthor();
+                      if ((authorName.text.trim()=="")||(about.text.trim()=="")){
+                        showAlertDialog9(context);
+                      }else{
+                      addnewauthor();}
                     },
                   ),
                 ),
@@ -150,4 +153,28 @@ class AddAuthorState extends State<AddAuthor> {
       throw Exception('fail');
     }
   }
+  showAlertDialog9(BuildContext context) {
+
+    Widget continueButton = FlatButton(
+      child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+
+  // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("Fields cannot be empty",style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [
+        continueButton
+      ],
+   );
+
+  // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 }

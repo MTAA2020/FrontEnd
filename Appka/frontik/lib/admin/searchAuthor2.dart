@@ -94,7 +94,7 @@ class _Search extends State<SearchAuthor> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context,"");
             }),
         title: RichText(
           textAlign: TextAlign.center,

@@ -112,6 +112,8 @@ class AddBookState extends State<AddBook> {
               width: 300,
               padding: EdgeInsets.all(5),
               child: new TextField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                 controller: price,
                 decoration: new InputDecoration(
                     fillColor: Colors.white,
@@ -183,6 +185,7 @@ class AddBookState extends State<AddBook> {
               width: 300,
               padding: EdgeInsets.all(5),
               child: new TextField(
+                readOnly: true,
                 controller: filePath,
                 decoration: new InputDecoration(
                     prefixIcon: IconButton(
@@ -199,6 +202,7 @@ class AddBookState extends State<AddBook> {
               width: 300,
               padding: EdgeInsets.all(5),
               child: new TextField(
+                readOnly: true,
                 controller: picturePath,
                 decoration: new InputDecoration(
                     prefixIcon: IconButton(
@@ -229,7 +233,15 @@ class AddBookState extends State<AddBook> {
                             fontSize: 20.0)),
                     color: Colors.lightBlue,
                     onPressed: () {
-                      addnewbook();
+                      if ((filePath.text.trim() == "") ||
+                          (authorName.text.trim() == "") ||
+                          (price.text.trim() == "") ||
+                          (bookTitle.text.trim() == "") ||
+                          (picturePath.text.trim() == "")) {
+                        showAlertDialog9(context);
+                      } else {
+                        addnewbook();
+                      }
                     }),
               ),
             ),
@@ -237,6 +249,29 @@ class AddBookState extends State<AddBook> {
           //displaying input text
           new Text(result)
         ]))));
+  }
+
+  showAlertDialog9(BuildContext context) {
+    Widget continueButton = FlatButton(
+      child: new Text("OK",
+          style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed: () => Navigator.of(context).pop(),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("Fields cannot be empty",
+          style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [continueButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   void _openFileExplorer() async {
