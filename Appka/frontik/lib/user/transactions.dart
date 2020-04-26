@@ -107,10 +107,12 @@ class _TransactionsState extends State<Transactions> {
   
   List<Transaction> transactions = new List();
   ScrollController scrollController = new ScrollController();
+  double mybalance=0;
 
   @override
   void initState(){
     super.initState();
+    getbalance(widget.token);
     give10(1,widget.token);
     scrollController.addListener((){
       if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
@@ -135,11 +137,21 @@ class _TransactionsState extends State<Transactions> {
   Widget build(BuildContext context) {
 
 
-    Widget balance = new Container(
-      height:100,
-
-    );
-
+    Widget balance() {
+      return Container(
+        height:100,
+        width:420,
+        child: Card(
+          color: Colors.blueGrey,
+          child: Center(
+            child: Text(
+              "Balance: $mybalance credits",
+              style: TextStyle(color: Colors.white,fontSize: 30),
+            )
+          )
+        ),
+      );
+    }
 
     return new Scaffold(
       backgroundColor: Colors.grey,
@@ -147,11 +159,14 @@ class _TransactionsState extends State<Transactions> {
         title: new Text("Transactions"),
         centerTitle: true,
       ),
-      body:  new Container(
-          padding: EdgeInsets.fromLTRB(10,3,10,3),
-          width: 420,
-          height: 500,
-          child: ListView.builder(
+      body: Container(
+        child:Column(
+          children: <Widget>[
+            new Container(
+              padding: EdgeInsets.fromLTRB(10,3,10,3),
+              width: 420,
+              height: 500,
+              child: ListView.builder(
                   controller: scrollController,
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
@@ -187,12 +202,40 @@ class _TransactionsState extends State<Transactions> {
                         ),
                       ),
                     );
-                  },
-                ),
-        ),
-      ); // This trailing comma makes auto-formatting nicer for build methods.
+                },
+              ),
+            ),
+            balance(),
+          ]
+        )
+      )
+    ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
+
+  getbalance(String token) async{
+    
+    http.Response response;
+    try{
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/getbalance"),
+        headers: {
+          'Content-Type' : 'application/json',
+          'Connection' : 'keep-alive',
+          'Authorization': 'Bearer $token',
+        },
+      );
+    }
+    catch(error){
+      print(error);
+    }
+    
+    if(response.statusCode==200){
+      final jsonresponse= json.decode(response.body);
+      mybalance=jsonresponse['balance'];
+    }
+
+  }
 
 
   Future give10(int page,String token) async {

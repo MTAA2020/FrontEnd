@@ -155,12 +155,12 @@ class _DepositState extends State<Deposit> {
     } catch (error) {
       print(error);
     }
-
+    final jsonresponse = json.decode(response.body);
     if (response.statusCode == 200) {
       setState(() {
         cardid.clear();
         amount.clear();
-        showAlertDialog(context, "Success");
+        showAlertDialog(context, "Success",jsonresponse['balance']);
       });
     } else {
       throw Exception('fail');
@@ -168,7 +168,7 @@ class _DepositState extends State<Deposit> {
 
   }
 
-  showAlertDialog(BuildContext context,String msg) {
+  showAlertDialog(BuildContext context,String msg,double balance) {
 
     Widget continueButton = FlatButton(
       child: new Text("OK",style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
@@ -177,7 +177,7 @@ class _DepositState extends State<Deposit> {
 
   // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      content: new Text(msg,style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      content: new Text('$msg! Your new balance is $balance credits.',style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
       actions: [
         continueButton
       ],
