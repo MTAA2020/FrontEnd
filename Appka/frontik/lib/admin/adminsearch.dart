@@ -15,15 +15,13 @@ class BookList {
   });
 
   factory BookList.fromJson(List<dynamic> parsedJson) {
-
     List<Book> books = new List<Book>();
-    books = parsedJson.map((i)=>Book.fromJson(i)).toList();
+    books = parsedJson.map((i) => Book.fromJson(i)).toList();
 
     return new BookList(
       books: books,
     );
   }
-
 }
 
 class Book {
@@ -36,10 +34,17 @@ class Book {
   final List<dynamic> genres;
   final String about;
 
-  Book({this.id,this.author, this.title, this.published,this.rating,this.price,this.genres,this.about});
+  Book(
+      {this.id,
+      this.author,
+      this.title,
+      this.published,
+      this.rating,
+      this.price,
+      this.genres,
+      this.about});
 
   factory Book.fromJson(Map<String, dynamic> json) {
-
     return new Book(
       id: json['id'],
       author: json['author'],
@@ -51,11 +56,10 @@ class Book {
       about: json['about'],
     );
   }
-
 }
 
 class Search extends StatefulWidget {
-  Search({Key key,this.token}) : super(key: key);
+  Search({Key key, this.token}) : super(key: key);
 
   final String token;
   @override
@@ -65,8 +69,7 @@ class Search extends StatefulWidget {
 class _Search extends State<Search> {
   final SearchBarController<Book> _searchBarController = SearchBarController();
 
-
- Widget tit(String title) {
+  Widget tit(String title) {
     return Container(
       width: 233,
       height: 60,
@@ -98,21 +101,21 @@ class _Search extends State<Search> {
     );
   }
 
-  removeButton(int index,Book book) {
+  removeButton(int index, Book book) {
     return FlatButton(
       child: new Text("Remove",
           style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
       onPressed: () {
-        deleteBook(book.id,index);
+        deleteBook(book.id, index);
       },
     );
   }
 
-  editButton(int index,Book book) {
+  editButton(int index, Book book) {
     return FlatButton(
       child: new Text("Edit",
           style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
-      onPressed: () {
+      onPressed: () {_searchBarController.clear();
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -122,14 +125,15 @@ class _Search extends State<Search> {
                   genres: book.genres,
                   price: book.price,
                   selectedDate: book.published,
-                  id: book.id,token: widget.token)),
-        
+                  author: 'Null',
+                  id: book.id,
+                  token: widget.token)),
         );
       },
     );
   }
 
-  Widget info(String title, String author, int index,Book book) {
+  Widget info(String title, String author, int index, Book book) {
     return Container(
       width: 233,
       height: 160,
@@ -140,7 +144,9 @@ class _Search extends State<Search> {
           Container(
             height: 40,
             child: new Row(
-              children: <Widget>[removeButton(index,book), editButton(index,book)],
+              children: <Widget>[
+                editButton(index, book)
+              ],
             ),
           ),
         ],
@@ -162,45 +168,34 @@ class _Search extends State<Search> {
         ));
   }
 
-
-
-
-
-
   Future<List<Book>> getbooks(String text) async {
-
     http.Response response;
-    try{
+    try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/searchbook",{"hladanie": text}),
+        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": text}),
         headers: {
-          'Content-Type' : 'application/json',
-          'Connection' : 'keep-alive',
+          'Content-Type': 'application/json',
+          'Connection': 'keep-alive',
         },
       );
-    }
-    catch(error){
+    } catch (error) {
       print(error);
     }
-    
+
     List<Book> books = new List();
 
-    if (response.statusCode==200){
+    if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       BookList b = BookList.fromJson(jsonResponse);
-        for(final book in b.books){
-          books.add(book);
-          print(book.title);
-        }
-      
-      return books;
-    }
-    else if(response.statusCode==204){
-      return [];
-    }
-    else{
+      for (final book in b.books) {
+        books.add(book);
+        print(book.title);
+      }
 
-    }
+      return books;
+    } else if (response.statusCode == 204) {
+      return [];
+    } else {}
   }
 
   @override
@@ -208,16 +203,15 @@ class _Search extends State<Search> {
     return Scaffold(
       appBar: new AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          }
-        ),
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
         title: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
             text: 'Read It!',
-            style: TextStyle(fontFamily: 'EmilysCandy',fontSize: 30),
+            style: TextStyle(fontFamily: 'EmilysCandy', fontSize: 30),
           ),
         ),
         centerTitle: true,
@@ -234,78 +228,77 @@ class _Search extends State<Search> {
           emptyWidget: Text("No results"),
           crossAxisCount: 1,
           onItemFound: (Book book, int index) {
-            int idcko=book.id;
+            int idcko = book.id;
             return Container(
-                  padding: EdgeInsets.fromLTRB(10,5,10,0),
-                  height: 180,
-                  width: 360,
-                  child: GestureDetector(
-                    onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => BookDetail(
-                            title: book.title,
-                            author: book.author,
-                            image: "http://10.0.2.2:5000/jpg?book_id=$idcko",
-                            about: book.about,
-                            bookid: book.id,
-                            price: book.price,
-                            rating: book.rating,
-                            token: widget.token,
-                            )
-                          ),
-                        );
-                      },
-                    child: Card(
-                      elevation: 15,
-                      child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                height: 180,
+                width: 360,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BookDetail(
+                                title: book.title,
+                                author: book.author,
+                                image:
+                                    "http://10.0.2.2:5000/jpg?book_id=$idcko",
+                                about: book.about,
+                                bookid: book.id,
+                                price: book.price,
+                                rating: book.rating,
+                                token: widget.token,
+                              )),
+                    );
+                  },
+                  child: Card(
+                    elevation: 15,
+                    child: Padding(
                       padding: EdgeInsets.all(0),
-                      child: Stack(
-                      children: <Widget>[
+                      child: Stack(children: <Widget>[
                         Align(
                           alignment: Alignment.centerRight,
                           child: Stack(
                             children: <Widget>[
                               Padding(
-                                  padding: const EdgeInsets.only(left: 0, top: 0),
+                                  padding:
+                                      const EdgeInsets.only(left: 0, top: 0),
                                   child: Row(
                                     children: <Widget>[
-                                      image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
-                                      info(book.title,book.author,index,book)
+                                      image(
+                                          'http://10.0.2.2:5000/jpg?book_id=$idcko'),
+                                      info(book.title, book.author, index, book)
                                     ],
-                                  )
-                              ),
+                                  )),
                             ],
                           ),
                         )
                       ]),
-                      ),
                     ),
-                  )
-                );
+                  ),
+                ));
           },
         ),
       ),
     );
   }
 
-  Future deleteBook(int id,int index) async {
+  Future deleteBook(int id, int index) async {
     http.Response response;
     try {
-      response =
-          await http.delete(Uri.http('10.0.2.2:5000', "/bookDelete",{"book_id":"${id}"}), headers: {
-        'Content-Type': 'application/json',
-        'Connection': 'keep-alive',
-        'Authorization': 'Bearer ${widget.token}'
-      },);
+      response = await http.delete(
+        Uri.http('10.0.2.2:5000', "/bookDelete", {"book_id": "${id}"}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Connection': 'keep-alive',
+          'Authorization': 'Bearer ${widget.token}'
+        },
+      );
     } catch (error) {
       print(error);
     }
-    if(response.statusCode==200){
-      
-    }
+    if (response.statusCode == 200) {}
   }
-
 
   Future getcover(String id) async {
     http.Response response;
@@ -323,4 +316,3 @@ class _Search extends State<Search> {
     return response.body;
   }
 }
-

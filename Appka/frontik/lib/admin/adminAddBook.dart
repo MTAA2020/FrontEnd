@@ -6,15 +6,18 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:multiselect_formfield/multiselect_formfield.dart';
+import 'package:frontik/admin/searchAuthort.dart';
 
 void main() {
   runApp(new MaterialApp(home: new AddBook()));
 }
 
 class AddBook extends StatefulWidget {
-  AddBook({Key key, this.token}) : super(key: key);
+  AddBook({Key key,this.id,this.author, this.token}) : super(key: key);
 
   final String token;
+  final String author;
+  final int id;
 
   @override
   AddBookState createState() => new AddBookState();
@@ -44,6 +47,7 @@ class AddBookState extends State<AddBook> {
   @override
   Widget build(BuildContext context) {
     selectedDate.text = dateFormat.format(DateTime.now());
+    authorName.text = widget.author;
     return new Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: new AppBar(
@@ -67,6 +71,12 @@ class AddBookState extends State<AddBook> {
                 child: new TextField(
                   controller: authorName,
                   decoration: new InputDecoration(
+                    prefixIcon: IconButton(
+                          icon: Icon(Icons.find_in_page),
+                          onPressed: () {Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchAuthor(token: widget.token)),
+                        );}),
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Enter Author name"),

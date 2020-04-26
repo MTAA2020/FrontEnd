@@ -3,6 +3,7 @@ import 'package:frontik/admin/adminAddAuthor.dart';
 import 'package:frontik/admin/adminAddBook.dart';
 import 'package:frontik/admin/adminEditBook.dart';
 import 'package:frontik/user/startpage.dart';
+import 'package:frontik/admin/adminsearch.dart';
 
 void main() {
   runApp(new MaterialApp(home: new AdminMainPage()));
@@ -111,7 +112,7 @@ class AwesomeButtonState extends State<AdminMainPage> {
                       color: Colors.lightBlue,
                       onPressed: (){Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => EditBook(token: widget.token)),
+                          MaterialPageRoute(builder: (context) => Search(token: widget.token)),
                         );}),
                 ),
               )
