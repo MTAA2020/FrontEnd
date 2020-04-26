@@ -1,10 +1,11 @@
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:frontik/user/bookdetail.dart';
-
+import 'package:flutter/rendering.dart';
+import 'package:frontik/admin/bookEditing.dart';
+import 'dart:async';
 
 class BookList {
   final List<Book> books;
@@ -65,16 +66,17 @@ class _Search extends State<Search> {
   final SearchBarController<Book> _searchBarController = SearchBarController();
 
 
-  Widget tit(String title) {
+ Widget tit(String title) {
     return Container(
-      width: 200,
+      width: 233,
       height: 60,
       padding: new EdgeInsets.all(1.0),
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
           text: title,
-          style: TextStyle(fontFamily: 'PermanentMarker',fontSize: 20,color: Colors.black),
+          style: TextStyle(
+              fontFamily: 'PermanentMarker', fontSize: 20, color: Colors.black),
         ),
       ),
     );
@@ -82,71 +84,82 @@ class _Search extends State<Search> {
 
   Widget auth(String auth) {
     return Container(
-      width: 200,
+      width: 233,
       height: 60,
       padding: new EdgeInsets.all(1.0),
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
           text: auth,
-          style: TextStyle(fontFamily: 'PermanentMarker',fontSize: 20,color: Colors.black),
+          style: TextStyle(
+              fontFamily: 'PermanentMarker', fontSize: 20, color: Colors.black),
         ),
       ),
     );
   }
 
-  Widget stars() {
-    return Container(
-      width: 200,
-      height: 40,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-          child: RatingBar(
-            initialRating: 0,
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-            itemBuilder: (context, _) => Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            onRatingUpdate: (rating) {
-              print(rating);
-            },
-          )
-        )
+  removeButton(int index,Book book) {
+    return FlatButton(
+      child: new Text("Remove",
+          style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed: () {
+        deleteBook(book.id,index);
+      },
     );
   }
 
+  editButton(int index,Book book) {
+    return FlatButton(
+      child: new Text("Edit",
+          style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => EditingBook(
+                  authorName: book.author,
+                  bookTitle: book.title,
+                  genres: book.genres,
+                  price: book.price,
+                  selectedDate: book.published,
+                  id: book.id,token: widget.token)),
+        
+        );
+      },
+    );
+  }
 
-  Container info(String title,String author) {
+  Widget info(String title, String author, int index,Book book) {
     return Container(
-      width: 200,
+      width: 233,
       height: 160,
       child: new Column(
         children: <Widget>[
           tit(title),
           auth(author),
-          stars(),
+          Container(
+            height: 40,
+            child: new Row(
+              children: <Widget>[removeButton(index,book), editButton(index,book)],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget image(String obrazok){
+  Widget image(String image) {
+    //Uint8List bytes=getcover(id.toString());
     return Container(
-      width: 120,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Image.network(
-        obrazok,
-        height: 167.0,
-        width: 113.0,
-        ),
-      )
-    );
+        width: 120,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Image.network(
+            image,
+            height: 167.0,
+            width: 113.0,
+          ),
+        ));
   }
 
 
@@ -258,7 +271,7 @@ class _Search extends State<Search> {
                                   child: Row(
                                     children: <Widget>[
                                       image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
-                                      info(book.title,book.author)
+                                      info(book.title,book.author,index,book)
                                     ],
                                   )
                               ),
@@ -275,4 +288,39 @@ class _Search extends State<Search> {
       ),
     );
   }
+
+  Future deleteBook(int id,int index) async {
+    http.Response response;
+    try {
+      response =
+          await http.delete(Uri.http('10.0.2.2:5000', "/bookDelete",{"book_id":"${id}"}), headers: {
+        'Content-Type': 'application/json',
+        'Connection': 'keep-alive',
+        'Authorization': 'Bearer ${widget.token}'
+      },);
+    } catch (error) {
+      print(error);
+    }
+    if(response.statusCode==200){
+      
+    }
+  }
+
+
+  Future getcover(String id) async {
+    http.Response response;
+    try {
+      response = await http.get(
+        Uri.http('10.0.2.2:5000', "/jpg", {"book_id": id}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Connection': 'keep-alive'
+        },
+      );
+    } catch (error) {
+      print(error);
+    }
+    return response.body;
+  }
 }
+

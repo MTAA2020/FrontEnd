@@ -399,6 +399,8 @@ class _BookDetailState extends State<BookDetail> {
     print(response.body);
     if (response.statusCode==200){
       final jsonResponse = json.decode(response.body);
+      reviews.clear();
+      give10(1);
     }
     else{
       throw Exception('fail');
