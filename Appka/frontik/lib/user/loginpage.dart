@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                           elevation: 3.0,
                           borderRadius: BorderRadius.circular(50.0),
                           child: TextFormField(
-                            
+                            obscureText: true,
                             controller: regpassword,
                             decoration: InputDecoration(
                             

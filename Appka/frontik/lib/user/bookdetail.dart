@@ -248,7 +248,7 @@ class _BookDetailState extends State<BookDetail> {
               children: <Widget>[
                 TextFormField(
                   controller: commentcontroller,
-                  keyboardType: TextInputType.multiline,
+                  //keyboardType: TextInputType.multiline,
                   maxLines: 6,
                   decoration:
                       InputDecoration(hintText: "Write your review here"),
@@ -263,9 +263,8 @@ class _BookDetailState extends State<BookDetail> {
 
   List<Review> reviews = new List();
   ScrollController scrollController = new ScrollController();
-  final commentcontroller = TextEditingController();
+  var commentcontroller = TextEditingController();
   String mytext = "Read";
-  TextEditingController myreviewcontroller = new TextEditingController();
   String myreviewtext = "";
   double myratinginitial = 0;
 
@@ -301,7 +300,7 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
-    //commentcontroller.text = myreviewtext;
+    commentcontroller.text = myreviewtext;
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
@@ -511,6 +510,29 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
 
+    showAlertDialog99(BuildContext context) {
+    Widget continueButton = FlatButton(
+      child: new Text("OK",
+          style: new TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      onPressed: () => Navigator.of(context).pop(),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      content: new Text("No enough credit, first deposit some cash please",
+          style: TextStyle(fontFamily: 'EmilyCandy', fontSize: 20)),
+      actions: [continueButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   showAlertDialog2(BuildContext context, double price) {
     Widget cancelButton = FlatButton(
       child: new Text("No",
@@ -524,11 +546,21 @@ class _BookDetailState extends State<BookDetail> {
       onPressed: () async {
         var res = await buybook();
         if (res['code'] == "1") {
-          print("Readin");
+          Navigator.of(context).pop();
+          int idcko = widget.bookid;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PdfViewPage(
+                      url: 'http://10.0.2.2:5000/pdf?book_id=$idcko',
+                    )),
+          );
         } else if (res['code'] == "2") {
-          print("No credit");
+          
+          Navigator.of(context).pop();
+          showAlertDialog99(context);
         } else if (res['code'] == "3") {
-          print("reading");
+          
           int idcko = widget.bookid;
           Navigator.push(
             context,
