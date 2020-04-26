@@ -17,7 +17,7 @@ class _TransactionsState extends State<Transactions> {
   Widget info(String type,String date){
     return Container(
       width: 200,
-      height:100,
+      height:120,
       alignment: Alignment.centerLeft,
       child: new Column(
         children: <Widget>[
@@ -46,7 +46,7 @@ class _TransactionsState extends State<Transactions> {
   Widget spent(String amount){
     return Container(
       width:142,
-      height: 100,
+      height: 120,
       child:Container(
         alignment: Alignment.centerRight,
         child: new Row(
@@ -75,7 +75,7 @@ class _TransactionsState extends State<Transactions> {
   Container transaction(String type, String date,String amount){
     return Container(
       padding: EdgeInsets.fromLTRB(10,5,10,0),
-      height: 100,
+      height: 120,
       width: 380,
       child: Card(
         elevation: 15,
@@ -111,7 +111,7 @@ class _TransactionsState extends State<Transactions> {
   @override
   void initState(){
     super.initState();
-    give10(1);
+    give10(1,widget.token);
     scrollController.addListener((){
       if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
         int tmp=1;
@@ -119,7 +119,7 @@ class _TransactionsState extends State<Transactions> {
           tmp=2;
         }
         int nextpage=(transactions.length/10-(transactions.length%10)/10 +tmp).toInt();
-        give10(nextpage);
+        give10(nextpage,widget.token);
       }
     }
     );
@@ -135,27 +135,6 @@ class _TransactionsState extends State<Transactions> {
   Widget build(BuildContext context) {
 
 
-    Widget transactionscroll = new Container(
-      margin: EdgeInsets.symmetric(vertical:1.0,horizontal: 5.0),
-      height: 500.0,
-      width: 380,
-      child: new ListView(
-        scrollDirection: Axis.vertical,
-        children: <Widget>[
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Purchase","2019-01-02","30"),
-          transaction("Deposit" ,"2019-01-01","1000"),
-        ],
-      )
-    );
-
     Widget balance = new Container(
       height:100,
 
@@ -168,23 +147,55 @@ class _TransactionsState extends State<Transactions> {
         title: new Text("Transactions"),
         centerTitle: true,
       ),
-      body: new Center(
-        child: new Container(
-          width: 380,
-          child: ListView(
-            children: <Widget>[
-              transactionscroll,
-              balance,
-            ],
-          ),
+      body:  new Container(
+          padding: EdgeInsets.fromLTRB(10,3,10,3),
+          width: 420,
+          height: 500,
+          child: ListView.builder(
+                  controller: scrollController,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: transactions.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      padding: EdgeInsets.fromLTRB(10,3,10,3),
+                      height: 120,
+                      width: 400,
+                      child: Card(
+                        elevation: 15,
+                        child: Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Stack(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Stack(
+                              children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 0, top: 0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        info("Purchase",transactions[index].date),
+                                        spent(transactions[index].amount.toString())
+                                      ],
+                                    )
+                                ),
+                              ],
+                            ),
+                          )
+                        ]),
+                        ),
+                      ),
+                    );
+                  },
+                ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
 
 
-  Future give10(int page) async {
+  Future give10(int page,String token) async {
     
     http.Response response;
     try{
@@ -192,13 +203,13 @@ class _TransactionsState extends State<Transactions> {
         Uri.http('10.0.2.2:5000', "/seePurchases",{"strana": page.toString()}),
         headers: {
           'Content-Type' : 'application/json',
-          'Connection' : 'keep-alive'
+          'Connection' : 'keep-alive',
+          'Authorization': 'Bearer $token',
         },
       );
     }
     catch(error){
       print(error);
-
     }
     
     
@@ -241,7 +252,7 @@ class TransactionList {
 
 }
 class Transaction {
-  final String amount;
+  final double amount;
   final String title;
   final String date;
 

@@ -32,6 +32,7 @@ dependencies:
   dio: ^3.0.9
   multiselect_formfield: ^0.1.2
   flappy_search_bar: ^1.7.2
+  flutter_pdfview: ^1.0.1
 
 dev_dependencies:
   flutter_test:
