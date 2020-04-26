@@ -6,17 +6,17 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:multiselect_formfield/multiselect_formfield.dart';
-import 'package:frontik/admin/searchAuthort.dart';
+import 'package:frontik/admin/searchAuthor2.dart';
 
 void main() {
   runApp(new MaterialApp(home: new AddBook()));
 }
 
 class AddBook extends StatefulWidget {
-  AddBook({Key key,this.id,this.author, this.token}) : super(key: key);
+  AddBook({Key key, this.id, this.author, this.token}) : super(key: key);
 
   final String token;
-  final String author;
+  String author;
   final int id;
 
   @override
@@ -62,168 +62,181 @@ class AddBookState extends State<AddBook> {
         ),
         body: new Container(
             child: new Center(
-                child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(5),
-                child: new TextField(
-                  controller: authorName,
-                  decoration: new InputDecoration(
+                child: new ListView(children: <Widget>[
+          Center(
+            child: Container(
+              width: 300,
+              padding: EdgeInsets.all(5),
+              child: new TextField(
+                controller: authorName,
+                decoration: new InputDecoration(
                     prefixIcon: IconButton(
-                          icon: Icon(Icons.find_in_page),
-                          onPressed: () {Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SearchAuthor(token: widget.token)),
-                        );}),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Enter Author name"),
-                ),
+                        icon: Icon(Icons.find_in_page),
+                        onPressed: () {
+                          _getAuthorName();
+                        }),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    hintText: "Enter Author name"),
               ),
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(5),
-                child: new TextField(
-                  controller: bookTitle,
-                  decoration: new InputDecoration(
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Ented book title"),
-                ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 300,
+              padding: EdgeInsets.all(5),
+              child: new TextField(
+                controller: bookTitle,
+                decoration: new InputDecoration(
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    hintText: "Ented book title"),
               ),
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(5),
-                child: new TextField(
-                  controller: selectedDate,
-                  decoration: new InputDecoration(
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Enter date published"),
-                ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 300,
+              padding: EdgeInsets.all(5),
+              child: new TextField(
+                controller: selectedDate,
+                decoration: new InputDecoration(
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    hintText: "Enter date published"),
               ),
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(5),
-                child: new TextField(
-                  controller: price,
-                  decoration: new InputDecoration(
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Enter price"),
-                ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 300,
+              padding: EdgeInsets.all(5),
+              child: new TextField(
+                controller: price,
+                decoration: new InputDecoration(
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    hintText: "Enter price"),
               ),
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(5),
-                child: MultiSelectFormField(
-                  autovalidate: false,
-                  titleText: 'Genres',
-                  validator: (value) {
-                    if (value == null || value.length == 0) {
-                      return 'Please select one or more options';
-                    }
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 300,
+              padding: EdgeInsets.all(5),
+              child: MultiSelectFormField(
+                autovalidate: false,
+                titleText: 'Genres',
+                validator: (value) {
+                  if (value == null || value.length == 0) {
+                    return 'Please select one or more options';
+                  }
+                },
+                dataSource: [
+                  {
+                    "display": "Thriller",
+                    "value": "\"Thriller\"",
                   },
-                  dataSource: [
-                    {
-                      "display": "Thriller",
-                      "value": "\"Thriller\"",
-                    },
-                    {
-                      "display": "SciFi",
-                      "value": "\"SciFi\"",
-                    },
-                    {
-                      "display": "Child",
-                      "value": "\"Child\"",
-                    },
-                    {
-                      "display": "History",
-                      "value": "\"History\"",
-                    },
-                    {
-                      "display": "Romance",
-                      "value": "\"Romance\"",
-                    },
-                    {
-                      "display": "Bibliography",
-                      "value": "\"Bibliography\"",
-                    },
-                    {
-                      "display": "Technology",
-                      "value": "\"Technology\"",
-                    },
-                  ],
-                  textField: 'display',
-                  valueField: 'value',
-                  okButtonLabel: 'OK',
-                  cancelButtonLabel: 'CANCEL',
-                  // required: true,
-                  hintText: 'Please choose one or more',
-                  value: _myActivities,
-                  onSaved: (value) {
-                    if (value == null) return;
-                    setState(() {
-                      _myActivities = value;
-                    });
+                  {
+                    "display": "SciFi",
+                    "value": "\"SciFi\"",
                   },
-                ), 
+                  {
+                    "display": "Child",
+                    "value": "\"Child\"",
+                  },
+                  {
+                    "display": "History",
+                    "value": "\"History\"",
+                  },
+                  {
+                    "display": "Romance",
+                    "value": "\"Romance\"",
+                  },
+                  {
+                    "display": "Bibliography",
+                    "value": "\"Bibliography\"",
+                  },
+                  {
+                    "display": "Technology",
+                    "value": "\"Technology\"",
+                  },
+                ],
+                textField: 'display',
+                valueField: 'value',
+                okButtonLabel: 'OK',
+                cancelButtonLabel: 'CANCEL',
+                // required: true,
+                hintText: 'Please choose one or more',
+                value: _myActivities,
+                onSaved: (value) {
+                  if (value == null) return;
+                  setState(() {
+                    _myActivities = value;
+                  });
+                },
               ),
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(5),
-                child: new TextField(
-                  controller: filePath,
-                  decoration: new InputDecoration(
-                      prefixIcon: IconButton(
-                          icon: Icon(Icons.find_in_page),
-                          onPressed: () => _openFileExplorer()),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Browse for the book"),
-                ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 300,
+              padding: EdgeInsets.all(5),
+              child: new TextField(
+                controller: filePath,
+                decoration: new InputDecoration(
+                    prefixIcon: IconButton(
+                        icon: Icon(Icons.find_in_page),
+                        onPressed: () => _openFileExplorer()),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    hintText: "Browse for the book"),
               ),
-              Container(
-                width: 300,
-                padding: EdgeInsets.all(5),
-                child: new TextField(
-                  controller: picturePath,
-                  decoration: new InputDecoration(
-                      prefixIcon: IconButton(
-                          icon: Icon(Icons.find_in_page),
-                          onPressed: () => _openFileExplorerJPG()),
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Browse for the cover"),
-                ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 300,
+              padding: EdgeInsets.all(5),
+              child: new TextField(
+                controller: picturePath,
+                decoration: new InputDecoration(
+                    prefixIcon: IconButton(
+                        icon: Icon(Icons.find_in_page),
+                        onPressed: () => _openFileExplorerJPG()),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                    hintText: "Browse for the cover"),
               ),
-              new Padding(
-                padding: new EdgeInsets.fromLTRB(0, 15, 0, 0),
-                child: ButtonTheme(
-                  minWidth: 200,
-                  height: 60,
-                  child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(15),
-                            top: Radius.circular(15)),
-                      ),
-                      child: new Text("Submit",
-                          style: new TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'EmilysCandy',
-                              fontSize: 20.0)),
-                      color: Colors.lightBlue,
-                      onPressed: () {
-                        addnewbook();
-                      }),
-                ),
+            ),
+          ),
+          Center(
+            child: new Padding(
+              padding: new EdgeInsets.fromLTRB(0, 15, 0, 0),
+              child: ButtonTheme(
+                minWidth: 200,
+                height: 60,
+                child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(15),
+                          top: Radius.circular(15)),
+                    ),
+                    child: new Text("Submit",
+                        style: new TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'EmilysCandy',
+                            fontSize: 20.0)),
+                    color: Colors.lightBlue,
+                    onPressed: () {
+                      addnewbook();
+                    }),
               ),
-              //displaying input text
-              new Text(result)
-            ]))));
+            ),
+          ),
+          //displaying input text
+          new Text(result)
+        ]))));
   }
 
   void _openFileExplorer() async {
@@ -326,6 +339,17 @@ class AddBookState extends State<AddBook> {
         new http.MultipartFile('file', stream, length, filename: 'book_$id'));
     request.send().then((response) {
       if (response.statusCode == 200) print("Uploaded!");
+    });
+  }
+
+  void _getAuthorName() async {
+    result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SearchAuthor(token: widget.token)),
+    );
+    setState(() {
+      widget.author = result;
     });
   }
 

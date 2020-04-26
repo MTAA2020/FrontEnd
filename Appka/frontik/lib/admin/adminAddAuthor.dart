@@ -113,7 +113,9 @@ class AddAuthorState extends State<AddAuthor> {
                         },
                       );
                     },*/
-                    onPressed: (){addnewauthor();},
+                    onPressed: () {
+                      addnewauthor();
+                    },
                   ),
                 ),
               ),

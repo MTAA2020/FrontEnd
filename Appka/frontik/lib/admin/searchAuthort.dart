@@ -119,9 +119,7 @@ class _Search extends State<SearchAuthor> {
           emptyWidget: Text("No results"),
           crossAxisCount: 1,
           onItemFound: (Author author, int index) {
-            print(author.about);
-            print(author.id);
-            print(author.author);
+
             int idcko=author.id;
             return Container(
                 padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -129,15 +127,7 @@ class _Search extends State<SearchAuthor> {
                 width: 360,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddBook(
-                                author: author.author,
-                                id: author.id,
-                                token: widget.token,
-                              )),
-                    );
+                  Navigator.pop(context,author.author);
                   },
                   child: Card(
                     elevation: 15,
