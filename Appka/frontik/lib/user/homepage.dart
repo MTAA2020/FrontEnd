@@ -111,9 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
         scrollDirection: Axis.horizontal,
         children: <Widget>[
           kategoria("Thriller"),
-          kategoria("Adventure"),
-          kategoria("Sci-Fi"),
-          kategoria("Entertainment")
+          kategoria("SciFi"),
+          kategoria("Child"),
+          kategoria("History"),
+          kategoria("Romance"),
+          kategoria("Bibliography"),
+          kategoria("Technology")
         ],
       )
     );
@@ -419,7 +422,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Search()),
+                MaterialPageRoute(builder: (context) => Search(token: widget.token)),
               );
             }
           )

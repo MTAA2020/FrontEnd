@@ -161,6 +161,7 @@ class _MyBooksState extends State<MyBooks> {
                             bookid: books[index].id,
                             price: books[index].price,
                             rating: books[index].rating,
+                            token: widget.token,
                             )
                           ),
                         );

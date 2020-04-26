@@ -33,6 +33,9 @@ dependencies:
   multiselect_formfield: ^0.1.2
   flappy_search_bar: ^1.7.2
   flutter_pdfview: ^1.0.1
+  path_provider: ^1.6.7
+  permission_handler: ^2.1.0
+
 
 dev_dependencies:
   flutter_test:

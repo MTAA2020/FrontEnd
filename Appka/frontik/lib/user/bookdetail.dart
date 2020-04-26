@@ -5,6 +5,7 @@ import 'package:expandable/expandable.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'package:frontik/user/pdfviewer.dart';
 
 
 
@@ -123,8 +124,20 @@ class _BookDetailState extends State<BookDetail> {
                     var bought = await isbought();
                     if(bought['code']=="1"){
                       print("now youre reading the book");//Treba otvorit PDF
-                    }else{
+                      int idcko=widget.bookid;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PdfViewPage(
+                          url: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                          )
+                        ),
+                      );
+                    }
+                    else if(bought['code']=="3"){
                       showAlertDialog2(context,widget.price);
+                    }
+                    else{
+
                     }
                   }
                 },
@@ -394,7 +407,6 @@ class _BookDetailState extends State<BookDetail> {
     }
     
     if (response.statusCode==200){
-      final jsonResponse = json.decode(response.body);
       reviews.clear();
       give10(1);
     }
@@ -485,6 +497,7 @@ class _BookDetailState extends State<BookDetail> {
     }
 
   }
+
 
 
   showAlertDialog(BuildContext context) {

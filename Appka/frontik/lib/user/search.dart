@@ -102,7 +102,7 @@ class _Search extends State<Search> {
       child: Align(
         alignment: Alignment.bottomCenter,
           child: RatingBar(
-            initialRating: 0,
+            initialRating: r,
             minRating: 1,
             direction: Axis.horizontal,
             allowHalfRating: true,

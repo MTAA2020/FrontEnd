@@ -110,9 +110,12 @@ class _StartPageState extends State<StartPage> {
         scrollDirection: Axis.horizontal,
         children: <Widget>[
           kategoria("Thriller"),
-          kategoria("Adventure"),
-          kategoria("Sci-Fi"),
-          kategoria("Entertainment")
+          kategoria("SciFi"),
+          kategoria("Child"),
+          kategoria("History"),
+          kategoria("Romance"),
+          kategoria("Bibliography"),
+          kategoria("Technology")
         ],
       )
     );
