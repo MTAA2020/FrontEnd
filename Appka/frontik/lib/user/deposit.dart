@@ -143,7 +143,6 @@ class _DepositState extends State<Deposit> {
     var url = Uri.http('10.0.2.2:5000', "/deposit");
     var body = jsonEncode({'amount': amount.text});
     http.Response response;
-    print('Bearer $token');
     try {
       response = await http.post(url,
           headers: {

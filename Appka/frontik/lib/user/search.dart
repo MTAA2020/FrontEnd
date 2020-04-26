@@ -95,7 +95,7 @@ class _Search extends State<Search> {
     );
   }
 
-  Widget stars() {
+  Widget stars(double r) {
     return Container(
       width: 200,
       height: 40,
@@ -106,22 +106,20 @@ class _Search extends State<Search> {
             minRating: 1,
             direction: Axis.horizontal,
             allowHalfRating: true,
+            ignoreGestures: true,
             itemCount: 5,
             itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
             itemBuilder: (context, _) => Icon(
               Icons.star,
               color: Colors.amber,
             ),
-            onRatingUpdate: (rating) {
-              print(rating);
-            },
           )
         )
     );
   }
 
 
-  Container info(String title,String author) {
+  Container info(String title,String author,double rating) {
     return Container(
       width: 200,
       height: 160,
@@ -129,7 +127,7 @@ class _Search extends State<Search> {
         children: <Widget>[
           tit(title),
           auth(author),
-          stars(),
+          stars(rating),
         ],
       ),
     );
@@ -177,7 +175,6 @@ class _Search extends State<Search> {
       BookList b = BookList.fromJson(jsonResponse);
         for(final book in b.books){
           books.add(book);
-          print(book.title);
         }
       
       return books;
@@ -259,7 +256,7 @@ class _Search extends State<Search> {
                                   child: Row(
                                     children: <Widget>[
                                       image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
-                                      info(book.title,book.author)
+                                      info(book.title,book.author,book.rating)
                                     ],
                                   )
                               ),

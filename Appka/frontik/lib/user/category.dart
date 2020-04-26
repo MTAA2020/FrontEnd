@@ -67,9 +67,6 @@ class _MyCategoryState extends State<MyCategory> {
             Icons.star,
             color: Colors.amber,
           ),
-          onRatingUpdate: (rating) {
-            print(rating);
-          },
         )
       )
   );
@@ -169,6 +166,7 @@ class _MyCategoryState extends State<MyCategory> {
                           bookid: books[index].id,
                           price: books[index].price,
                           rating: books[index].rating,
+                          token: widget.token,
                           )
                         ),
                       );
@@ -231,7 +229,6 @@ class _MyCategoryState extends State<MyCategory> {
       setState(() {
         for(final book in b.books){
           books.add(book);
-          print(book.title);
         }
       });
     }

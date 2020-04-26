@@ -262,7 +262,6 @@ class _TransactionsState extends State<Transactions> {
       setState(() {
         for(final transaction in t.transactions){
           transactions.add(transaction);
-          print(transaction.title);
         }
       });
     }

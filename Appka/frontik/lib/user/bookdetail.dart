@@ -121,7 +121,6 @@ class _BookDetailState extends State<BookDetail> {
                   }
                   else{
                     var bought = await isbought();
-                    print(bought['code']);
                     if(bought['code']=="1"){
                       print("now youre reading the book");//Treba otvorit PDF
                     }else{
@@ -320,7 +319,7 @@ class _BookDetailState extends State<BookDetail> {
                       padding: EdgeInsets.only(left: 10.0, right: 8.0, top: 8.0, bottom: 8.0),
                       child:  Card(
                         child: ExpandablePanel(
-                          header: Text(reviews[index].user),
+                          header: Text('${reviews[index].user} rated it ${reviews[index].rating}'),
                           collapsed: Text(reviews[index].comment, softWrap: true, maxLines: 2, overflow: TextOverflow.ellipsis,),
                           expanded: Text(reviews[index].comment, softWrap: true, ),
                         ),
@@ -353,14 +352,12 @@ class _BookDetailState extends State<BookDetail> {
 
     }
     
-    print(response.body);
     if (response.statusCode==200){
       final jsonResponse = json.decode(response.body);
       ReviewList r = ReviewList.fromJson(jsonResponse);
       setState(() {
         for(final review in r.reviews){
           reviews.add(review);
-          print(review.comment);
         }
       });
     }
@@ -396,7 +393,6 @@ class _BookDetailState extends State<BookDetail> {
       print(error);
     }
     
-    print(response.body);
     if (response.statusCode==200){
       final jsonResponse = json.decode(response.body);
       reviews.clear();
