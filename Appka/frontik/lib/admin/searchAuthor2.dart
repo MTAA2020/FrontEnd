@@ -2,7 +2,7 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:frontik/admin/bookEditing.dart';
+import 'package:frontik/admin/adminAddBook.dart';
 import 'package:flutter/rendering.dart';
 
 import 'dart:async';
@@ -28,36 +28,35 @@ class Author {
   final int id;
   final String author;
   final String about;
+ 
 
-  Author({this.id, this.author, this.about});
+  Author(
+      {this.id,
+      this.author,
+      this.about
+  });
 
   factory Author.fromJson(Map<String, dynamic> json) {
     return new Author(
-        id: json['id'], author: json['name'], about: json['about']);
+      id: json['id'],
+      author: json['name'],
+      about: json['about']
+   
+    );
   }
 }
 
 class SearchAuthor extends StatefulWidget {
-  SearchAuthor(
-      {Key key,
-      this.token,
-      this.price,
-      this.bookTitle,
-      this.genres,
-      this.selectedDate})
-      : super(key: key);
-  double price;
-  String bookTitle;
-  List genres;
-  String selectedDate;
+  SearchAuthor({Key key, this.token}) : super(key: key);
+
   final String token;
   @override
   _Search createState() => _Search();
 }
 
 class _Search extends State<SearchAuthor> {
-  final SearchBarController<Author> _searchBarController =
-      SearchBarController();
+  final SearchBarController<Author> _searchBarController = SearchBarController();
+
 
   Future<List<Author>> getAuthor(String text) async {
     http.Response response;
@@ -77,8 +76,6 @@ class _Search extends State<SearchAuthor> {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      print(response);
-      print(jsonResponse);
       AuthorList b = AuthorList.fromJson(jsonResponse);
       for (final author in b.authors) {
         authors.add(author);
@@ -120,25 +117,14 @@ class _Search extends State<SearchAuthor> {
           emptyWidget: Text("No results"),
           crossAxisCount: 1,
           onItemFound: (Author author, int index) {
-            print(author.about);
-            print(author.id);
-            print(author.author);
-            int idcko = author.id;
+            int idcko=author.id;
             return Container(
                 padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                 height: 180,
                 width: 360,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditingBook(
-                                author: author.author,
-                                id: author.id,
-                                token: widget.token,
-                              )),
-                    );
+                    Navigator.pop(context,author.author);
                   },
                   child: Card(
                     elevation: 15,
@@ -154,8 +140,7 @@ class _Search extends State<SearchAuthor> {
                                       const EdgeInsets.only(left: 0, top: 0),
                                   child: Row(
                                     children: <Widget>[
-                                      info(author.author, author.about,
-                                          author.id, index)
+                                      info(author.author, author.about,author.id, index)
                                     ],
                                   )),
                             ],
@@ -171,7 +156,7 @@ class _Search extends State<SearchAuthor> {
     );
   }
 
-  Widget info(String name, String about, int id, int index) {
+  Widget info(String name, String about,int id, int index) {
     return Container(
       width: 233,
       height: 160,
@@ -215,4 +200,5 @@ class _Search extends State<SearchAuthor> {
       ),
     );
   }
+
 }

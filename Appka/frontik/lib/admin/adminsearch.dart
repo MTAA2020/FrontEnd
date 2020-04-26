@@ -125,7 +125,6 @@ class _Search extends State<Search> {
                   genres: book.genres,
                   price: book.price,
                   selectedDate: book.published,
-                  author: 'Null',
                   id: book.id,
                   token: widget.token)),
         );
