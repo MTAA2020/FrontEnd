@@ -182,7 +182,7 @@ class _BookDetailState extends State<BookDetail> {
         alignment: Alignment.bottomCenter,
           child: RatingBar(
             itemSize: 43,
-            initialRating: 0,
+            initialRating: myratinginitial,
             minRating: 1,
             direction: Axis.horizontal,
             allowHalfRating: true,
@@ -266,13 +266,18 @@ class _BookDetailState extends State<BookDetail> {
   final commentcontroller = TextEditingController();
   String mytext= "Read";
   TextEditingController myreviewcontroller = new TextEditingController();
+  String myreviewtext="";
+  double myratinginitial=0;
+
+
 
   @override
   void initState(){
     super.initState();
 
-
-    //getmyreview();
+    if (widget.token!=null){
+      getmyreview();
+    }
 
 
     //Reviews Section
@@ -298,7 +303,7 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
-    
+    commentcontroller.text=myreviewtext;
     return new Scaffold(
       backgroundColor: Colors.grey,
       appBar: new AppBar(
@@ -419,7 +424,7 @@ class _BookDetailState extends State<BookDetail> {
     http.Response response;
     try{
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/getmyReview",{'book_id': widget.bookid.toString()}),
+        Uri.http('10.0.2.2:5000', "/getMyReview",{'book_id': widget.bookid.toString()}),
         headers: {
           'Content-Type' : 'application/json',
           'Connection' : 'keep-alive',
@@ -430,10 +435,12 @@ class _BookDetailState extends State<BookDetail> {
     catch(error){
       print(error);
     }
-    
-    if (response.statusCode==200){
-      final jsonResponse = json.decode(response.body);
-    }
+
+    final res = json.decode(response.body);
+    if(res['code']=='1'){
+        myreviewtext=res['comment'];
+        myratinginitial=res['rating'];
+      }
     else{
       throw Exception('fail');
     }
