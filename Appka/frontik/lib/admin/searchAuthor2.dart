@@ -62,7 +62,7 @@ class _Search extends State<SearchAuthor> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/searchauthor", {"hladanie": text}),
+        Uri.http('127.0.0.1:5000', "/searchauthor", {"hladanie": text}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive',

@@ -234,7 +234,7 @@ class EditingBookState extends State<EditingBook> {
     http.Response response;
     try {
       response = await http.delete(
-        Uri.http('10.0.2.2:5000', "/bookDelete", {"book_id": "${id}"}),
+        Uri.http('127.0.0.1:5000', "/bookDelete", {"book_id": "${id}"}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive',
@@ -282,7 +282,7 @@ class EditingBookState extends State<EditingBook> {
   }
 
   Future give10() async {
-    var url = Uri.http('10.0.2.2:5000', "/bookEdit");
+    var url = Uri.http('127.0.0.1:5000', "/bookEdit");
     var body = jsonEncode({
       'book_id': '${widget.id}',
       'name': '${authorName.text}',

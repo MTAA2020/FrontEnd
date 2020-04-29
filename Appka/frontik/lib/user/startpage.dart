@@ -157,7 +157,7 @@ class _StartPageState extends State<StartPage> {
                       MaterialPageRoute(builder: (context) => BookDetail(
                         title: bestsellers[index].title,
                         author: bestsellers[index].author,
-                        image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                        image: 'http://127.0.0.1:5000/jpg?book_id=$idcko',
                         about: "h",
                         bookid: bestsellers[index].id,
                         price: bestsellers[index].price,
@@ -183,7 +183,7 @@ class _StartPageState extends State<StartPage> {
                         ClipRRect(
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
-                              'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              'http://127.0.0.1:5000/jpg?book_id=$idcko',
                               headers: {
                                 //'Content-Type' : 'application/json',
                                 'Connection' : 'keep-alive',
@@ -250,7 +250,7 @@ class _StartPageState extends State<StartPage> {
                       MaterialPageRoute(builder: (context) => BookDetail(
                         title: picks[index].title,
                         author: picks[index].author,
-                        image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                        image: 'http://127.0.0.1:5000/jpg?book_id=$idcko',
                         about: "h",
                         bookid: picks[index].id,
                         price: picks[index].price,
@@ -276,7 +276,7 @@ class _StartPageState extends State<StartPage> {
                         ClipRRect(
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
-                              'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              'http://127.0.0.1:5000/jpg?book_id=$idcko',
                               headers: {
                                 //'Content-Type' : 'application/json',
                                 'Connection' : 'keep-alive',
@@ -344,7 +344,7 @@ class _StartPageState extends State<StartPage> {
                       MaterialPageRoute(builder: (context) => BookDetail(
                         title: topbooks[index].title,
                         author: topbooks[index].author,
-                        image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                        image: 'http://127.0.0.1:5000/jpg?book_id=$idcko',
                         about: "h",
                         bookid: topbooks[index].id,
                         price: topbooks[index].price,
@@ -370,7 +370,7 @@ class _StartPageState extends State<StartPage> {
                         ClipRRect(
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
-                              'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              'http://127.0.0.1:5000/jpg?book_id=$idcko',
                               headers: {
                                 //'Content-Type' : 'application/json',
                                 'Connection' : 'keep-alive',
@@ -494,7 +494,7 @@ class _StartPageState extends State<StartPage> {
     http.Response response;
     try{
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/getBooks"),
+        Uri.http('127.0.0.1:5000', "/getBooks"),
         headers: {
           'Content-Type' : 'application/json',
           'Connection' : 'keep-alive'

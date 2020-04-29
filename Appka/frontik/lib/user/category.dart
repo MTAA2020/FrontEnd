@@ -161,7 +161,7 @@ class _MyCategoryState extends State<MyCategory> {
                         MaterialPageRoute(builder: (context) => BookDetail(
                           title: books[index].title,
                           author: books[index].author,
-                          image: "http://10.0.2.2:5000/jpg?book_id=$idcko",
+                          image: "http://127.0.0.1:5000/jpg?book_id=$idcko",
                           about: books[index].about,
                           bookid: books[index].id,
                           price: books[index].price,
@@ -185,7 +185,7 @@ class _MyCategoryState extends State<MyCategory> {
                                 padding: const EdgeInsets.only(left: 0, top: 0),
                                 child: Row(
                                   children: <Widget>[
-                                    image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
+                                    image('http://127.0.0.1:5000/jpg?book_id=$idcko'),
                                     info(books[index].title,books[index].author,books[index].rating)
                                   ],
                                 )
@@ -210,7 +210,7 @@ class _MyCategoryState extends State<MyCategory> {
     http.Response response;
     try{
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/getBookCategory",{"strana": page.toString() ,"kategoria": widget.category}),
+        Uri.http('127.0.0.1:5000', "/getBookCategory",{"strana": page.toString() ,"kategoria": widget.category}),
         headers: {
           'Content-Type' : 'application/json',
           'Connection' : 'keep-alive'

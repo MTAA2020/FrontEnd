@@ -133,7 +133,7 @@ class _BookDetailState extends State<BookDetail> {
                           MaterialPageRoute(
                               builder: (context) => PdfViewPage(
                                     url:
-                                        'http://10.0.2.2:5000/pdf?book_id=$idcko',
+                                        'http://127.0.0.1:5000/pdf?book_id=$idcko',
                                   )),
                         );
                       } else if (bought['code'] == "3") {
@@ -363,7 +363,7 @@ class _BookDetailState extends State<BookDetail> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/getBookReviews",
+        Uri.http('127.0.0.1:5000', "/getBookReviews",
             {"strana": page.toString(), "book_id": widget.bookid.toString()}),
         headers: {
           'Content-Type': 'application/json',
@@ -391,7 +391,7 @@ class _BookDetailState extends State<BookDetail> {
   Future addreview(double rating) async {
     http.Response response;
     try {
-      response = await http.put(Uri.http('10.0.2.2:5000', "/addReview"),
+      response = await http.put(Uri.http('127.0.0.1:5000', "/addReview"),
           headers: {
             'Content-Type': 'application/json',
             'Connection': 'keep-alive',
@@ -418,7 +418,7 @@ class _BookDetailState extends State<BookDetail> {
     http.Response response;
     try {
       response = await http.get(
-          Uri.http('10.0.2.2:5000', "/getMyReview",
+          Uri.http('127.0.0.1:5000', "/getMyReview",
               {'book_id': widget.bookid.toString()}),
           headers: {
             'Content-Type': 'application/json',
@@ -441,7 +441,7 @@ class _BookDetailState extends State<BookDetail> {
   buybook() async {
     http.Response response;
     try {
-      response = await http.post(Uri.http('10.0.2.2:5000', "/purchase"),
+      response = await http.post(Uri.http('127.0.0.1:5000', "/purchase"),
           headers: {
             'Content-Type': 'application/json',
             'Connection': 'keep-alive',
@@ -467,7 +467,7 @@ class _BookDetailState extends State<BookDetail> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/isbought",
+        Uri.http('127.0.0.1:5000', "/isbought",
             {'book_id': widget.bookid.toString()}),
         headers: {
           'Content-Type': 'application/json',
@@ -552,7 +552,7 @@ class _BookDetailState extends State<BookDetail> {
             context,
             MaterialPageRoute(
                 builder: (context) => PdfViewPage(
-                      url: 'http://10.0.2.2:5000/pdf?book_id=$idcko',
+                      url: 'http://127.0.0.1:5000/pdf?book_id=$idcko',
                     )),
           );
         } else if (res['code'] == "2") {
@@ -566,7 +566,7 @@ class _BookDetailState extends State<BookDetail> {
             context,
             MaterialPageRoute(
                 builder: (context) => PdfViewPage(
-                      url: 'http://10.0.2.2:5000/pdf?book_id=$idcko',
+                      url: 'http://127.0.0.1:5000/pdf?book_id=$idcko',
                     )),
           );
         }

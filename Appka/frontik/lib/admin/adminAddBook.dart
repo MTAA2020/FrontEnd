@@ -247,7 +247,6 @@ class AddBookState extends State<AddBook> {
             ),
           ),
           //displaying input text
-          new Text(result)
         ]))));
   }
 
@@ -321,7 +320,7 @@ class AddBookState extends State<AddBook> {
   }
 
   Future addnewbook() async {
-    var url = Uri.http('10.0.2.2:5000', "/addBook");
+    var url = Uri.http('127.0.0.1:5000', "/addBook");
     var body = jsonEncode({
       'name': '${authorName.text}',
       'title': '${bookTitle.text}',
@@ -365,7 +364,7 @@ class AddBookState extends State<AddBook> {
     var request = new http.MultipartRequest(
         "POST",
         Uri.http(
-          '10.0.2.2:5000',
+          '127.0.0.1:5000',
           "/addjpg",
         ));
     request.fields['book_id'] = id.toString();
@@ -395,7 +394,7 @@ class AddBookState extends State<AddBook> {
     var request = new http.MultipartRequest(
         "POST",
         Uri.http(
-          '10.0.2.2:5000',
+          '127.0.0.1:5000',
           "/addpdf",
         ));
     request.fields['book_id'] = id.toString();

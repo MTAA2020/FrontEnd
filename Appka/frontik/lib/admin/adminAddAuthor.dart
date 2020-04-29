@@ -127,7 +127,7 @@ class AddAuthorState extends State<AddAuthor> {
   }
 
   Future addnewauthor() async {
-    var url = Uri.http('10.0.2.2:5000', "/addAuthor");
+    var url = Uri.http('127.0.0.1:5000', "/addAuthor");
     var body = jsonEncode({'name': '${authorName.text}', 'about': about.text});
     http.Response response;
     try {

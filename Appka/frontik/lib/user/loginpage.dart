@@ -382,7 +382,7 @@ class _LoginPageState extends State<LoginPage> {
     http.Response response;
     try{
       response = await http.post(
-        Uri.http('10.0.2.2:5000', "/login"),
+        Uri.http('127.0.0.1:5000', "/login"),
         headers: {
           'Content-Type' : 'application/json'
         },
@@ -409,7 +409,7 @@ class _LoginPageState extends State<LoginPage> {
     http.Response response;
     try{
       response = await http.post(
-        Uri.http('10.0.2.2:5000', "/register"),
+        Uri.http('127.0.0.1:5000', "/register"),
         headers: {
           'Content-Type' : 'application/json'
         },

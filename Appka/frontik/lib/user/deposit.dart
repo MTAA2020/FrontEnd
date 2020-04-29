@@ -140,7 +140,7 @@ class _DepositState extends State<Deposit> {
 
   Future getmoney(String token) async{
 
-    var url = Uri.http('10.0.2.2:5000', "/deposit");
+    var url = Uri.http('127.0.0.1:5000', "/deposit");
     var body = jsonEncode({'amount': amount.text});
     http.Response response;
     try {

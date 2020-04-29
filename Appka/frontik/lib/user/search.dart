@@ -157,7 +157,7 @@ class _Search extends State<Search> {
     http.Response response;
     try{
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/searchbook",{"hladanie": text}),
+        Uri.http('127.0.0.1:5000', "/searchbook",{"hladanie": text}),
         headers: {
           'Content-Type' : 'application/json',
           'Connection' : 'keep-alive',
@@ -231,7 +231,7 @@ class _Search extends State<Search> {
                           MaterialPageRoute(builder: (context) => BookDetail(
                             title: book.title,
                             author: book.author,
-                            image: "http://10.0.2.2:5000/jpg?book_id=$idcko",
+                            image: "http://127.0.0.1:5000/jpg?book_id=$idcko",
                             about: book.about,
                             bookid: book.id,
                             price: book.price,
@@ -255,7 +255,7 @@ class _Search extends State<Search> {
                                   padding: const EdgeInsets.only(left: 0, top: 0),
                                   child: Row(
                                     children: <Widget>[
-                                      image('http://10.0.2.2:5000/jpg?book_id=$idcko'),
+                                      image('http://127.0.0.1:5000/jpg?book_id=$idcko'),
                                       info(book.title,book.author,book.rating)
                                     ],
                                   )

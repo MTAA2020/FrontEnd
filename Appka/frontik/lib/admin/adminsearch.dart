@@ -171,7 +171,7 @@ class _Search extends State<Search> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": text}),
+        Uri.http('127.0.0.1:5000', "/searchbook", {"hladanie": text}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive',
@@ -241,7 +241,7 @@ class _Search extends State<Search> {
                                 title: book.title,
                                 author: book.author,
                                 image:
-                                    "http://10.0.2.2:5000/jpg?book_id=$idcko",
+                                    "http://127.0.0.1:5000/jpg?book_id=$idcko",
                                 about: book.about,
                                 bookid: book.id,
                                 price: book.price,
@@ -265,7 +265,7 @@ class _Search extends State<Search> {
                                   child: Row(
                                     children: <Widget>[
                                       image(
-                                          'http://10.0.2.2:5000/jpg?book_id=$idcko'),
+                                          'http://127.0.0.1:5000/jpg?book_id=$idcko'),
                                       info(book.title, book.author, index, book)
                                     ],
                                   )),
@@ -286,7 +286,7 @@ class _Search extends State<Search> {
     http.Response response;
     try {
       response = await http.delete(
-        Uri.http('10.0.2.2:5000', "/bookDelete", {"book_id": "${id}"}),
+        Uri.http('127.0.0.1:5000', "/bookDelete", {"book_id": "${id}"}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive',
@@ -303,7 +303,7 @@ class _Search extends State<Search> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/jpg", {"book_id": id}),
+        Uri.http('127.0.0.1:5000', "/jpg", {"book_id": id}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive'

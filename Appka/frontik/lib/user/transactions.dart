@@ -134,8 +134,7 @@ class _TransactionsState extends State<Transactions> {
   }
 
   @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context){
 
     Widget balance() {
       return Container(
@@ -218,7 +217,7 @@ class _TransactionsState extends State<Transactions> {
     http.Response response;
     try{
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/getbalance"),
+        Uri.http('127.0.0.1:5000', "/getbalance"),
         headers: {
           'Content-Type' : 'application/json',
           'Connection' : 'keep-alive',
@@ -243,7 +242,7 @@ class _TransactionsState extends State<Transactions> {
     http.Response response;
     try{
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/seePurchases",{"strana": page.toString()}),
+        Uri.http('127.0.0.1:5000', "/seePurchases",{"strana": page.toString()}),
         headers: {
           'Content-Type' : 'application/json',
           'Connection' : 'keep-alive',

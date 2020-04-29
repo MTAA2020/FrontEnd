@@ -159,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         token: widget.token,
                         title: bestsellers[index].title,
                         author: bestsellers[index].author,
-                        image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                        image: 'http://127.0.0.1:5000/jpg?book_id=$idcko',
                         about: "h",
                         bookid: bestsellers[index].id,
                         price: bestsellers[index].price,
@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ClipRRect(
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
-                              'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              'http://127.0.0.1:5000/jpg?book_id=$idcko',
                               height: 160.0,
                               width: 140.0,
                           ),
@@ -246,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         token: widget.token,
                         title: picks[index].title,
                         author: picks[index].author,
-                        image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                        image: 'http://127.0.0.1:5000/jpg?book_id=$idcko',
                         about: "h",
                         bookid: picks[index].id,
                         price: picks[index].price,
@@ -272,7 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ClipRRect(
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
-                              'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              'http://127.0.0.1:5000/jpg?book_id=$idcko',
                               height: 160.0,
                               width: 140.0,
                           ),
@@ -334,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         token: widget.token,
                         title: topbooks[index].title,
                         author: topbooks[index].author,
-                        image: 'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                        image: 'http://127.0.0.1:5000/jpg?book_id=$idcko',
                         about: topbooks[index].about,
                         bookid: topbooks[index].id,
                         price: topbooks[index].price,
@@ -360,7 +360,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ClipRRect(
                           borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
                           child: Image.network(
-                              'http://10.0.2.2:5000/jpg?book_id=$idcko',
+                              'http://127.0.0.1:5000/jpg?book_id=$idcko',
                               height: 160.0,
                               width: 140.0,
                           ),
@@ -484,7 +484,7 @@ class _MyHomePageState extends State<MyHomePage> {
     http.Response response;
     try{
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/getBooks"),
+        Uri.http('127.0.0.1:5000', "/getBooks"),
         headers: {
           'Content-Type' : 'application/json',
           'Connection' : 'keep-alive'

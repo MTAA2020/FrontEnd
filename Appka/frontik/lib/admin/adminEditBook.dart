@@ -147,7 +147,7 @@ class _EditBookState extends State<EditBook> {
                                       title: books[index].title,
                                       author: books[index].author,
                                       image:
-                                          "http://10.0.2.2:5000/jpg?book_id=$idcko",
+                                          "http://127.0.0.1:5000/jpg?book_id=$idcko",
                                       about: "hello",
                                       bookid: books[index].id,
                                       price: books[index].price,
@@ -170,7 +170,7 @@ class _EditBookState extends State<EditBook> {
                                         child: Row(
                                           children: <Widget>[
                                             image(
-                                                'http://10.0.2.2:5000/jpg?book_id=$idcko'),
+                                                'http://127.0.0.1:5000/jpg?book_id=$idcko'),
                                             info(books[index].title,
                                                 books[index].author, index)
                                           ],
@@ -194,7 +194,7 @@ class _EditBookState extends State<EditBook> {
     http.Response response;
     try {
       response =
-          await http.delete(Uri.http('10.0.2.2:5000', "/bookDelete",{"book_id":"${id}"}), headers: {
+          await http.delete(Uri.http('127.0.0.1:5000', "/bookDelete",{"book_id":"${id}"}), headers: {
         'Content-Type': 'application/json',
         'Connection': 'keep-alive',
         'Authorization': 'Bearer ${widget.token}'
@@ -208,7 +208,7 @@ class _EditBookState extends State<EditBook> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/searchbook", {"hladanie": "ggg"}),
+        Uri.http('127.0.0.1:5000', "/searchbook", {"hladanie": "ggg"}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive'
@@ -238,7 +238,7 @@ class _EditBookState extends State<EditBook> {
     http.Response response;
     try {
       response = await http.get(
-        Uri.http('10.0.2.2:5000', "/jpg", {"book_id": id}),
+        Uri.http('127.0.0.1:5000', "/jpg", {"book_id": id}),
         headers: {
           'Content-Type': 'application/json',
           'Connection': 'keep-alive'
